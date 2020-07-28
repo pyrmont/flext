@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  EditorViewController.swift
 //  Telekinesis
 //
 //  Created by Michael Camilleri on 28/7/20.
