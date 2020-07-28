@@ -12,17 +12,31 @@ import JavaScriptCore
 class ViewController: UIViewController, UITextViewDelegate {
     @IBOutlet var textPreview: UITextView!
     @IBOutlet var textEditor: UITextView!
+    @IBOutlet var processorButton: UIButton!
     
     var jsProcessFunction: JSValue? = nil
+    var defaultProcessor: String = "wrap-at-72-chars"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         textEditor.delegate = self
-        setupProcessor()
+        setupProcessor(using: defaultProcessor)
     }
     
-    func setupProcessor(using filename: String = "wrap-at-72-chars") {
+    // Processor Setup
+    
+    func setupProcessor(using filename: String) {
+        setupProcessorButton(using: filename)
+        setupProcessorFunction(using: filename)
+    }
+    
+    func setupProcessorButton(using filename: String) {
+        let prettyName = filename.capitalized.replacingOccurrences(of: "-", with: " ")
+        processorButton.setTitle(prettyName, for: .normal)
+    }
+    
+    func setupProcessorFunction(using filename: String) {
         guard let jsContext = JSContext() else { return }
 
         if let jsSourcePath = Bundle.main.path(forResource: filename, ofType: "js") {
