@@ -14,6 +14,7 @@
 		708BF85924CFB0E40004A404 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 708BF85824CFB0E40004A404 /* Assets.xcassets */; };
 		708BF85C24CFB0E40004A404 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 708BF85A24CFB0E40004A404 /* LaunchScreen.storyboard */; };
 		708BF86424CFDA3C0004A404 /* TextViewWithPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708BF86324CFDA3C0004A404 /* TextViewWithPlaceholder.swift */; };
+		708BF86824CFF9CE0004A404 /* wrap-at-72-chars.js in Resources */ = {isa = PBXBuildFile; fileRef = 708BF86724CFF9CE0004A404 /* wrap-at-72-chars.js */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		708BF85B24CFB0E40004A404 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		708BF85D24CFB0E40004A404 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		708BF86324CFDA3C0004A404 /* TextViewWithPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewWithPlaceholder.swift; sourceTree = "<group>"; };
+		708BF86724CFF9CE0004A404 /* wrap-at-72-chars.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "wrap-at-72-chars.js"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,10 +66,19 @@
 				708BF85524CFB0E30004A404 /* Main.storyboard */,
 				708BF86324CFDA3C0004A404 /* TextViewWithPlaceholder.swift */,
 				708BF85824CFB0E40004A404 /* Assets.xcassets */,
+				708BF86524CFF9430004A404 /* Processors */,
 				708BF85A24CFB0E40004A404 /* LaunchScreen.storyboard */,
 				708BF85D24CFB0E40004A404 /* Info.plist */,
 			);
 			path = Telekinesis;
+			sourceTree = "<group>";
+		};
+		708BF86524CFF9430004A404 /* Processors */ = {
+			isa = PBXGroup;
+			children = (
+				708BF86724CFF9CE0004A404 /* wrap-at-72-chars.js */,
+			);
+			path = Processors;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -128,6 +139,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				708BF86824CFF9CE0004A404 /* wrap-at-72-chars.js in Resources */,
 				708BF85C24CFB0E40004A404 /* LaunchScreen.storyboard in Resources */,
 				708BF85924CFB0E40004A404 /* Assets.xcassets in Resources */,
 				708BF85724CFB0E30004A404 /* Main.storyboard in Resources */,
