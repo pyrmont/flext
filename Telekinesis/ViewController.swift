@@ -8,13 +8,19 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+class ViewController: UIViewController, UITextViewDelegate {
+    @IBOutlet var textPreview: UITextView!
+    @IBOutlet var textEditor: UITextView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        textEditor.delegate = self
     }
-
-
+    
+    // UITextView Delegate Methods
+    
+    func textViewDidChange(_ textView: UITextView) {
+        textPreview.text = textView.text
+    }
 }
-
