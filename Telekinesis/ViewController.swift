@@ -18,7 +18,7 @@ class ViewController: UIViewController, UITextViewDelegate {
         textEditor.delegate = self
     }
     
-    // UITextView Delegate Methods
+    // UITextViewDelegate Methods
     
     func textViewDidChange(_ textView: UITextView) {
         textPreview.text = textView.text
