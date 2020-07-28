@@ -8,8 +8,8 @@
 
 import UIKit
 
-@IBDesignable class TextViewWithPlaceholder: UITextView {
-    @IBInspectable var activeTextColor: UIColor = .black
+class TextViewWithPlaceholder: UITextView {
+    var activeTextColor: UIColor = .black
     
     var placeholderText: String = "Enter your text."
     var placeholderColor: UIColor? = .lightGray
