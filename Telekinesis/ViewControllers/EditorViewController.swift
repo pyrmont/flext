@@ -15,7 +15,6 @@ class EditorViewController: UIViewController, UITextViewDelegate {
     @IBOutlet var processorButton: UIButton!
     
     var jsProcessFunction: JSValue? = nil
-    var defaultProcessor: String = "wrap-at-72-chars"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,31 +23,30 @@ class EditorViewController: UIViewController, UITextViewDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(EditorViewController.adjustTextEditorHeight(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         textEditor.delegate = self
+
+        let defaultProcessor = ProcessorModel(path: Bundle.main.url(forResource: "wrap-at-72-chars", withExtension: "js", subdirectory: "Processors")!)
         setupProcessor(using: defaultProcessor)
     }
     
     // Processor Setup
     
-    func setupProcessor(using filename: String) {
-        setupProcessorButton(using: filename)
-        setupProcessorFunction(using: filename)
+    func setupProcessor(using processor: ProcessorModel) {
+        setupProcessorButton(using: processor)
+        setupProcessorFunction(using: processor)
     }
     
-    func setupProcessorButton(using filename: String) {
-        let prettyName = filename.capitalized.replacingOccurrences(of: "-", with: " ")
-        processorButton.setTitle(prettyName, for: .normal)
+    func setupProcessorButton(using processor: ProcessorModel) {
+        processorButton.setTitle(processor.name, for: .normal)
     }
     
-    func setupProcessorFunction(using filename: String) {
+    func setupProcessorFunction(using processor: ProcessorModel) {
         guard let jsContext = JSContext() else { return }
 
-        if let jsSourcePath = Bundle.main.path(forResource: filename, ofType: "js", inDirectory: "Processors") {
-            do {
-                let jsSourceContents = try String(contentsOfFile: jsSourcePath)
-                jsContext.evaluateScript(jsSourceContents)
-            } catch {
-                print(error.localizedDescription)
-            }
+        do {
+            let jsSourceContents = try String(contentsOf: processor.path)
+            jsContext.evaluateScript(jsSourceContents)
+        } catch {
+            print(error.localizedDescription)
         }
         
         jsProcessFunction = jsContext.objectForKeyedSubscript("process")
