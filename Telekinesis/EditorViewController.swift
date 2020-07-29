@@ -42,7 +42,7 @@ class EditorViewController: UIViewController, UITextViewDelegate {
     func setupProcessorFunction(using filename: String) {
         guard let jsContext = JSContext() else { return }
 
-        if let jsSourcePath = Bundle.main.path(forResource: filename, ofType: "js") {
+        if let jsSourcePath = Bundle.main.path(forResource: filename, ofType: "js", inDirectory: "Processors") {
             do {
                 let jsSourceContents = try String(contentsOfFile: jsSourcePath)
                 jsContext.evaluateScript(jsSourceContents)
