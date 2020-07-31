@@ -13,6 +13,8 @@ class EditorViewController: UIViewController, UITextViewDelegate {
     @IBOutlet var textPreview: UITextView!
     @IBOutlet var textEditor: UITextView!
     @IBOutlet var processorButton: UIButton!
+
+    @IBAction func unwindToEditor(unwindSegue: UIStoryboardSegue) { }
     
     var jsProcessFunction: JSValue? = nil
     
