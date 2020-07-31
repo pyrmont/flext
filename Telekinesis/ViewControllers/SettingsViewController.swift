@@ -48,7 +48,9 @@ class SettingsViewController: UIViewController {
         if let processorFileURLs = Bundle.main.urls(forResourcesWithExtension: "js", subdirectory: "Processors") {
             settings.append(SettingSection(
                 name: "Processors",
-                items: processorFileURLs.map { ProcessorModel(path: $0 )}))
+                items: processorFileURLs
+                    .map { ProcessorModel(path: $0 )}
+                    .sorted(by: { $0.name < $1.name })))
         }
         
         settings.append(SettingSection(name: "Other", items: ["About"]))
@@ -67,7 +69,6 @@ class SettingsViewController: UIViewController {
 }
 
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
-
     func numberOfSections(in tableView: UITableView) -> Int {
         return settings.count
     }
@@ -90,15 +91,4 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return settings[section].name
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
