@@ -8,58 +8,39 @@
 
 import UIKit
 
-struct SettingSection {
-    var name: String
-    var items: [SettingItem]
-}
-
-protocol SettingItem {
-    var name: String { get }
-    var cellType: String { get }
-}
-
-extension ProcessorModel: SettingItem {
-    var cellType: String {
-        get { "Selectable Cell" }
-    }
-}
-
-extension String: SettingItem  {
-    var name: String {
-        get { self }
-    }
-    
-    var cellType: String {
-        get { "Disclosable Cell" }
-    }
-}
-
 class SettingsViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
     @IBOutlet var tableViewHeight: NSLayoutConstraint!
     
-    var settings: [SettingSection]!
+    var settings: [Setting]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        settings = [SettingSection]()
-        
-        if let processorFileURLs = Bundle.main.urls(forResourcesWithExtension: "js", subdirectory: "Processors") {
-            settings.append(SettingSection(
-                name: "Processors",
-                items: processorFileURLs
-                    .map { ProcessorModel(path: $0 )}
-                    .sorted(by: { $0.name < $1.name })))
+        if settings == nil {
+            settings = SettingsData.settings()
         }
-        
-        settings.append(SettingSection(name: "Other", items: ["About"]))
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
         tableView.delegate = self
         tableView.dataSource = self
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let sender = sender as? UITableViewCell else { return }
+        let indexPath = tableView.indexPath(for: sender)!
+        
+        guard let items = settings[indexPath.section].value as? [Setting] else { return }
+        let item = items[indexPath.row]
+
+        if let section = segue.destination as? SettingsViewController {
+            section.settings = [item]
+            section.title = item.name
+        } else if let page = segue.destination as? PageViewController {
+            page.textKey = item.value as! String
+        }
     }
     
     override func viewWillLayoutSubviews() {
@@ -69,18 +50,27 @@ class SettingsViewController: UIViewController {
 }
 
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
+    func typeOfCell(for item: Setting) -> String {
+        switch item.type {
+        case .section:
+            return "Section Cell"
+        case .page:
+            return "Page Cell"
+        case .processor:
+            return "Processor Cell"
+        }
+    }
     func numberOfSections(in tableView: UITableView) -> Int {
         return settings.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return settings[section].items.count
+        return (settings[section].value as! [Setting]).count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = settings[indexPath.section].items[indexPath.row]
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: item.cellType, for: indexPath)
+        let item = (settings[indexPath.section].value as! [Setting])[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: typeOfCell(for: item), for: indexPath)
 
         // Configure the cell...
         cell.textLabel?.text = item.name
@@ -89,6 +79,6 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return settings[section].name
+        return settings.count == 1 ? "" : settings[section].name
     }
 }
