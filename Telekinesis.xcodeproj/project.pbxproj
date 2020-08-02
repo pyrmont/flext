@@ -74,12 +74,12 @@
 		708BF84E24CFB0E30004A404 /* Telekinesis */ = {
 			isa = PBXGroup;
 			children = (
-				70B2312624D680F9004760B1 /* Data */,
 				7096B74224D1050900B2C132 /* Processors */,
 				708BF85D24CFB0E40004A404 /* Info.plist */,
 				708BF84F24CFB0E30004A404 /* AppDelegate.swift */,
 				708BF85124CFB0E30004A404 /* SceneDelegate.swift */,
 				708BF85824CFB0E40004A404 /* Assets.xcassets */,
+				70B2312624D680F9004760B1 /* Data */,
 				70B2312324D6607B004760B1 /* Helpers */,
 				708BF85A24CFB0E40004A404 /* LaunchScreen.storyboard */,
 				70B2311524D52AB6004760B1 /* Localizable.strings */,

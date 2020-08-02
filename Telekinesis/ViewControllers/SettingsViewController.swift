@@ -40,6 +40,9 @@ class SettingsViewController: UIViewController {
             section.title = item.name
         } else if let page = segue.destination as? PageViewController {
             page.textKey = item.value as! String
+        } else if let editor = segue.destination as? EditorViewController {
+            editor.setupProcessor(using: (item.value as! ProcessorModel))
+            editor.runProcessor()
         }
     }
     

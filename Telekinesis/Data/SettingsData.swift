@@ -17,11 +17,12 @@ enum SettingType {
 protocol SettingValue { }
 extension Array: SettingValue {}
 extension String: SettingValue {}
+extension ProcessorModel: SettingValue {}
 
 struct Setting {
     var name: String
     var type: SettingType
-    var value: SettingValue?
+    var value: SettingValue
 }
 
 struct SettingsData {
@@ -48,6 +49,6 @@ struct SettingsData {
     
     private static func processors() -> Setting {
         return Setting(name: "Processors", type: .section, value: ProcessorModel.findAll().map {
-            Setting(name: $0.name, type: .processor, value: nil) })
+            Setting(name: $0.name, type: .processor, value: $0) })
     }
 }

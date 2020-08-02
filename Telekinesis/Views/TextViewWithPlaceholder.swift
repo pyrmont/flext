@@ -14,9 +14,9 @@ class TextViewWithPlaceholder: UITextView {
     var placeholderText: String = "Enter your text."
     var placeholderColor: UIColor? = .lightGray
 
-    var placeholderEnabled: Bool = true
+    var placeholderIsEnabled: Bool = true
 
-    // MARK: Initialisation
+    // MARK: - Initialisation
     
     init(frame: CGRect, textContainer: NSTextContainer?, placeholderText: String, placeholderColor: UIColor, activeTextColor: UIColor? = nil) {
         super.init(frame: frame, textContainer: textContainer)
@@ -45,20 +45,20 @@ class TextViewWithPlaceholder: UITextView {
         NotificationCenter.default.addObserver(self, selector: #selector(TextViewWithPlaceholder.textDidEndEditing(notification:)), name: UITextView.textDidEndEditingNotification, object: nil)
     }
     
-    // MARK: Deinitialisation
+    // MARK: - Deinitialisation
     
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
     
-    // MARK: Placeholder Updating
+    // MARK: - Placeholder Updating
     
     @objc private func textDidBeginEditing(notification: Notification) {
-        guard placeholderEnabled else { return }
+        guard placeholderIsEnabled else { return }
 
         self.text = nil
         self.textColor = self.activeTextColor
-        self.placeholderEnabled = false
+        self.placeholderIsEnabled = false
     }
     
     @objc private func textDidEndEditing(notification: Notification) {
@@ -66,6 +66,6 @@ class TextViewWithPlaceholder: UITextView {
 
         self.text = self.placeholderText
         self.textColor = self.placeholderColor
-        self.placeholderEnabled = true
+        self.placeholderIsEnabled = true
     }
 }

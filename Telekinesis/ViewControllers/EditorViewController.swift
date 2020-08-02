@@ -9,7 +9,7 @@
 import UIKit
 import JavaScriptCore
 
-class EditorViewController: UIViewController, UITextViewDelegate {
+class EditorViewController: UIViewController {
     @IBOutlet var textPreview: UITextView!
     @IBOutlet var textEditor: UITextView!
     @IBOutlet var processorButton: UIButton!
@@ -21,16 +21,34 @@ class EditorViewController: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(EditorViewController.adjustTextEditorHeight(notification:)), name: UIResponder.keyboardDidShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(EditorViewController.adjustTextEditorHeight(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-        textEditor.delegate = self
-
-        let defaultProcessor = ProcessorModel(path: Bundle.main.url(forResource: "wrap-at-72-chars", withExtension: "js", subdirectory: "Processors")!)
-        setupProcessor(using: defaultProcessor)
+        setupListeners()
+        setupProcessor()
     }
     
-    // Processor Setup
+    // MARK: - Listener Setup
+    
+    func setupListeners() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(EditorViewController.adjustTextEditorHeight(notification:)),
+            name: UIResponder.keyboardDidShowNotification,
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(EditorViewController.adjustTextEditorHeight(notification:)),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil)
+        
+        textEditor.delegate = self
+    }
+    
+    // MARK: - Processor Setup
+
+    func setupProcessor() {
+        let defaultProcessor = ProcessorModel(path: Bundle.main.urls(forResourcesWithExtension: "js", subdirectory: "Processors")![0])
+        setupProcessor(using: defaultProcessor)
+    }
     
     func setupProcessor(using processor: ProcessorModel) {
         setupProcessorButton(using: processor)
@@ -47,20 +65,21 @@ class EditorViewController: UIViewController, UITextViewDelegate {
         do {
             let jsSourceContents = try String(contentsOf: processor.path)
             jsContext.evaluateScript(jsSourceContents)
+            jsProcessFunction = jsContext.objectForKeyedSubscript("process")
         } catch {
             print(error.localizedDescription)
         }
-        
-        jsProcessFunction = jsContext.objectForKeyedSubscript("process")
     }
     
-    // UITextViewDelegate Methods
+    // MARK: - Processor Execution
     
-    func textViewDidChange(_ textView: UITextView) {
-        guard let result = jsProcessFunction?.call(withArguments: [textView.text ?? ""]) else { return }
-        
+    func runProcessor() {
+        guard let textEditor = textEditor as? TextViewWithPlaceholder, !textEditor.placeholderIsEnabled else { return }
+        guard let result = jsProcessFunction?.call(withArguments: [textEditor.text ?? ""]) else { return }
         textPreview.text = result.toString()
     }
+    
+    // MARK: - UI Adjustments
     
     @objc func adjustTextEditorHeight(notification: Notification) {
         if notification.name == UIResponder.keyboardDidShowNotification {
@@ -69,5 +88,11 @@ class EditorViewController: UIViewController, UITextViewDelegate {
         } else if notification.name == UIResponder.keyboardWillHideNotification {
             textEditor.contentInset = .zero
         }
+    }
+}
+
+extension EditorViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        runProcessor()
     }
 }
