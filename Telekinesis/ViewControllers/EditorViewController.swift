@@ -74,7 +74,7 @@ class EditorViewController: UIViewController {
     // MARK: - Processor Execution
     
     func runProcessor() {
-        guard let textEditor = textEditor as? TextViewWithPlaceholder, !textEditor.placeholderIsEnabled else { return }
+        guard editorHasText() else { return }
         guard let result = jsProcessFunction?.call(withArguments: [textEditor.text ?? ""]) else { return }
         textPreview.text = result.toString()
     }
@@ -88,6 +88,26 @@ class EditorViewController: UIViewController {
         } else if notification.name == UIResponder.keyboardWillHideNotification {
             textEditor.contentInset = .zero
         }
+    }
+    
+    // MARK: - Copying and Undoing
+  
+    @IBAction func copyText(_ sender: UIButton) {
+        guard editorHasText() else { return }
+        UIPasteboard.general.string = textPreview.text
+    }
+    
+    @IBAction func resetText(_ sender: UIButton) {
+        guard editorHasText() else { return }
+        textEditor.text = ""
+        textViewDidChange(textEditor)
+    }
+    
+    // MARK: - Other Functions
+    
+    func editorHasText() -> Bool {
+        let textEditor = self.textEditor as! TextViewWithPlaceholder
+        return !textEditor.placeholderIsEnabled
     }
 }
 

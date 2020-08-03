@@ -69,11 +69,17 @@
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q3v-ZA-8NM">
                                                                         <rect key="frame" x="0.0" y="0.0" width="147.66666666666666" height="48"/>
-                                                                        <state key="normal" title="Copy"/>
+                                                                        <state key="normal" title="Reset"/>
+                                                                        <connections>
+                                                                            <action selector="resetText:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2O2-nl-L69"/>
+                                                                        </connections>
                                                                     </button>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eta-Tk-QN7">
                                                                         <rect key="frame" x="187.66666666666663" y="0.0" width="147.33333333333337" height="48"/>
-                                                                        <state key="normal" title="Reset"/>
+                                                                        <state key="normal" title="Copy"/>
+                                                                        <connections>
+                                                                            <action selector="copyText:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Zf0-YB-REL"/>
+                                                                        </connections>
                                                                     </button>
                                                                 </subviews>
                                                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
