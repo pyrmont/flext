@@ -60,7 +60,12 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         case .page:
             return "Page Cell"
         case .processor:
-            return "Processor Cell"
+            let processor = item.value as! ProcessorModel
+            if (processor.hasOptions) {
+                return "Processor Cell (Options)"
+            } else {
+                return "Processor Cell"
+            }
         }
     }
     func numberOfSections(in tableView: UITableView) -> Int {

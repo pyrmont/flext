@@ -46,7 +46,7 @@ class EditorViewController: UIViewController {
     // MARK: - Processor Setup
 
     func setupProcessor() {
-        let defaultProcessor = ProcessorModel(path: Bundle.main.urls(forResourcesWithExtension: "js", subdirectory: "Processors")![0])
+        let defaultProcessor = try! ProcessorModel(path: Bundle.main.urls(forResourcesWithExtension: "js", subdirectory: "Processors")![0])
         setupProcessor(using: defaultProcessor)
     }
     
