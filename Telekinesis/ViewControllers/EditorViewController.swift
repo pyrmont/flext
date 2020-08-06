@@ -16,13 +16,13 @@ class EditorViewController: UIViewController {
 
     @IBAction func unwindToEditor(unwindSegue: UIStoryboardSegue) { }
     
-    var jsProcessFunction: JSValue? = nil
+    var processor: ProcessorModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupListeners()
-        setupProcessor()
+        setupDefaultProcessor()
     }
     
     // MARK: - Listener Setup
@@ -45,29 +45,21 @@ class EditorViewController: UIViewController {
     
     // MARK: - Processor Setup
 
-    func setupProcessor() {
-        let defaultProcessor = try! ProcessorModel(path: Bundle.main.urls(forResourcesWithExtension: "js", subdirectory: "Processors")![0])
-        setupProcessor(using: defaultProcessor)
+    func setupDefaultProcessor() {
+        let firstPath = Bundle.main.urls(forResourcesWithExtension: "js", subdirectory: "Processors")![0]
+        setupProcessor(using: try! ProcessorModel(path: firstPath))
     }
     
     func setupProcessor(using processor: ProcessorModel) {
-        setupProcessorButton(using: processor)
-        setupProcessorFunction(using: processor)
-    }
-    
-    func setupProcessorButton(using processor: ProcessorModel) {
+        self.processor = processor
         processorButton.setTitle(processor.name, for: .normal)
-    }
-    
-    func setupProcessorFunction(using processor: ProcessorModel) {
-        jsProcessFunction = processor.function
     }
     
     // MARK: - Processor Execution
     
     func runProcessor() {
         guard editorHasText() else { return }
-        guard let result = jsProcessFunction?.call(withArguments: [textEditor.text ?? ""]) else { return }
+        guard let result = processor.function?.call(withArguments: [textEditor.text ?? ""]) else { return }
         textPreview.text = result.toString()
     }
     

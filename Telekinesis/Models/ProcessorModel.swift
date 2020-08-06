@@ -9,6 +9,8 @@
 import Foundation
 import JavaScriptCore
 
+// MARK: - ProcessorOption
+
 struct ProcessorOption {
     var name: String
     var defaultValue: String?
@@ -31,6 +33,15 @@ struct ProcessorOption {
     }
 }
 
+extension Array where Element == ProcessorOption {
+    mutating func appendOption(name: String, defaultValue: String, comment: String) {
+        guard name != "text" else { return }
+        append(ProcessorOption(name: name, defaultValue: defaultValue, comment: comment))
+    }
+}
+
+// MARK: - ProcessorModel
+
 struct ProcessorModel {
     enum ProcessorError: Error {
         case invalidPath
@@ -39,35 +50,31 @@ struct ProcessorModel {
     var path: URL
     var hasOptions: Bool = false
     
+    lazy var function: JSValue? = {
+        guard let jsContext = JSContext() else { return nil }
+        
+        do {
+            let jsSourceContents = try String(contentsOf: path)
+            jsContext.evaluateScript(jsSourceContents)
+            return jsContext.objectForKeyedSubscript("process")
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        return nil
+    }()
+    
+    lazy var options: [ProcessorOption] = {
+        guard hasOptions else { return [] }
+        return parseOptions()
+    }()
+    
     // MARK: - Computed Properties
     
     var filename: String { get { path.lastPathComponent } }
     var basename: String { get { filename.replacingOccurrences(of: ".js", with: "") } }
     var name: String { get { basename.replacingOccurrences(of: "-", with: " ") } }
 
-    var function: JSValue? {
-        get {
-            guard let jsContext = JSContext() else { return nil }
-            
-            do {
-                let jsSourceContents = try String(contentsOf: path)
-                jsContext.evaluateScript(jsSourceContents)
-                return jsContext.objectForKeyedSubscript("process")
-            } catch {
-                print(error.localizedDescription)
-            }
-            
-            return nil
-        }
-    }
-
-    var options: [ProcessorOption] {
-        get {
-            guard hasOptions else { return [] }
-            return parseOptions()
-        }
-    }
-    
     // MARK: - Initialiser
     
     init(path: URL) throws {
@@ -88,7 +95,7 @@ struct ProcessorModel {
         return false
     }
     
-    private func parseOptions() -> [ProcessorOption] {
+    private mutating func parseOptions() -> [ProcessorOption] {
         let functionDefinition = function?.toString()
 
         var isComplete = false
@@ -248,22 +255,16 @@ struct ProcessorModel {
         
         return params
     }
-    
-    // MARK: - Static Functions
-    
+}
+
+// MARK: - Processor Model Factory
+
+extension ProcessorModel {
     static func findAll() -> [ProcessorModel] {
         guard let processorFileURLs = Bundle.main.urls(forResourcesWithExtension: "js", subdirectory: "Processors") else { return [] }
         
         return processorFileURLs
             .map { try! ProcessorModel(path: $0)}
             .sorted(by: { $0.name < $1.name })
-    }
-}
-
-extension Array where Element == ProcessorOption {
-    mutating func appendOption(name: String, defaultValue: String, comment: String) {
-        guard name != "text" else { return }
-        
-        append(ProcessorOption(name: name, defaultValue: defaultValue, comment: comment))
     }
 }

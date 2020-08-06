@@ -43,7 +43,7 @@ class SettingsViewController: UIViewController {
         } else if let page = segue.destination as? PageViewController {
             page.textKey = item.value as! String
         } else if let editor = segue.destination as? EditorViewController {
-            editor.setupProcessor(using: (item.value as! ProcessorModel))
+            editor.setupProcessor(using: item.value as! ProcessorModel)
             editor.runProcessor()
         } else if let options = segue.destination as? ProcessorOptionsViewController {
             options.processor = item.value as? ProcessorModel
