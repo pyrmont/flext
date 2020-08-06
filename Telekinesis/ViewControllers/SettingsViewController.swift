@@ -12,6 +12,8 @@ class SettingsViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
     @IBOutlet var tableViewHeight: NSLayoutConstraint!
     
+    @IBAction func unwindToSettings(unwindSegue: UIStoryboardSegue) { }
+    
     var settings: [Setting]!
 
     override func viewDidLoad() {
@@ -43,6 +45,8 @@ class SettingsViewController: UIViewController {
         } else if let editor = segue.destination as? EditorViewController {
             editor.setupProcessor(using: (item.value as! ProcessorModel))
             editor.runProcessor()
+        } else if let options = segue.destination as? ProcessorOptionsViewController {
+            options.processor = item.value as? ProcessorModel
         }
     }
     
@@ -68,6 +72,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             }
         }
     }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return settings.count
     }
@@ -80,7 +85,6 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         let item = (settings[indexPath.section].value as! [Setting])[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: typeOfCell(for: item), for: indexPath)
 
-        // Configure the cell...
         cell.textLabel?.text = item.name
 
         return cell

@@ -60,15 +60,7 @@ class EditorViewController: UIViewController {
     }
     
     func setupProcessorFunction(using processor: ProcessorModel) {
-        guard let jsContext = JSContext() else { return }
-
-        do {
-            let jsSourceContents = try String(contentsOf: processor.path)
-            jsContext.evaluateScript(jsSourceContents)
-            jsProcessFunction = jsContext.objectForKeyedSubscript("process")
-        } catch {
-            print(error.localizedDescription)
-        }
+        jsProcessFunction = processor.function
     }
     
     // MARK: - Processor Execution

@@ -23,6 +23,7 @@
 		70B2312524D660AF004760B1 /* DownHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2312424D660AF004760B1 /* DownHelper.swift */; };
 		70B2312824D68113004760B1 /* SettingsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2312724D68113004760B1 /* SettingsData.swift */; };
 		70D9C71824D8F66F002A74AD /* LineReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D9C71724D8F66F002A74AD /* LineReader.swift */; };
+		70D9C71A24D967EA002A74AD /* ProcessorOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D9C71924D967EA002A74AD /* ProcessorOptionsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		70B2312424D660AF004760B1 /* DownHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownHelper.swift; sourceTree = "<group>"; };
 		70B2312724D68113004760B1 /* SettingsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsData.swift; sourceTree = "<group>"; };
 		70D9C71724D8F66F002A74AD /* LineReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineReader.swift; sourceTree = "<group>"; };
+		70D9C71924D967EA002A74AD /* ProcessorOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessorOptionsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 			children = (
 				708BF85324CFB0E30004A404 /* EditorViewController.swift */,
 				70B2311824D53C33004760B1 /* PageViewController.swift */,
+				70D9C71924D967EA002A74AD /* ProcessorOptionsViewController.swift */,
 				7096B74824D107D100B2C132 /* SettingsViewController.swift */,
 			);
 			path = ViewControllers;
@@ -223,6 +226,7 @@
 				7096B74F24D109CA00B2C132 /* ProcessorModel.swift in Sources */,
 				70B2312824D68113004760B1 /* SettingsData.swift in Sources */,
 				708BF85224CFB0E30004A404 /* SceneDelegate.swift in Sources */,
+				70D9C71A24D967EA002A74AD /* ProcessorOptionsViewController.swift in Sources */,
 				7096B74924D107D100B2C132 /* SettingsViewController.swift in Sources */,
 				708BF86424CFDA3C0004A404 /* TextViewWithPlaceholder.swift in Sources */,
 			);

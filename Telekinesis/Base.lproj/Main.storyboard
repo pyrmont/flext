@@ -7,10 +7,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Editor View Controller-->
+        <!--Editor-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="EditorViewController" customModule="Telekinesis" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" userLabel="Editor" customClass="EditorViewController" customModule="Telekinesis" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -196,6 +196,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="H5D-nE-3cQ" kind="presentation" trigger="accessoryAction" id="15a-Hz-Vy4"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Page Cell" textLabel="q1j-lE-FGf" style="IBUITableViewCellStyleDefault" id="6P8-Uf-7on">
                                         <rect key="frame" x="15" y="142.66666793823242" width="345" height="43.666667938232422"/>
@@ -271,10 +274,110 @@
             </objects>
             <point key="canvasLocation" x="1802" y="137"/>
         </scene>
-        <!--Page View Controller-->
+        <!--Processor Options-->
+        <scene sceneID="ZgI-Ya-O0x">
+            <objects>
+                <viewController id="H5D-nE-3cQ" userLabel="Processor Options" customClass="ProcessorOptionsViewController" customModule="Telekinesis" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="7kG-Cx-gKE">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="758"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yMj-wj-6SR">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                                <items>
+                                    <navigationItem title="Processor" id="ZBr-45-75G">
+                                        <barButtonItem key="rightBarButtonItem" title="Done" id="hPh-yY-Auu">
+                                            <connections>
+                                                <segue destination="jtG-yP-KoZ" kind="unwind" unwindAction="unwindToSettingsWithUnwindSegue:" id="NB4-EL-HrW"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="eTJ-OD-Xj5">
+                                <rect key="frame" x="16" y="66" width="343" height="300"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="7RK-3f-Xv5"/>
+                                </constraints>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Option Cell" rowHeight="100" id="Oj8-5m-KyM" customClass="ProcessorOptionTableViewCell" customModule="Telekinesis" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="343" height="100"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Oj8-5m-KyM" id="76r-t7-eLs">
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="100"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Parameter Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LkG-Rl-xUg">
+                                                    <rect key="frame" x="0.0" y="9.9999999999999982" width="343" height="20.333333333333329"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Comment" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jJU-To-Yjw">
+                                                    <rect key="frame" x="0.0" y="75" width="343" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <color key="textColor" systemColor="systemGrayColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Default value" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ysf-Oe-IV3">
+                                                    <rect key="frame" x="0.0" y="38.333333333333336" width="343" height="28.666666666666664"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="ysf-Oe-IV3" firstAttribute="leading" secondItem="76r-t7-eLs" secondAttribute="leading" id="COF-u5-3ZP"/>
+                                                <constraint firstItem="ysf-Oe-IV3" firstAttribute="leading" secondItem="76r-t7-eLs" secondAttribute="leading" id="EtD-YX-LuT"/>
+                                                <constraint firstItem="ysf-Oe-IV3" firstAttribute="top" secondItem="LkG-Rl-xUg" secondAttribute="bottom" constant="8" symbolic="YES" id="KSA-sl-4n1"/>
+                                                <constraint firstAttribute="bottom" secondItem="jJU-To-Yjw" secondAttribute="bottom" constant="8" id="aEW-0I-psg"/>
+                                                <constraint firstAttribute="trailing" secondItem="jJU-To-Yjw" secondAttribute="trailing" id="cPb-2u-r62"/>
+                                                <constraint firstAttribute="trailing" secondItem="LkG-Rl-xUg" secondAttribute="trailing" id="dTv-fM-7Mp"/>
+                                                <constraint firstItem="LkG-Rl-xUg" firstAttribute="top" secondItem="76r-t7-eLs" secondAttribute="top" constant="10" id="feq-5o-LDK"/>
+                                                <constraint firstItem="LkG-Rl-xUg" firstAttribute="leading" secondItem="76r-t7-eLs" secondAttribute="leading" id="gNJ-37-jM0"/>
+                                                <constraint firstItem="jJU-To-Yjw" firstAttribute="top" secondItem="ysf-Oe-IV3" secondAttribute="bottom" constant="8" symbolic="YES" id="kHh-2x-m2M"/>
+                                                <constraint firstAttribute="trailing" secondItem="ysf-Oe-IV3" secondAttribute="trailing" id="kaQ-By-zwR"/>
+                                                <constraint firstItem="jJU-To-Yjw" firstAttribute="leading" secondItem="76r-t7-eLs" secondAttribute="leading" id="uis-BJ-tnn"/>
+                                                <constraint firstAttribute="trailing" secondItem="ysf-Oe-IV3" secondAttribute="trailing" id="yII-Ue-rfM"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="comment" destination="jJU-To-Yjw" id="jDy-DZ-5BR"/>
+                                            <outlet property="defaultValue" destination="ysf-Oe-IV3" id="zqd-Dm-WwI"/>
+                                            <outlet property="parameterName" destination="LkG-Rl-xUg" id="jsZ-4b-9dx"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="eTJ-OD-Xj5" firstAttribute="top" secondItem="yMj-wj-6SR" secondAttribute="bottom" constant="10" id="32J-Wx-f22"/>
+                            <constraint firstItem="yMj-wj-6SR" firstAttribute="top" secondItem="eFC-Ek-nBE" secondAttribute="top" id="F2b-F0-XDy"/>
+                            <constraint firstItem="eFC-Ek-nBE" firstAttribute="trailing" secondItem="eTJ-OD-Xj5" secondAttribute="trailing" constant="16" id="ZUB-eQ-6Li"/>
+                            <constraint firstItem="yMj-wj-6SR" firstAttribute="trailing" secondItem="eFC-Ek-nBE" secondAttribute="trailing" id="vRg-Cy-Dp6"/>
+                            <constraint firstItem="eTJ-OD-Xj5" firstAttribute="leading" secondItem="eFC-Ek-nBE" secondAttribute="leading" constant="16" id="xuP-Bs-aaf"/>
+                            <constraint firstItem="yMj-wj-6SR" firstAttribute="leading" secondItem="eFC-Ek-nBE" secondAttribute="leading" id="zCk-JZ-201"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="eFC-Ek-nBE"/>
+                    </view>
+                    <connections>
+                        <outlet property="optionsTable" destination="eTJ-OD-Xj5" id="hjR-CK-PzT"/>
+                        <outlet property="optionsTableHeight" destination="7RK-3f-Xv5" id="pX9-Re-Sxy"/>
+                        <outlet property="processorTitle" destination="ZBr-45-75G" id="5Dw-EV-myD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Gcc-hM-YC6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="jtG-yP-KoZ" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="1800.8" y="869.70443349753702"/>
+        </scene>
+        <!--Settings Page-->
         <scene sceneID="DPy-EQ-TIc">
             <objects>
-                <viewController id="4cC-Ko-Dhb" customClass="PageViewController" customModule="Telekinesis" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="4cC-Ko-Dhb" userLabel="Settings Page" customClass="PageViewController" customModule="Telekinesis" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Fym-4Y-kyB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="758"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -34,7 +34,7 @@ const process_line = function(line, wrap_limit, indent, pos = 0) {
     return result
 }
 
-var process = function(text, wrap_limit = 72) {
+var process = function(text, wrap_limit = 72 /* The maximum number of characters to display before wrapping */) {
     const chunk_re = /([^\n]+)|([\n]+)/g
     const list_start_re = /^(?:\d+\.|[-*]+) +/
     const code_start_re = /^[ ]{4,}/
