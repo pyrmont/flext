@@ -90,10 +90,14 @@ class EditorViewController: UIViewController {
     func runProcessor() {
         guard editorHasText() else { return }
         
-        arguments[0] = textEditor.text ?? ""
-        
-        guard let result = processor.function?.call(withArguments: arguments) else { return }
-        textPreview.text = result.toString()
+        let text = textEditor.text ?? ""
+        if text.isEmpty {
+            textPreview.text = text
+        } else {
+            arguments[0] = text
+            guard let result = processor.function?.call(withArguments: arguments) else { return }
+            textPreview.text = result.toString()
+        }
     }
     
     // MARK: - UI Adjustments

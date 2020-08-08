@@ -40,7 +40,7 @@ class TextViewWithPlaceholder: UITextView {
     private func setupPlaceholder() {
         placeholderText = self.text
         placeholderColor = self.textColor
-
+        
         NotificationCenter.default.addObserver(self, selector: #selector(TextViewWithPlaceholder.textDidBeginEditing(notification:)), name: UITextView.textDidBeginEditingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(TextViewWithPlaceholder.textDidEndEditing(notification:)), name: UITextView.textDidEndEditingNotification, object: nil)
     }
