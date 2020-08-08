@@ -14,42 +14,45 @@ class SettingsViewController: UIViewController {
     
     @IBAction func unwindToSettings(unwindSegue: UIStoryboardSegue) { }
     
-    var settings: [Setting]!
-
+    var settings: Settings!
+    var trail: [Int]!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if settings == nil {
-            settings = SettingsData.settings()
-        }
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
+        settings = settings ?? Settings(processors: ProcessorModel.findAll())
+        trail = trail ?? []
+
         tableView.delegate = self
         tableView.dataSource = self
+        
+        if trail.isEmpty {
+            tableView.allowsMultipleSelection = true
+            tableView.selectRow(at: settings.selectedProcessorPath, animated: false, scrollPosition: .none)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let sender = sender as? UITableViewCell else { return }
-        let indexPath = tableView.indexPath(for: sender)!
-        
-        guard let items = settings[indexPath.section].value as? [Setting] else { return }
-        let item = items[indexPath.row]
-
-        if let section = segue.destination as? SettingsViewController {
-            section.settings = [item]
-            section.title = item.name
-        } else if let page = segue.destination as? PageViewController {
-            page.textKey = item.value as! String
-        } else if let editor = segue.destination as? EditorViewController {
-            editor.setupProcessor(using: item.value as! ProcessorModel)
+        if let sender = sender as? UITableViewCell {
+            let indexPath = tableView.indexPath(for: sender)!
+            
+            if let section = segue.destination as? SettingsViewController {
+                section.settings = settings
+                section.trail = trail + [indexPath.section, indexPath.row]
+                section.title = settings.setting(at: indexPath, using: trail).name
+            } else if let page = segue.destination as? PageViewController {
+                page.textKey = settings.value(at: indexPath, using: trail) as! String
+            } else if let options = segue.destination as? ProcessorOptionsViewController {
+                options.processor = settings.processors[indexPath.row]
+            }
+        } else {
+            guard let editor = segue.destination as? EditorViewController else { return }
+            editor.settings = settings
+            editor.setupProcessor(using: settings.selectedProcessor)
             editor.runProcessor()
-        } else if let options = segue.destination as? ProcessorOptionsViewController {
-            options.processor = item.value as? ProcessorModel
         }
     }
-    
+
     override func viewWillLayoutSubviews() {
         super.updateViewConstraints()
         tableViewHeight.constant = tableView.contentSize.height
@@ -57,40 +60,55 @@ class SettingsViewController: UIViewController {
 }
 
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
-    func typeOfCell(for item: Setting) -> String {
-        switch item.type {
-        case .section:
+    func typeOfCell(for value: SettingValue) -> String {
+        if let processor = value as? ProcessorModel {
+            return processor.hasOptions ? "Processor Cell (Options)" : "Processor Cell"
+        } else if value is [Setting] {
             return "Section Cell"
-        case .page:
+        } else {
             return "Page Cell"
-        case .processor:
-            let processor = item.value as! ProcessorModel
-            if (processor.hasOptions) {
-                return "Processor Cell (Options)"
-            } else {
-                return "Processor Cell"
-            }
         }
     }
-    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return settings.count
+        return settings.numberOfSections(using: trail)
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (settings[section].value as! [Setting]).count
+        return settings.numberOfRows(for: section, using: trail)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = (settings[indexPath.section].value as! [Setting])[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: typeOfCell(for: item), for: indexPath)
-
-        cell.textLabel?.text = item.name
-
+        let item = settings.value(at: indexPath, using: trail)
+        let cellType = typeOfCell(for: item)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellType, for: indexPath)
+        if item is ProcessorModel {
+            cell.textLabel?.text = (item as! ProcessorModel).name
+        } else {
+            cell.textLabel?.text = settings.setting(at: indexPath, using: trail).name
+        }
         return cell
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return settings.count == 1 ? "" : settings[section].name
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        guard let selectedPaths = tableView.indexPathsForSelectedRows else { return indexPath }
+        
+        for selectedPath in selectedPaths {
+            if (settings.isProcessor(at: indexPath, using: trail) && settings.isProcessor(at: selectedPath, using: trail)) || (!settings.isProcessor(at: indexPath, using: trail) && !settings.isProcessor(at: selectedPath, using: trail)) {
+                tableView.deselectRow(at: selectedPath, animated: false)
+            }
+        }
+        
+        if settings.isProcessor(at: indexPath, using: trail) {
+            settings.selectedProcessorPath = indexPath
+        }
+        
+        return indexPath
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard !settings.isProcessor(at: indexPath, using: trail) else { return }
+        
+        let selection = tableView.cellForRow(at: indexPath)
+        selection?.isSelected = false
     }
 }

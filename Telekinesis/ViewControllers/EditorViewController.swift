@@ -16,13 +16,21 @@ class EditorViewController: UIViewController {
 
     @IBAction func unwindToEditor(unwindSegue: UIStoryboardSegue) { }
     
+    var settings: Settings!
     var processor: ProcessorModel!
+    var arguments: [Any]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupListeners()
         setupDefaultProcessor()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let navigationController = segue.destination as? UINavigationController else { return }
+        guard let settingsController = navigationController.topViewController as? SettingsViewController else { return }
+        settingsController.settings = settings
     }
     
     // MARK: - Listener Setup
@@ -46,20 +54,45 @@ class EditorViewController: UIViewController {
     // MARK: - Processor Setup
 
     func setupDefaultProcessor() {
-        let firstPath = Bundle.main.urls(forResourcesWithExtension: "js", subdirectory: "Processors")![0]
-        setupProcessor(using: try! ProcessorModel(path: firstPath))
+        let processors = ProcessorModel.findAll()
+        let processor = processors.first!
+        settings = Settings(processors: processors, selected: processor)
+        setupProcessor(using: processor)
     }
     
     func setupProcessor(using processor: ProcessorModel) {
-        self.processor = processor
         processorButton.setTitle(processor.name, for: .normal)
+        
+        self.processor = processor
+        self.arguments = [""]
+
+        if self.processor.hasOptions {
+            guard let context = self.processor.function?.context else { return }
+            
+            for option in self.processor.options {
+                var javascriptValue: JSValue? = nil
+                
+                if let value = option.value {
+                    javascriptValue = context.evaluateScript(value)
+                }
+                
+                if javascriptValue == nil {
+                    self.arguments.append(JSValue(undefinedIn: self.processor.function?.context)!)
+                } else {
+                    self.arguments.append(javascriptValue!)
+                }
+            }
+        }
     }
     
     // MARK: - Processor Execution
     
     func runProcessor() {
         guard editorHasText() else { return }
-        guard let result = processor.function?.call(withArguments: [textEditor.text ?? ""]) else { return }
+        
+        arguments[0] = textEditor.text ?? ""
+        
+        guard let result = processor.function?.call(withArguments: arguments) else { return }
         textPreview.text = result.toString()
     }
     

@@ -11,13 +11,16 @@ import JavaScriptCore
 
 // MARK: - ProcessorOption
 
-struct ProcessorOption {
+class ProcessorOption: Codable {
     var name: String
+    var value: String?
     var defaultValue: String?
     var comment: String?
     
     init(name: String, defaultValue: String?, comment: String?) {
         self.name = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        self.value = nil
         
         if defaultValue == nil || defaultValue!.isEmpty {
             self.defaultValue = nil
@@ -42,7 +45,7 @@ extension Array where Element == ProcessorOption {
 
 // MARK: - ProcessorModel
 
-struct ProcessorModel {
+class ProcessorModel {
     enum ProcessorError: Error {
         case invalidPath
     }
@@ -66,7 +69,15 @@ struct ProcessorModel {
     
     lazy var options: [ProcessorOption] = {
         guard hasOptions else { return [] }
-        return parseOptions()
+        
+        var result = parseOptions()
+        
+        for (index, option) in result.enumerated() {
+            guard let savedValue = PreferencesManager.processors[path]?.options[option.name] else { continue }
+            result[index].value = savedValue
+        }
+        
+        return result
     }()
     
     // MARK: - Computed Properties
@@ -95,7 +106,7 @@ struct ProcessorModel {
         return false
     }
     
-    private mutating func parseOptions() -> [ProcessorOption] {
+    private func parseOptions() -> [ProcessorOption] {
         let functionDefinition = function?.toString()
 
         var isComplete = false
@@ -266,5 +277,17 @@ extension ProcessorModel {
         return processorFileURLs
             .map { try! ProcessorModel(path: $0)}
             .sorted(by: { $0.name < $1.name })
+    }
+}
+
+extension ProcessorModel: Equatable {
+    static func == (lhs: ProcessorModel, rhs: ProcessorModel) -> Bool {
+        lhs.path == rhs.path
+    }
+}
+
+extension Array where Element == ProcessorModel {
+    func find(path: URL) -> ProcessorModel? {
+        first(where: { $0.path == path })
     }
 }

@@ -9,9 +9,9 @@
 import UIKit
 
 class ProcessorOptionTableViewCell: UITableViewCell {
-    @IBOutlet var parameterName: UILabel!
-    @IBOutlet var defaultValue: UITextField!
-    @IBOutlet var comment: UILabel!
+    @IBOutlet var nameLabel: UILabel!
+    @IBOutlet var valueTextField: UITextField!
+    @IBOutlet var commentLabel: UILabel!
 }
 
 class ProcessorOptionsViewController: UIViewController {
@@ -20,13 +20,13 @@ class ProcessorOptionsViewController: UIViewController {
     @IBOutlet var optionsTableHeight: NSLayoutConstraint!
     
     var processor: ProcessorModel!
-    var options: [ProcessorOption] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         processorTitle.title = processor.name
-        options = processor.options
+        
+        setupListener()
         
         optionsTable.delegate = self
         optionsTable.dataSource = self
@@ -34,9 +34,33 @@ class ProcessorOptionsViewController: UIViewController {
         optionsTable.estimatedRowHeight = 100
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        PreferencesManager.save(processor.options, under: processor.path, as: .processors)
+    }
+    
     override func viewWillLayoutSubviews() {
         super.updateViewConstraints()
         optionsTableHeight.constant = optionsTable.contentSize.height
+    }
+    
+    func setupListener() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(ProcessorOptionsViewController.updateOption(notification:)),
+            name: UITextField.textDidChangeNotification,
+            object: nil)
+    }
+    
+    @objc func updateOption(notification: Notification) {
+        guard let textField = notification.object as? UITextField else { return }
+        guard let cell = textField.superview?.superview as? UITableViewCell else { return }
+        guard let indexPath = optionsTable.indexPath(for: cell) else { return }
+        
+        if textField.text == nil || textField.text!.isEmpty {
+            processor.options[indexPath.row].value = nil
+        } else {
+            processor.options[indexPath.row].value = textField.text
+        }
     }
 }
 
@@ -46,15 +70,18 @@ extension ProcessorOptionsViewController: UITableViewDataSource, UITableViewDele
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return options.count
+        return processor.options.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Option Cell", for: indexPath) as! ProcessorOptionTableViewCell
 
-        cell.parameterName.text = options[indexPath.row].name.replacingOccurrences(of: "_", with: " ").capitalized
-        cell.defaultValue.placeholder = options[indexPath.row].defaultValue
-        cell.comment.text = options[indexPath.row].comment
+        cell.nameLabel.text = processor.options[indexPath.row].name.replacingOccurrences(of: "_", with: " ").capitalized
+
+        cell.valueTextField.text = processor.options[indexPath.row].value
+        cell.valueTextField.placeholder = processor.options[indexPath.row].defaultValue
+
+        cell.commentLabel.text = processor.options[indexPath.row].comment
 
         return cell
     }

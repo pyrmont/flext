@@ -176,9 +176,6 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="eiO-fx-2aP" kind="unwind" unwindAction="unwindToEditorWithUnwindSegue:" id="P9n-qt-93h"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" accessoryType="detailButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Processor Cell (Options)" textLabel="XaR-7A-OI4" style="IBUITableViewCellStyleDefault" id="i2y-BG-dbg">
                                         <rect key="frame" x="15" y="99" width="345" height="43.666667938232422"/>
@@ -200,7 +197,7 @@
                                             <segue destination="H5D-nE-3cQ" kind="presentation" trigger="accessoryAction" id="15a-Hz-Vy4"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Page Cell" textLabel="q1j-lE-FGf" style="IBUITableViewCellStyleDefault" id="6P8-Uf-7on">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Page Cell" textLabel="q1j-lE-FGf" style="IBUITableViewCellStyleDefault" id="6P8-Uf-7on">
                                         <rect key="frame" x="15" y="142.66666793823242" width="345" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6P8-Uf-7on" id="u20-DK-ayz">
@@ -217,10 +214,10 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="4cC-Ko-Dhb" kind="show" id="YGY-CB-JEK"/>
+                                            <segue destination="4cC-Ko-Dhb" kind="show" identifier="Show Settings Page" id="YGY-CB-JEK"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Section Cell" textLabel="Nrb-IC-YcA" style="IBUITableViewCellStyleDefault" id="H58-Y0-7iW">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Section Cell" textLabel="Nrb-IC-YcA" style="IBUITableViewCellStyleDefault" id="H58-Y0-7iW">
                                         <rect key="frame" x="15" y="186.33333587646484" width="345" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="H58-Y0-7iW" id="HAF-E5-dVf">
@@ -286,7 +283,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
                                 <items>
                                     <navigationItem title="Processor" id="ZBr-45-75G">
-                                        <barButtonItem key="rightBarButtonItem" title="Done" id="hPh-yY-Auu">
+                                        <barButtonItem key="rightBarButtonItem" title="Save" id="hPh-yY-Auu">
                                             <connections>
                                                 <segue destination="jtG-yP-KoZ" kind="unwind" unwindAction="unwindToSettingsWithUnwindSegue:" id="NB4-EL-HrW"/>
                                             </connections>
@@ -295,10 +292,10 @@
                                 </items>
                             </navigationBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="eTJ-OD-Xj5">
-                                <rect key="frame" x="16" y="66" width="343" height="300"/>
+                                <rect key="frame" x="16" y="66" width="343" height="150"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="300" id="7RK-3f-Xv5"/>
+                                    <constraint firstAttribute="height" constant="150" id="7RK-3f-Xv5"/>
                                 </constraints>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Option Cell" rowHeight="100" id="Oj8-5m-KyM" customClass="ProcessorOptionTableViewCell" customModule="Telekinesis" customModuleProvider="target">
@@ -344,9 +341,9 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
-                                            <outlet property="comment" destination="jJU-To-Yjw" id="jDy-DZ-5BR"/>
-                                            <outlet property="defaultValue" destination="ysf-Oe-IV3" id="zqd-Dm-WwI"/>
-                                            <outlet property="parameterName" destination="LkG-Rl-xUg" id="jsZ-4b-9dx"/>
+                                            <outlet property="commentLabel" destination="jJU-To-Yjw" id="jDy-DZ-5BR"/>
+                                            <outlet property="nameLabel" destination="LkG-Rl-xUg" id="jsZ-4b-9dx"/>
+                                            <outlet property="valueTextField" destination="ysf-Oe-IV3" id="zqd-Dm-WwI"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
