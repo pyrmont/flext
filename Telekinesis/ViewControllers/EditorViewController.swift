@@ -16,7 +16,7 @@ class EditorViewController: UIViewController {
 
     @IBAction func unwindToEditor(unwindSegue: UIStoryboardSegue) { }
     
-    var settings: Settings!
+    var settings: SettingsModel!
     var processor: ProcessorModel!
     var arguments: [Any]!
     
@@ -56,7 +56,7 @@ class EditorViewController: UIViewController {
     func setupDefaultProcessor() {
         let processors = ProcessorModel.findAll()
         let processor = processors.first!
-        settings = Settings(processors: processors, selected: processor)
+        settings = try! SettingsModel(processors: processors, selected: processor)
         setupProcessor(using: processor)
     }
     

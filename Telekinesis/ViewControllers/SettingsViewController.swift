@@ -14,13 +14,13 @@ class SettingsViewController: UIViewController {
     
     @IBAction func unwindToSettings(unwindSegue: UIStoryboardSegue) { }
     
-    var settings: Settings!
+    var settings: SettingsModel!
     var trail: [Int]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        settings = settings ?? Settings(processors: ProcessorModel.findAll())
+        settings = settings ?? SettingsModel(processors: ProcessorModel.findAll())
         trail = trail ?? []
 
         tableView.delegate = self
@@ -39,16 +39,16 @@ class SettingsViewController: UIViewController {
             if let section = segue.destination as? SettingsViewController {
                 section.settings = settings
                 section.trail = trail + [indexPath.section, indexPath.row]
-                section.title = settings.setting(at: indexPath, using: trail).name
+                section.title = try! settings.setting(at: indexPath, using: trail).name
             } else if let page = segue.destination as? PageViewController {
-                page.textKey = settings.value(at: indexPath, using: trail) as! String
+                page.textKey = try! settings.setting(at: indexPath, using: trail).value as! String
             } else if let options = segue.destination as? ProcessorOptionsViewController {
                 options.processor = settings.processors[indexPath.row]
             }
         } else {
             guard let editor = segue.destination as? EditorViewController else { return }
             editor.settings = settings
-            editor.setupProcessor(using: settings.selectedProcessor)
+            editor.setupProcessor(using: settings.selectedProcessor!)
             editor.runProcessor()
         }
     }
@@ -63,28 +63,28 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func typeOfCell(for value: SettingValue) -> String {
         if let processor = value as? ProcessorModel {
             return processor.hasOptions ? "Processor Cell (Options)" : "Processor Cell"
-        } else if value is [Setting] {
+        } else if value is [SettingModel] {
             return "Section Cell"
         } else {
             return "Page Cell"
         }
     }
     func numberOfSections(in tableView: UITableView) -> Int {
-        return settings.numberOfSections(using: trail)
+        return try! settings.numberOfSections(using: trail)
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return settings.numberOfRows(for: section, using: trail)
+        return try! settings.numberOfRows(for: section, using: trail)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = settings.value(at: indexPath, using: trail)
+        let item = try! settings.value(at: indexPath, using: trail)
         let cellType = typeOfCell(for: item)
         let cell = tableView.dequeueReusableCell(withIdentifier: cellType, for: indexPath)
         if item is ProcessorModel {
             cell.textLabel?.text = (item as! ProcessorModel).name
         } else {
-            cell.textLabel?.text = settings.setting(at: indexPath, using: trail).name
+            cell.textLabel?.text = try! settings.setting(at: indexPath, using: trail).name
         }
         return cell
     }
