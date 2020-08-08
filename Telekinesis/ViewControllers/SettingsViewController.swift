@@ -28,7 +28,7 @@ class SettingsViewController: UIViewController {
         
         if trail.isEmpty {
             tableView.allowsMultipleSelection = true
-            tableView.selectRow(at: settings.selectedProcessorPath, animated: false, scrollPosition: .none)
+            selectProcessor(at: settings.selectedProcessorPath)
         }
     }
     
@@ -57,6 +57,19 @@ class SettingsViewController: UIViewController {
         super.updateViewConstraints()
         tableViewHeight.constant = tableView.contentSize.height
     }
+    
+    func selectProcessor(at indexPath: IndexPath?) {
+        guard let indexPath = indexPath else { return }
+        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+        tableView.cellForRow(at: indexPath)?.imageView?.image = UIImage(systemName: "smallcircle.fill.circle.fill")
+        settings.selectedProcessorPath = indexPath
+    }
+    
+    func deselectProcessor(at indexPath: IndexPath?) {
+        guard let indexPath = indexPath else { return }
+        tableView.deselectRow(at: indexPath, animated: false)
+        tableView.cellForRow(at: indexPath)?.imageView?.image = UIImage(systemName: "circle")
+    }
 }
 
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
@@ -76,6 +89,10 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return try! settings.numberOfRows(for: section, using: trail)
     }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return try! settings.header(for: section, using: trail)
+    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = try! settings.value(at: indexPath, using: trail)
@@ -89,17 +106,24 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
+        guard settings.isProcessor(at: indexPath, using: trail) else { return indexPath }
+        return nil
+    }
+    
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         guard let selectedPaths = tableView.indexPathsForSelectedRows else { return indexPath }
         
         for selectedPath in selectedPaths {
-            if (settings.isProcessor(at: indexPath, using: trail) && settings.isProcessor(at: selectedPath, using: trail)) || (!settings.isProcessor(at: indexPath, using: trail) && !settings.isProcessor(at: selectedPath, using: trail)) {
+            if (settings.isProcessor(at: indexPath, using: trail) && settings.isProcessor(at: selectedPath, using: trail)) {
+                deselectProcessor(at: selectedPath)
+            } else if (!settings.isProcessor(at: indexPath, using: trail) && !settings.isProcessor(at: selectedPath, using: trail)) {
                 tableView.deselectRow(at: selectedPath, animated: false)
             }
         }
         
         if settings.isProcessor(at: indexPath, using: trail) {
-            settings.selectedProcessorPath = indexPath
+            selectProcessor(at: indexPath)
         }
         
         return indexPath
