@@ -17,7 +17,6 @@ class ManagerTableViewCell: UITableViewCell {
 
 class ManagerViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
-    @IBOutlet var instructionsLabel: UILabel!
     
     @IBAction func enableProcessor(_ sender: UISwitch) {
         guard let cell = sender.superview?.superview as? ManagerTableViewCell else { return }
