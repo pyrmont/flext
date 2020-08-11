@@ -148,8 +148,14 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let processor = settings.enabledProcessors.remove(at: sourceIndexPath.row)
         settings.enabledProcessors.insert(processor, at: destinationIndexPath.row)
-        if settings.selectedProcessorPath?.row == sourceIndexPath.row {
+
+        guard let selectedPath = settings.selectedProcessorPath else { return }
+        if selectedPath.row == sourceIndexPath.row {
             settings.selectedProcessorPath?.row = destinationIndexPath.row
+        } else if selectedPath.row > sourceIndexPath.row && selectedPath.row <= destinationIndexPath.row {
+            settings.selectedProcessorPath?.row -= 1
+        } else if selectedPath.row < sourceIndexPath.row && selectedPath.row >= destinationIndexPath.row {
+            settings.selectedProcessorPath?.row += 1
         }
     }
     
