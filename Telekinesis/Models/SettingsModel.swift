@@ -9,22 +9,36 @@
 import Foundation
 
 enum SettingType {
+    case manager
     case page
+    case processor
+    case processors
     case section
 }
 
 protocol SettingValue { }
-extension ProcessorModel: SettingValue {}
 extension Array: SettingValue where Element == SettingModel {}
 extension String: SettingValue {}
 
-struct SettingModel {
+protocol SettingItem {
+    var name: String { get }
+}
+
+extension ProcessorModel: SettingItem {}
+
+class SettingModel: SettingItem {
     var name: String
     var type: SettingType
     var value: SettingValue
+    
+    init(name: String, type: SettingType, value: SettingValue) {
+        self.name = name
+        self.type = type
+        self.value = value
+    }
 }
 
-struct SettingsModel {
+class SettingsModel {
     enum SettingsError: Error {
         case emptySection
         case invalidCast
@@ -33,11 +47,14 @@ struct SettingsModel {
     }
     
     var processors: [ProcessorModel]
+    var enabledProcessors: [ProcessorModel]
     var selectedProcessorPath: IndexPath?
     
     var selectedProcessor: ProcessorModel? {
         guard let row = selectedProcessorPath?.row else { return nil }
-        return processors[row]
+        guard let selection = enabledProcessors.at(row) else { return nil }
+        guard selection.isEnabled else { return nil }
+        return selection
     }
     
     private var settings: [SettingModel]
@@ -46,14 +63,16 @@ struct SettingsModel {
     
     init(processors: [ProcessorModel]) {
         self.processors = processors
+        self.enabledProcessors = processors.filter { $0.isEnabled }
         self.selectedProcessorPath = IndexPath(row: 0, section: 0)
         self.settings = SettingsData.settings()
     }
     
     init(processors: [ProcessorModel], selected processor: ProcessorModel) throws {
         self.processors = processors
+        self.enabledProcessors = processors.filter { $0.isEnabled }
         
-        guard let row = processors.firstIndex(of: processor) else { throw SettingsError.noProcessor }
+        guard let row = enabledProcessors.firstIndex(of: processor) else { throw SettingsError.noProcessor }
         self.selectedProcessorPath = IndexPath(row: row, section: 0)
         
         self.settings = SettingsData.settings()
@@ -61,76 +80,89 @@ struct SettingsModel {
 
     // MARK: - Selection Updaters
     
-    mutating func updateSelectedProcessor(with processor: ProcessorModel) {
-        selectedProcessorPath = IndexPath(row: processors.firstIndex(of: processor)!, section: 0)
+    func resetSelectedProcessor() {
+        if enabledProcessors.first != nil {
+            selectedProcessorPath = IndexPath(row: 0, section: 0)
+        } else {
+            print("There are no enabled processors")
+            selectedProcessorPath = nil
+        }
+    }
+    
+    func updateSelectedProcessor(with processor: ProcessorModel) {
+        if let row = enabledProcessors.firstIndex(of: processor) {
+            selectedProcessorPath = IndexPath(row: row, section: 0)
+        } else {
+            print("The selected processor is not enabled")
+            selectedProcessorPath = IndexPath(row: 0, section: 0)
+        }
     }
     
     // MARK: - Processor Checkers
 
     func isProcessor(at indexPath: IndexPath, using trail: [Int]) -> Bool {
-        return isProcessor(at: indexPath.section, using: trail)
+        return areProcessors(at: indexPath.section, using: trail)
     }
     
-    func isProcessor(at section: Int, using trail: [Int]) -> Bool {
+    func areProcessors(at section: Int, using trail: [Int]) -> Bool {
         return trail.isEmpty && section == 0
-    }
-    
-    func isProcessor(using trail: [Int]) -> Bool {
-        return trail.isEmpty
     }
     
     // MARK: - Row and Section Calculators
     
     func numberOfRows(for section: Int, using trail: [Int] = []) throws -> Int {
-        guard !isProcessor(at: section, using: trail) else { return processors.count }
+        guard !areProcessors(at: section, using: trail) else { return enabledProcessors.count }
         
         let sectionSettings = try extractSettings(for: section, using: trail)
         return sectionSettings.count
     }
     
     func numberOfSections(using trail: [Int] = []) throws -> Int {
-        guard !isProcessor(using: trail) else { return settings.count + 1 }
-
         let settings = try extractSettings(using: trail)
         return hasExtractableSettings(for: settings) ? settings.count : 1
     }
     
     // MARK: - Accessors
     
+    func header(for section: Int, using trail: [Int]) throws -> String? {
+        let settings = try extractSettings(using: trail)
+        return hasExtractableSettings(for: settings) ? settings[section].name : nil
+    }
+    
     func setting(at indexPath: IndexPath, using trail: [Int]) throws -> SettingModel {
         let settings = try extractSettings(for: indexPath.section, using: trail)
         return settings[indexPath.row]
     }
     
-    func value(at indexPath: IndexPath, using trail: [Int]) throws -> SettingValue {
+    func item(at indexPath: IndexPath, using trail: [Int]) throws -> SettingItem {
         if isProcessor(at: indexPath, using: trail) {
-            return processors[indexPath.row]
+            return enabledProcessors[indexPath.row]
         } else {
-            return try setting(at: indexPath, using: trail).value
+            return try setting(at: indexPath, using: trail)
         }
     }
     
     // MARK: - Setting Extractors
 
     private func extractSettings(using trail: [Int]) throws -> [SettingModel] {
-        guard !isProcessor(using: trail) else { return settings }
-        guard var result = settings[trail.first! - 1].value as? [SettingModel] else { throw SettingsError.notSection }
-        for section in trail.dropFirst() {
+        var result = settings
+        
+        for section in trail {
             guard result[section].value is [SettingModel] else { throw SettingsError.notSection }
             result = result[section].value as! [SettingModel]
         }
+        
         return result
     }
 
     private func extractSettings(for section: Int, using trail: [Int]) throws -> [SettingModel] {
-        let adjustedSection = trail.isEmpty ? section - 1 : section
         let parentSettings = try extractSettings(using: trail)
         
         // TODO: Not sure this works with deeply nested settings
         if hasExtractableSettings(for: parentSettings) {
-            guard let sectionSettings = parentSettings[adjustedSection].value as? [SettingModel] else { throw SettingsError.notSection }
+            guard let sectionSettings = parentSettings[section].value as? [SettingModel] else { throw SettingsError.notSection }
             return sectionSettings
-        } else if adjustedSection == 0 {
+        } else if section == 0 {
             return parentSettings
         } else {
             throw SettingsError.notSection
@@ -142,6 +174,7 @@ struct SettingsModel {
             print("The parent was empty.")
             return false
         }
+        
         return firstType == .section
     }
 }

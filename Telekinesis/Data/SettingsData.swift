@@ -9,7 +9,7 @@
 import Foundation
 
 struct SettingsData {
-    static func settings() -> [SettingModel] { [help(), general()] }
+    static func settings() -> [SettingModel] { [processors(), management(), help(), general()] }
     
     private static func help() -> SettingModel {
         return SettingModel(name: "User Guide", type: .section, value: [
@@ -23,6 +23,11 @@ struct SettingsData {
             SettingModel(name: "cmark", type: .page, value: "page-cmark-licence")])
     }
     
+    private static func management() -> SettingModel {
+        return SettingModel(name: "Management", type: .section, value: [
+            SettingModel(name: "Processors", type: .manager, value: "# Processors")])
+    }
+    
     private static func general() -> SettingModel {
         return SettingModel(name: "General", type: .section, value: [
             SettingModel(name: "About", type: .page, value: "page-about"),
@@ -30,8 +35,7 @@ struct SettingsData {
             licences()])
     }
     
-//    private static func processors() -> Setting {
-//        return Setting(name: "Processors", type: .section, value: ProcessorModel.findAll().map {
-//            Setting(name: $0.name, type: .processor, value: $0) })
-//    }
+    private static func processors() -> SettingModel {
+        return SettingModel(name: "Enabled Processors", type: .section, value: [])
+    }
 }

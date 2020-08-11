@@ -35,7 +35,7 @@ class ProcessorOptionsViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        PreferencesManager.save(processor.options, under: processor.path, as: .processors)
+        PreferencesManager.saveProcessorOptions(processor.options, for: processor.path)
     }
     
     override func viewWillLayoutSubviews() {

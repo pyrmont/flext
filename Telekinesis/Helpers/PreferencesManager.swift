@@ -9,6 +9,7 @@
 import Foundation
 
 struct ProcessorPreference: Codable {
+    var isEnabled: Bool = true
     var options: [String: String]
 }
 
@@ -53,21 +54,13 @@ struct PreferencesManager {
         return preferences
     }()
     
-    static func save(_ data: Codable, under key: Codable, as type: PreferenceType) {
-        switch type {
-        case .processors:
-            guard let options = data as? [ProcessorOption], let url = key as? URL else {
-                print("This failed for some reason.")
-                return
-            }
-            
-            for option in options {
-                if var processor = processors[url] {
-                    processor.options[option.name] = option.value
-                } else {
-                    guard let value = option.value else { continue }
-                    processors[url] = ProcessorPreference(options: [option.name: value])
-                }
+    static func saveProcessorOptions(_ options: [ProcessorOption], for url: URL) {
+        for option in options {
+            if var processor = processors[url] {
+                processor.options[option.name] = option.value
+            } else {
+                guard let value = option.value else { continue }
+                processors[url] = ProcessorPreference(options: [option.name: value])
             }
         }
     }

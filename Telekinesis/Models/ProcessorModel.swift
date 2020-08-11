@@ -50,8 +50,15 @@ class ProcessorModel {
         case invalidPath
     }
     
+    enum ProcessorType: Int {
+        case builtIn = 0
+        case userAdded = 1
+    }
+    
     var path: URL
     var hasOptions: Bool = false
+    var isEnabled: Bool = true
+    var type: ProcessorType = .builtIn
     
     lazy var function: JSValue? = {
         guard let jsContext = JSContext() else { return nil }
@@ -289,5 +296,10 @@ extension ProcessorModel: Equatable {
 extension Array where Element == ProcessorModel {
     func find(path: URL) -> ProcessorModel? {
         first(where: { $0.path == path })
+    }
+    
+    func at(_ index: Index) -> ProcessorModel? {
+        guard index >= 0, index < count else { return nil }
+        return self[index]
     }
 }
