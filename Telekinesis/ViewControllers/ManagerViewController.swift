@@ -65,6 +65,12 @@ class ManagerViewController: UIViewController {
         tableView.dataSource = self
         tableView.setEditing(true, animated: false)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let editor = segue.destination as? EditorViewController else { return }
+        editor.setupProcessor(using: settings.selectedProcessor!)
+        editor.runProcessor()
+    }
 }
 
 extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {

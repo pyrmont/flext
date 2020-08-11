@@ -66,7 +66,6 @@ class SettingsViewController: UIViewController {
             
         } else {
             guard let editor = segue.destination as? EditorViewController else { return }
-            editor.settings = settings
             editor.setupProcessor(using: settings.selectedProcessor!)
             editor.runProcessor()
         }

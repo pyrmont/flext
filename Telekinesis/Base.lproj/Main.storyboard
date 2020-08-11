@@ -419,12 +419,25 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="al1-PX-oj1"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Processors" id="MvP-TF-As3"/>
+                    <navigationItem key="navigationItem" title="Processors" id="MvP-TF-As3">
+                        <barButtonItem key="rightBarButtonItem" style="done" id="tp2-in-fN4">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="0VL-3d-myB">
+                                <rect key="frame" x="276" y="12" width="83" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="Done"/>
+                                <connections>
+                                    <segue destination="pn2-G7-d3F" kind="unwind" unwindAction="unwindToEditorWithUnwindSegue:" id="Cfj-hM-0fE"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="nRI-HJ-D7G" id="qMJ-C1-S4c"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uqw-FL-O6N" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="pn2-G7-d3F" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2772" y="-184.72906403940888"/>
         </scene>
