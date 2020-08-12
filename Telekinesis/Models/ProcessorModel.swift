@@ -100,6 +100,11 @@ class ProcessorModel {
         self.hasOptions = try checkForOptions()
     }
     
+    convenience init(path: URL, type: ProcessorType) throws {
+        try self.init(path: path)
+        self.type = type
+    }
+    
     // MARK: - Options
 
     private func checkForOptions() throws -> Bool {
@@ -279,11 +284,28 @@ class ProcessorModel {
 
 extension ProcessorModel {
     static func findAll() -> [ProcessorModel] {
-        guard let processorFileURLs = Bundle.main.urls(forResourcesWithExtension: "js", subdirectory: "Processors") else { return [] }
+        guard let builtInProcessorURLs = Bundle.main.urls(forResourcesWithExtension: "js", subdirectory: "Processors") else { return [] }
+
+        var userAddedProcessorURLs: [URL] = []
+        do {
+            let appDocumentsDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            let fileURLs = FileManager.default.enumerator(at: appDocumentsDirectory, includingPropertiesForKeys: nil)!
+            for case let fileURL as URL in fileURLs where fileURL.pathExtension == "js" {
+                userAddedProcessorURLs.append(fileURL)
+            }
+        } catch {
+            NSLog("There was an error accessing the documents directory")
+        }
         
-        return processorFileURLs
+        let builtInProcessors = builtInProcessorURLs
+            .sorted(by: { $0.lastPathComponent < $1.lastPathComponent })
             .map { try! ProcessorModel(path: $0)}
-            .sorted(by: { $0.name < $1.name })
+        
+        let userAddedProcessors = userAddedProcessorURLs
+            .sorted(by: { $0.lastPathComponent < $1.lastPathComponent })
+            .map { try! ProcessorModel(path: $0, type: .userAdded)}
+        
+        return builtInProcessors + userAddedProcessors
     }
 }
 

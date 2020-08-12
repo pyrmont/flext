@@ -403,7 +403,11 @@
                                 <items>
                                     <barButtonItem title="Remove" id="W4f-jg-6aX"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="sV6-hP-zQY"/>
-                                    <barButtonItem title="Add" id="zdC-X7-p8F"/>
+                                    <barButtonItem title="Add" id="zdC-X7-p8F">
+                                        <connections>
+                                            <action selector="openDocumentPicker:" destination="3Ul-7A-0Ti" id="h6P-Mx-gSt"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>

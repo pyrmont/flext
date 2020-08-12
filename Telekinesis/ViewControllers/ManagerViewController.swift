@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import JavaScriptCore
+import MobileCoreServices
 
 class ManagerTableViewCell: UITableViewCell {
     @IBOutlet var titleLabel: UILabel?
@@ -42,9 +44,16 @@ class ManagerViewController: UIViewController {
         }
     }
     
+    @IBAction func openDocumentPicker(_ sender: UIBarButtonItem) {
+        present(documentPicker, animated: true, completion: nil)
+    }
+    
     var settings: SettingsModel!
     var builtInProcessors: [ProcessorModel] = []
     var userAddedProcessors: [ProcessorModel] = []
+    
+    var documentPicker: UIDocumentPickerViewController!
+    var appDocumentsDirectory: URL!
     
     var isDeleting: Bool = false
     
@@ -63,6 +72,15 @@ class ManagerViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.setEditing(true, animated: false)
+        
+        documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeJavaScript as String], in: .import)
+        documentPicker.delegate = self
+        
+        do {
+            appDocumentsDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        } catch {
+            print("Could not access the documents directory")
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -166,5 +184,40 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
         guard isDeleting && indexPath.section == 2 else { return false }
         return true
+    }
+}
+
+extension ManagerViewController: UIDocumentPickerDelegate {
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+        var importError: TelekinesisError? = nil
+
+        var error: NSError? = nil
+        NSFileCoordinator().coordinate(readingItemAt: url, options: [NSFileCoordinator.ReadingOptions.withoutChanges], error: &error) { (url) in
+            do {
+                guard let jsContext = JSContext() else { throw TelekinesisError(type: .failedToLoadJSContext) }
+                guard let jsSource = try? String(contentsOf: url) else { throw TelekinesisError(type: .failedToReadFile) }
+                guard let jsValue = jsContext.evaluateScript(jsSource)?.objectForKeyedSubscript("process") else { throw TelekinesisError(type: .failedToEvaluateJavaScript) }
+                guard !jsValue.isUndefined else { throw TelekinesisError(type: .failedToFindProcessFunction) }
+
+                let filename = url.lastPathComponent
+                try FileManager.default.copyItem(at: url, to: appDocumentsDirectory.appendingPathComponent(filename))
+            } catch let error as TelekinesisError {
+                importError = error.with(location: (#file, #line))
+            } catch let error as NSError where error.code == NSFileWriteFileExistsError {
+                importError = TelekinesisError(type: .failedToCopyFile, location: (#file, #line))
+            } catch {
+                importError = TelekinesisError(type: .unknown, location: (#file, #line))
+            }
+            
+            return
+        }
+        
+        guard importError != nil else { return }
+        
+        let alert = UIAlertController(title: "Import Failed", message: importError!.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default) { _ in
+            NSLog(importError!.logMessage)
+        })
+        self.present(alert, animated: true, completion: nil)
     }
 }
