@@ -318,7 +318,7 @@
                                 <rect key="frame" x="0.0" y="56" width="375" height="619"/>
                                 <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="sW4-qB-wYi" userLabel="Table Footer">
-                                    <rect key="frame" x="0.0" y="157.33333206176758" width="375" height="69"/>
+                                    <rect key="frame" x="0.0" y="156.66666412353516" width="375" height="69"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For more information on how to add your own processors, see 'Adding Processors' in Settings." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rqM-eU-VnL" userLabel="Instructions">
@@ -336,21 +336,32 @@
                                     </constraints>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Reordering Cell" id="RZz-h6-Eb6" customClass="ManagerTableViewCell" customModule="Telekinesis" customModuleProvider="target">
-                                        <rect key="frame" x="15" y="55.333332061767578" width="345" height="42.666667938232422"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Reordering Cell" id="RZz-h6-Eb6" customClass="ManagerTableViewCell" customModule="Telekinesis" customModuleProvider="target">
+                                        <rect key="frame" x="15" y="55.333332061767578" width="345" height="42"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="right" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RZz-h6-Eb6" id="haS-AN-WGn">
-                                            <rect key="frame" x="0.0" y="0.0" width="345" height="42.666667938232422"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="345" height="42"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vTL-jj-LXD">
-                                                    <rect key="frame" x="15" y="10.666666666666666" width="315" height="21.333333333333336"/>
+                                                    <rect key="frame" x="15" y="10.666666666666666" width="315" height="20.666666666666671"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="line.horizontal.3" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="bLP-gv-lI6" userLabel="Reorder Widget">
+                                                    <rect key="frame" x="301" y="13.999999999999996" width="28" height="14.333333333333339"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="24" id="8qo-Hx-sin"/>
+                                                        <constraint firstAttribute="width" constant="28" id="vS4-2z-lzH"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="bLP-gv-lI6" firstAttribute="centerY" secondItem="haS-AN-WGn" secondAttribute="centerY" id="6be-my-j6X"/>
+                                                <constraint firstAttribute="trailing" secondItem="bLP-gv-lI6" secondAttribute="trailing" constant="16" id="KTC-lW-ji4"/>
                                                 <constraint firstItem="vTL-jj-LXD" firstAttribute="top" secondItem="haS-AN-WGn" secondAttribute="top" constant="10.67" id="Ogo-fw-hIU"/>
                                                 <constraint firstAttribute="bottom" secondItem="vTL-jj-LXD" secondAttribute="bottom" constant="10.67" id="QXi-z4-yH1"/>
                                                 <constraint firstItem="vTL-jj-LXD" firstAttribute="leading" secondItem="haS-AN-WGn" secondAttribute="leading" constant="15" id="duV-M4-cSF"/>
@@ -361,8 +372,8 @@
                                             <outlet property="titleLabel" destination="vTL-jj-LXD" id="7vJ-hE-QDg"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Enabling Cell" id="EO1-We-ZxW" customClass="ManagerTableViewCell" customModule="Telekinesis" customModuleProvider="target">
-                                        <rect key="frame" x="15" y="98" width="345" height="41.333332061767578"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Enabling Cell" id="EO1-We-ZxW" customClass="ManagerTableViewCell" customModule="Telekinesis" customModuleProvider="target">
+                                        <rect key="frame" x="15" y="97.333332061767578" width="345" height="41.333332061767578"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="right" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="EO1-We-ZxW" id="hYj-hb-GoZ">
                                             <rect key="frame" x="0.0" y="0.0" width="345" height="41.333332061767578"/>
@@ -615,5 +626,6 @@
     <resources>
         <image name="circle" catalog="system" width="128" height="121"/>
         <image name="gear" catalog="system" width="128" height="119"/>
+        <image name="line.horizontal.3" catalog="system" width="128" height="64"/>
     </resources>
 </document>

@@ -11,10 +11,24 @@ import JavaScriptCore
 import MobileCoreServices
 
 class ManagerTableViewCell: UITableViewCell {
+    enum ProcessorType {
+        case enabledProcessor
+        case builtInProcessor
+        case userAddedProcessor
+    }
+    
     @IBOutlet var titleLabel: UILabel?
     @IBOutlet var enabledToggle: UISwitch?
     
-    var processor: ProcessorModel!
+    weak var processor: ProcessorModel!
+    weak var tableView: UITableView!
+    var processorType: ProcessorType!
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        defer { super.touchesBegan(touches, with: event) }
+        guard processorType == .userAddedProcessor else { return }
+        tableView.setEditing(false, animated: false)
+    }
 }
 
 class ManagerViewController: UIViewController {
@@ -48,6 +62,7 @@ class ManagerViewController: UIViewController {
         present(documentPicker, animated: true, completion: nil)
     }
     
+    
     var settings: SettingsModel!
     var builtInProcessors: [ProcessorModel] = []
     var userAddedProcessors: [ProcessorModel] = []
@@ -56,6 +71,8 @@ class ManagerViewController: UIViewController {
     var appDocumentsDirectory: URL!
     
     var isDeleting: Bool = false
+    var leadingActions: UISwipeActionsConfiguration!
+    var trailingActions: UISwipeActionsConfiguration!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,7 +88,24 @@ class ManagerViewController: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.setEditing(true, animated: false)
+        
+        tableView.dragInteractionEnabled = true
+        tableView.dragDelegate = self
+        tableView.dropDelegate = self
+        
+        if let recognizers = tableView.gestureRecognizers {
+            for case let recognizer as UILongPressGestureRecognizer in recognizers {
+                recognizer.minimumPressDuration = 0.2
+            }
+        }
+
+        leadingActions = UISwipeActionsConfiguration(actions: [UIContextualAction(style: .normal, title: "Edit", handler: {_,_,_ in
+            print("Edit")
+        })])
+        
+        trailingActions = UISwipeActionsConfiguration(actions: [UIContextualAction(style: .destructive, title: "Delete", handler: {_,_,_ in
+            print("Delete")
+        })])
         
         documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeJavaScript as String], in: .import)
         documentPicker.delegate = self
@@ -119,23 +153,29 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var processor: ProcessorModel
-        var cellType: String
+        var cellID: String
+        var processorType: ManagerTableViewCell.ProcessorType
         
         switch indexPath.section {
         case 1:
             processor = builtInProcessors[indexPath.row]
-            cellType = "Enabling Cell"
+            cellID = "Enabling Cell"
+            processorType = .builtInProcessor
         case 2:
             processor = userAddedProcessors[indexPath.row]
-            cellType = "Enabling Cell"
+            cellID = "Enabling Cell"
+            processorType = .userAddedProcessor
         default:
             processor = settings.enabledProcessors[indexPath.row]
-            cellType = "Reordering Cell"
+            cellID = "Reordering Cell"
+            processorType = .enabledProcessor
         }
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellType, for: indexPath) as! ManagerTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! ManagerTableViewCell
         
         cell.titleLabel?.text = processor.name
+        cell.tableView = tableView
+        cell.processorType = processorType
         
         if let toggle = cell.enabledToggle {
             toggle.isOn = processor.isEnabled
@@ -145,6 +185,10 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
         cell.processor = processor
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return indexPath.section == 2 ? true : false
     }
     
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
@@ -175,18 +219,40 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
             settings.selectedProcessorPath?.row += 1
         }
     }
-    
+   
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        guard isDeleting && indexPath.section == 2 else { return .none }
         return .delete
     }
 
     func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-        guard isDeleting && indexPath.section == 2 else { return false }
         return true
+    }
+
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        return leadingActions
+    }
+
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        return trailingActions
     }
 }
 
+extension ManagerViewController: UITableViewDragDelegate, UITableViewDropDelegate {
+    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        guard indexPath.section == 0 else { return [] }
+        return [UIDragItem(itemProvider: NSItemProvider())]
+    }
+
+    func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+        guard session.localDragSession != nil else { return UITableViewDropProposal(operation: .cancel, intent: .unspecified) }
+        
+        return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+    }
+
+    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+    }
+}
+    
 extension ManagerViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
         var importError: TelekinesisError? = nil
