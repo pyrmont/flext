@@ -27,14 +27,14 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5vE-WX-8RG" userLabel="Top Bar">
                                                         <rect key="frame" x="0.0" y="0.0" width="335" height="68"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Preview" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wg9-OV-xvN" userLabel="Preview Heading">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Preview" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wg9-OV-xvN" userLabel="Preview Heading">
                                                                 <rect key="frame" x="0.0" y="47.666666666666664" width="60.333333333333336" height="20.333333333333336"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <button opaque="NO" contentMode="right" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" pointerInteraction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TRg-Yt-nJF">
-                                                                <rect key="frame" x="239.33333333333329" y="48.333333333333336" width="95.666666666666657" height="20.666666666666664"/>
+                                                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="tailTruncation" pointerInteraction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TRg-Yt-nJF">
+                                                                <rect key="frame" x="90.333333333333329" y="48.333333333333336" width="244.66666666666669" height="20.666666666666664"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="5" maxY="0.0"/>
@@ -47,12 +47,13 @@
                                                             </button>
                                                         </subviews>
                                                         <constraints>
-                                                            <constraint firstItem="TRg-Yt-nJF" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Wg9-OV-xvN" secondAttribute="trailing" constant="8" symbolic="YES" id="4Yg-0m-hkj"/>
                                                             <constraint firstAttribute="trailing" secondItem="TRg-Yt-nJF" secondAttribute="trailing" id="9Gd-yM-jYH"/>
                                                             <constraint firstItem="Wg9-OV-xvN" firstAttribute="firstBaseline" secondItem="TRg-Yt-nJF" secondAttribute="firstBaseline" id="MEb-dE-vta"/>
+                                                            <constraint firstItem="TRg-Yt-nJF" firstAttribute="width" relation="greaterThanOrEqual" secondItem="Wg9-OV-xvN" secondAttribute="width" id="NBJ-FR-uIe"/>
                                                             <constraint firstAttribute="height" constant="68" id="QHL-ch-vAp"/>
                                                             <constraint firstItem="Wg9-OV-xvN" firstAttribute="leading" secondItem="5vE-WX-8RG" secondAttribute="leading" id="bkf-jS-CIk"/>
                                                             <constraint firstAttribute="bottom" secondItem="Wg9-OV-xvN" secondAttribute="bottom" id="dIu-Bz-C5h"/>
+                                                            <constraint firstItem="TRg-Yt-nJF" firstAttribute="leading" secondItem="Wg9-OV-xvN" secondAttribute="trailing" constant="30" id="iwk-gp-NHc"/>
                                                         </constraints>
                                                     </view>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Kak-Iy-6Th" userLabel="Preview">
