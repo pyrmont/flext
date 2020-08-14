@@ -156,10 +156,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="1Qe-pg-otr">
-                                <rect key="frame" x="0.0" y="56" width="375" height="300"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="300" id="wvM-TK-kOw"/>
-                                </constraints>
+                                <rect key="frame" x="0.0" y="56" width="375" height="702"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Processor Cell" textLabel="QJH-tm-5u2" imageView="K1y-Mm-Jbf" style="IBUITableViewCellStyleDefault" id="vBe-nt-rFd" customClass="SettingsProcessorTableViewCell" customModule="Telekinesis" customModuleProvider="target">
                                         <rect key="frame" x="15" y="55.333332061767578" width="345" height="43.666667938232422"/>
@@ -278,6 +275,7 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="1Qe-pg-otr" secondAttribute="bottom" id="3Dz-ie-LP0"/>
                             <constraint firstItem="1Qe-pg-otr" firstAttribute="top" secondItem="59c-4T-m0n" secondAttribute="top" id="EZo-40-xSQ"/>
                             <constraint firstItem="59c-4T-m0n" firstAttribute="trailing" secondItem="1Qe-pg-otr" secondAttribute="trailing" id="WhQ-cZ-LjG"/>
                             <constraint firstItem="1Qe-pg-otr" firstAttribute="leading" secondItem="59c-4T-m0n" secondAttribute="leading" id="h3q-JM-Dci"/>
@@ -299,7 +297,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="1Qe-pg-otr" id="I0C-zF-NgR"/>
-                        <outlet property="tableViewHeight" destination="wvM-TK-kOw" id="gPv-1K-UrY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pXL-4k-nyD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -474,11 +471,8 @@
                                 </items>
                             </navigationBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="eTJ-OD-Xj5">
-                                <rect key="frame" x="16" y="66" width="343" height="150"/>
+                                <rect key="frame" x="16" y="66" width="343" height="658"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="7RK-3f-Xv5"/>
-                                </constraints>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Option Cell" rowHeight="100" id="Oj8-5m-KyM" customClass="ProcessorOptionTableViewCell" customModule="Telekinesis" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="343" height="100"/>
@@ -502,7 +496,10 @@
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Default value" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ysf-Oe-IV3">
                                                     <rect key="frame" x="0.0" y="38.333333333333336" width="343" height="28.666666666666664"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                                    <connections>
+                                                        <action selector="finishUpdating:" destination="H5D-nE-3cQ" eventType="editingDidEndOnExit" id="ehy-Ek-6fN"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -534,6 +531,7 @@
                         <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="eTJ-OD-Xj5" firstAttribute="top" secondItem="yMj-wj-6SR" secondAttribute="bottom" constant="10" id="32J-Wx-f22"/>
+                            <constraint firstItem="eFC-Ek-nBE" firstAttribute="bottom" secondItem="eTJ-OD-Xj5" secondAttribute="bottom" id="Cyt-jc-joe"/>
                             <constraint firstItem="yMj-wj-6SR" firstAttribute="top" secondItem="eFC-Ek-nBE" secondAttribute="top" id="F2b-F0-XDy"/>
                             <constraint firstItem="eFC-Ek-nBE" firstAttribute="trailing" secondItem="eTJ-OD-Xj5" secondAttribute="trailing" constant="16" id="ZUB-eQ-6Li"/>
                             <constraint firstItem="yMj-wj-6SR" firstAttribute="trailing" secondItem="eFC-Ek-nBE" secondAttribute="trailing" id="vRg-Cy-Dp6"/>
@@ -544,7 +542,6 @@
                     </view>
                     <connections>
                         <outlet property="optionsTable" destination="eTJ-OD-Xj5" id="hjR-CK-PzT"/>
-                        <outlet property="optionsTableHeight" destination="7RK-3f-Xv5" id="pX9-Re-Sxy"/>
                         <outlet property="processorTitle" destination="ZBr-45-75G" id="5Dw-EV-myD"/>
                     </connections>
                 </viewController>

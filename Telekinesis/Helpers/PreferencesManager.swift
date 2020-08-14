@@ -8,13 +8,20 @@
 
 import Foundation
 
-struct ProcessorPreference: Codable {
-    var isEnabled: Bool = true
+struct ProcessorPreferences: Codable {
+    var name: String
+    var isEnabled: Bool
     var options: [String: String]
+    
+    init(for processor: ProcessorModel) {
+        self.name = processor.name
+        self.isEnabled = processor.isEnabled
+        self.options = [:]
+    }
 }
 
 struct Preferences: Codable {
-    var processors: [URL: ProcessorPreference] = [:]
+    var processors: [URL: ProcessorPreferences] = [:]
 }
 
 struct PreferencesManager {
@@ -25,7 +32,7 @@ struct PreferencesManager {
     static var encoder = PropertyListEncoder()
     static var decoder = PropertyListDecoder()
     
-    static var processors: [URL: ProcessorPreference] = {
+    static var processors: [URL: ProcessorPreferences] = {
         return preferences.processors
     }()
     
@@ -54,15 +61,12 @@ struct PreferencesManager {
         return preferences
     }()
     
-    static func saveProcessorOptions(_ options: [ProcessorOption], for url: URL) {
-        for option in options {
-            if var processor = processors[url] {
-                processor.options[option.name] = option.value
-            } else {
-                guard let value = option.value else { continue }
-                processors[url] = ProcessorPreference(options: [option.name: value])
-            }
+    static func save(_ processorModel: ProcessorModel) {
+        var preferences = processors[processorModel.path] ?? ProcessorPreferences(for: processorModel)
+        for option in processorModel.options {
+            preferences.options[option.name] = option.value
         }
+        processors[processorModel.path] = preferences
     }
 }
 

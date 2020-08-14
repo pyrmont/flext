@@ -56,7 +56,7 @@ class EditorViewController: UIViewController {
     // MARK: - Processor Setup
 
     func setupDefaultProcessor() {
-        let processors = ProcessorModel.findAll()
+        let processors = ProcessorModel.all
         let processor = processors.first!
         settings = try! SettingsModel(processors: processors, selected: processor)
         setupProcessor(using: processor)
@@ -128,6 +128,11 @@ class EditorViewController: UIViewController {
     
     // MARK: - Other Functions
     
+    func returnToEditor() {
+        setupProcessor(using: settings.selectedProcessor!)
+        runProcessor()
+    }
+    
     func editorHasText() -> Bool {
         let textEditor = self.textEditor as! TextViewWithPlaceholder
         return !textEditor.placeholderIsEnabled
@@ -142,7 +147,6 @@ extension EditorViewController: UITextViewDelegate {
 
 extension EditorViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
-        setupProcessor(using: settings.selectedProcessor!)
-        runProcessor()
+        returnToEditor()
     }
 }

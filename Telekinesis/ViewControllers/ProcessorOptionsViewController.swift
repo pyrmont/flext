@@ -30,17 +30,6 @@ class ProcessorOptionsViewController: UIViewController {
         
         optionsTable.delegate = self
         optionsTable.dataSource = self
-        optionsTable.rowHeight = UITableView.automaticDimension
-        optionsTable.estimatedRowHeight = 100
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        PreferencesManager.saveProcessorOptions(processor.options, for: processor.path)
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.updateViewConstraints()
-        optionsTableHeight.constant = optionsTable.contentSize.height
     }
     
     func setupListener() {
@@ -56,12 +45,14 @@ class ProcessorOptionsViewController: UIViewController {
         guard let cell = textField.superview?.superview as? UITableViewCell else { return }
         guard let indexPath = optionsTable.indexPath(for: cell) else { return }
         
-        if textField.text == nil || textField.text!.isEmpty {
-            processor.options[indexPath.row].value = nil
+        if let text = textField.text, !text.isEmpty {
+            processor.options[indexPath.row].value = text
         } else {
-            processor.options[indexPath.row].value = textField.text
+            processor.options[indexPath.row].value = nil
         }
     }
+    
+    @IBAction func finishUpdating(_ sender: UITextField) { }
 }
 
 extension ProcessorOptionsViewController: UITableViewDataSource, UITableViewDelegate {

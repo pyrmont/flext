@@ -299,7 +299,7 @@ class ProcessorModel {
 // MARK: - Processor Model Factory
 
 extension ProcessorModel {
-    static func findAll() -> [ProcessorModel] {
+    static var all: [ProcessorModel] {
         guard let builtInProcessorURLs = Bundle.main.urls(forResourcesWithExtension: "js", subdirectory: "Processors") else { return [] }
 
         var userAddedProcessorURLs: [URL] = []

@@ -35,7 +35,7 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        settings = settings ?? SettingsModel(processors: ProcessorModel.findAll())
+        settings = settings ?? SettingsModel(processors: ProcessorModel.all)
         trail = trail ?? []
 
         tableView.delegate = self
@@ -64,14 +64,8 @@ class SettingsViewController: UIViewController {
                 section.title = item.name
             }
         } else if let editor = segue.destination as? EditorViewController {
-            editor.setupProcessor(using: settings.selectedProcessor!)
-            editor.runProcessor()
+            editor.returnToEditor()
         }
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.updateViewConstraints()
-        tableViewHeight.constant = tableView.contentSize.height
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -80,7 +74,6 @@ class SettingsViewController: UIViewController {
             tableView.reloadData()
             selectProcessor(at: settings.selectedProcessorPath)
         }
-
     }
     
     func selectProcessor(at indexPath: IndexPath?) {
