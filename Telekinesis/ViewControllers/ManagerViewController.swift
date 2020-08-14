@@ -28,6 +28,12 @@ class ManagerTableViewCell: UITableViewCell {
 }
 
 class ManagerViewController: UIViewController {
+    enum Section: Int {
+        case enabled
+        case builtIn
+        case userAdded
+    }
+    
     @IBOutlet var tableView: UITableView!
     @IBOutlet var editingButton: UIBarButtonItem!
     
@@ -39,11 +45,11 @@ class ManagerViewController: UIViewController {
         if sender.isOn {
             let rowIndex = settings.enabledProcessors.count
             settings.enabledProcessors.append(cell.processor)
-            tableView.insertRows(at: [IndexPath(row: rowIndex, section: 0)], with: .automatic)
+            tableView.insertRows(at: [IndexPath(row: rowIndex, section: Section.enabled.rawValue)], with: .automatic)
         } else {
             guard let rowIndex = settings.enabledProcessors.firstIndex(of: cell.processor) else { return }
             settings.enabledProcessors.remove(at: rowIndex)
-            tableView.deleteRows(at: [IndexPath(row: rowIndex, section: 0)], with: .automatic)
+            tableView.deleteRows(at: [IndexPath(row: rowIndex, section: Section.enabled.rawValue)], with: .automatic)
             if settings.selectedProcessorPath?.row == rowIndex {
                 settings.resetSelectedProcessor()
             }
@@ -63,7 +69,7 @@ class ManagerViewController: UIViewController {
         cell.processor.name = text
         
         guard let enabledRow = settings.enabledProcessors.firstIndex(of: cell.processor) else { return }
-        guard let enabledCell = tableView.cellForRow(at: IndexPath(row: enabledRow, section: 0)) as? ManagerTableViewCell else { return }
+        guard let enabledCell = tableView.cellForRow(at: IndexPath(row: enabledRow, section: Section.enabled.rawValue)) as? ManagerTableViewCell else { return }
         enabledCell.set(text: text)
     }
     
@@ -78,7 +84,7 @@ class ManagerViewController: UIViewController {
         } else {
             editingButton.title = "Done"
             tableView.setEditing(true, animated: true)
-            tableView.scrollToRow(at: IndexPath(row: 0, section: 2), at: .top, animated: true)
+            tableView.scrollToRow(at: IndexPath(row: 0, section: Section.userAdded.rawValue), at: .top, animated: true)
         }
     }
     
@@ -204,24 +210,28 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 1:
+        switch Section(rawValue: section) {
+        case .enabled:
+            return settings.enabledProcessors.count
+        case .builtIn:
             return builtInProcessors.count
-        case 2:
+        case .userAdded:
             return userAddedProcessors.count
         default:
-            return settings.enabledProcessors.count
+            return 0
         }
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 1:
+        switch Section(rawValue: section) {
+        case .enabled:
+            return "Ordering"
+        case .builtIn:
             return "Built-In Processors"
-        case 2:
+        case .userAdded:
             return "User-Added Processors"
         default:
-            return "Ordering"
+            return nil
         }
     }
     
@@ -229,15 +239,19 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
         var processor: ProcessorModel
         var cell: ManagerTableViewCell
         
-        switch indexPath.section {
-        case 1:
+        switch Section(rawValue: indexPath.section) {
+        case .enabled:
+            processor = settings.enabledProcessors[indexPath.row]
+            cell = tableView.dequeueReusableCell(withIdentifier: "Reordering Cell", for: indexPath) as! ManagerTableViewCell
+            cell.titleLabel!.text = processor.name
+        case .builtIn:
             processor = builtInProcessors[indexPath.row]
             cell = tableView.dequeueReusableCell(withIdentifier: "Enabling Cell", for: indexPath) as! ManagerTableViewCell
             cell.textField!.text = processor.name
             cell.textField!.isEnabled = false
             cell.enabledToggle!.isOn = processor.isEnabled
             cell.enabledToggle!.isEnabled = settings.enabledProcessors.count == 1 ? !cell.enabledToggle!.isOn : true
-        case 2:
+        case .userAdded:
             processor = userAddedProcessors[indexPath.row]
             cell = tableView.dequeueReusableCell(withIdentifier: "Enabling Cell", for: indexPath) as! ManagerTableViewCell
             cell.textField!.text = processor.name
@@ -246,9 +260,7 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
             cell.enabledToggle!.isOn = processor.isEnabled
             cell.enabledToggle!.isEnabled = settings.enabledProcessors.count == 1 ? !cell.enabledToggle!.isOn : true
         default:
-            processor = settings.enabledProcessors[indexPath.row]
-            cell = tableView.dequeueReusableCell(withIdentifier: "Reordering Cell", for: indexPath) as! ManagerTableViewCell
-            cell.titleLabel!.text = processor.name
+            return UITableViewCell()
         }
         
         cell.processor = processor
@@ -257,17 +269,17 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return indexPath.section == 2 ? true : false
+        return indexPath.section == Section.userAdded.rawValue ? true : false
     }
     
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        return indexPath.section == 0 ? true : false
+        return indexPath.section == Section.enabled.rawValue ? true : false
     }
     
     func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
-        guard sourceIndexPath.section == 0 else { return sourceIndexPath }
+        guard sourceIndexPath.section == Section.enabled.rawValue else { return sourceIndexPath }
         
-        if proposedDestinationIndexPath.section != 0 {
+        if proposedDestinationIndexPath.section != Section.enabled.rawValue {
             let lastRowIndex = self.tableView(tableView, numberOfRowsInSection: sourceIndexPath.section) - 1
             return IndexPath(row: lastRowIndex, section: sourceIndexPath.section)
         } else {
@@ -321,7 +333,7 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
         let enabledIndexPath = settings.enabledProcessors.firstIndex(of: processor)
         settings.remove(processor)
         if enabledIndexPath != nil {
-            tableView.deleteRows(at: [IndexPath(row: enabledIndexPath!, section: 0)], with: .automatic)
+            tableView.deleteRows(at: [IndexPath(row: enabledIndexPath!, section: Section.enabled.rawValue)], with: .automatic)
         }
         
         tableView.endUpdates()
@@ -330,7 +342,7 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension ManagerViewController: UITableViewDragDelegate, UITableViewDropDelegate {
     func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-        guard indexPath.section == 0 else { return [] }
+        guard indexPath.section == Section.enabled.rawValue else { return [] }
         return [UIDragItem(itemProvider: NSItemProvider())]
     }
 
@@ -377,8 +389,8 @@ extension ManagerViewController: UIDocumentPickerDelegate {
         userAddedProcessors.append(processor)
         settings.add(processor)
         
-        let enabledIndexPath = IndexPath(row: settings.enabledProcessors.count - 1, section: 0)
-        let userAddedIndexPath = IndexPath(row: userAddedProcessors.count - 1, section: 2)
+        let enabledIndexPath = IndexPath(row: settings.enabledProcessors.count - 1, section: Section.enabled.rawValue)
+        let userAddedIndexPath = IndexPath(row: userAddedProcessors.count - 1, section: Section.userAdded.rawValue)
         
         tableView.beginUpdates()
         
