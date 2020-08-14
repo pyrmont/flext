@@ -63,9 +63,7 @@ class SettingsViewController: UIViewController {
                 section.trail = trail + [indexPath.section, indexPath.row]
                 section.title = item.name
             }
-            
-        } else {
-            guard let editor = segue.destination as? EditorViewController else { return }
+        } else if let editor = segue.destination as? EditorViewController {
             editor.setupProcessor(using: settings.selectedProcessor!)
             editor.runProcessor()
         }

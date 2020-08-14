@@ -29,6 +29,8 @@ class EditorViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let navigationController = segue.destination as? UINavigationController else { return }
+        navigationController.presentationController?.delegate = self as UIAdaptivePresentationControllerDelegate
+
         guard let settingsController = navigationController.topViewController as? SettingsViewController else { return }
         settingsController.settings = settings
     }
@@ -134,6 +136,13 @@ class EditorViewController: UIViewController {
 
 extension EditorViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
+        runProcessor()
+    }
+}
+
+extension EditorViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+        setupProcessor(using: settings.selectedProcessor!)
         runProcessor()
     }
 }

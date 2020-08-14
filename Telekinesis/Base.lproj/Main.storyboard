@@ -318,7 +318,7 @@
                                 <rect key="frame" x="0.0" y="56" width="375" height="619"/>
                                 <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="sW4-qB-wYi" userLabel="Table Footer">
-                                    <rect key="frame" x="0.0" y="156.66666412353516" width="375" height="69"/>
+                                    <rect key="frame" x="0.0" y="157.33333206176758" width="375" height="69"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For more information on how to add your own processors, see 'Adding Processors' in Settings." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rqM-eU-VnL" userLabel="Instructions">
@@ -337,20 +337,20 @@
                                 </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Reordering Cell" id="RZz-h6-Eb6" customClass="ManagerTableViewCell" customModule="Telekinesis" customModuleProvider="target">
-                                        <rect key="frame" x="15" y="55.333332061767578" width="345" height="42"/>
+                                        <rect key="frame" x="15" y="55.333332061767578" width="345" height="42.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="right" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RZz-h6-Eb6" id="haS-AN-WGn">
-                                            <rect key="frame" x="0.0" y="0.0" width="345" height="42"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="345" height="42.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vTL-jj-LXD">
-                                                    <rect key="frame" x="15" y="10.666666666666666" width="315" height="20.666666666666671"/>
+                                                    <rect key="frame" x="15" y="10.666666666666666" width="315" height="21.333333333333336"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="line.horizontal.3" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="bLP-gv-lI6" userLabel="Reorder Widget">
-                                                    <rect key="frame" x="301" y="13.999999999999996" width="28" height="14.333333333333339"/>
+                                                    <rect key="frame" x="301" y="14.333333333333332" width="28" height="14.333333333333339"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
@@ -373,7 +373,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Enabling Cell" id="EO1-We-ZxW" customClass="ManagerTableViewCell" customModule="Telekinesis" customModuleProvider="target">
-                                        <rect key="frame" x="15" y="97.333332061767578" width="345" height="41.333332061767578"/>
+                                        <rect key="frame" x="15" y="98" width="345" height="41.333332061767578"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="right" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="EO1-We-ZxW" id="hYj-hb-GoZ">
                                             <rect key="frame" x="0.0" y="0.0" width="345" height="41.333332061767578"/>
@@ -412,7 +412,11 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" semanticContentAttribute="playback" translatesAutoresizingMaskIntoConstraints="NO" id="QKv-94-fCt">
                                 <rect key="frame" x="0.0" y="675" width="375" height="49"/>
                                 <items>
-                                    <barButtonItem title="Remove" id="W4f-jg-6aX"/>
+                                    <barButtonItem title="Remove" id="W4f-jg-6aX">
+                                        <connections>
+                                            <action selector="enableEditing:" destination="3Ul-7A-0Ti" id="vr2-AK-0q6"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="sV6-hP-zQY"/>
                                     <barButtonItem title="Add" id="zdC-X7-p8F">
                                         <connections>
@@ -434,25 +438,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="al1-PX-oj1"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Processors" id="MvP-TF-As3">
-                        <barButtonItem key="rightBarButtonItem" style="done" id="tp2-in-fN4">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="0VL-3d-myB">
-                                <rect key="frame" x="276" y="12" width="83" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <state key="normal" title="Done"/>
-                                <connections>
-                                    <segue destination="pn2-G7-d3F" kind="unwind" unwindAction="unwindToEditorWithUnwindSegue:" id="Cfj-hM-0fE"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Processors" id="MvP-TF-As3"/>
                     <connections>
+                        <outlet property="editingButton" destination="W4f-jg-6aX" id="QBY-A9-0b4"/>
                         <outlet property="tableView" destination="nRI-HJ-D7G" id="qMJ-C1-S4c"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uqw-FL-O6N" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <exit id="pn2-G7-d3F" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2772" y="-184.72906403940888"/>
         </scene>
@@ -581,25 +573,12 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="JdV-c1-eys"/>
                     </view>
-                    <navigationItem key="navigationItem" id="NvK-VE-Kt2">
-                        <barButtonItem key="rightBarButtonItem" style="done" id="rMK-AI-DVg">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="8kl-pi-jXN">
-                                <rect key="frame" x="276" y="12" width="83" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <state key="normal" title="Done"/>
-                                <connections>
-                                    <segue destination="lNP-PR-jGC" kind="unwind" unwindAction="unwindToEditorWithUnwindSegue:" id="R5I-yb-K0R"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="NvK-VE-Kt2"/>
                     <connections>
                         <outlet property="textView" destination="fMs-3r-dWg" id="3Sq-zG-gEP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ViS-Ia-aG9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <exit id="lNP-PR-jGC" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2772" y="503"/>
         </scene>

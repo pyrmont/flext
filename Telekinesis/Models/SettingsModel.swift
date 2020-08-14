@@ -77,6 +77,22 @@ class SettingsModel {
         
         self.settings = SettingsData.settings()
     }
+    
+    // MARK: - Processor Inserters and Removers
+    
+    func add(_ processor: ProcessorModel) {
+        self.processors.append(processor)
+        
+        guard processor.isEnabled else { return }
+        self.enabledProcessors.append(processor)
+    }
+    
+    func remove(_ processor: ProcessorModel) {
+        self.processors.remove(at: self.processors.firstIndex(of: processor)!)
+        
+        guard processor.isEnabled else { return }
+        self.enabledProcessors.remove(at: self.enabledProcessors.firstIndex(of: processor)!)
+    }
 
     // MARK: - Selection Updaters
     

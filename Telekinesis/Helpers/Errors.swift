@@ -14,6 +14,7 @@ struct TelekinesisError: Error {
         case failedToLoadPath
         case failedToReadFile
         case failedToCopyFile
+        case failedToDeleteFile
         case failedToLoadJSContext
         case failedToEvaluateJavaScript
         case failedToFindProcessFunction
@@ -54,6 +55,8 @@ extension TelekinesisError: LocalizedError {
             return "The selected file could not be read."
         case .failedToCopyFile:
             return "The selected file could not be copied."
+        case .failedToDeleteFile:
+            return "The selected file could not be deleted."
         case .failedToLoadJSContext:
             return "The JavaScript engine could not be loaded."
         case .failedToEvaluateJavaScript:
