@@ -164,7 +164,7 @@ class ManagerViewController: UIViewController {
                 guard let jsValue = jsContext.objectForKeyedSubscript("process") else { throw TelekinesisError(type: .failedToEvaluateJavaScript) }
                 guard !jsValue.isUndefined else { throw TelekinesisError(type: .failedToFindProcessFunction) }
 
-                importURL = URL(fileURLWithPath: url.lastPathComponent, isDirectory: false, relativeTo: appDocumentsDirectory)
+                importURL = URL(fileURLWithPath: UUID().uuidString + "." + url.pathExtension, isDirectory: false, relativeTo: appDocumentsDirectory)
                 try FileManager.default.copyItem(at: url, to: importURL!)
             } catch let error as TelekinesisError {
                 importError = error.with(location: (#file, #line))
@@ -371,7 +371,8 @@ extension ManagerViewController: UIDocumentPickerDelegate {
         }
         
         guard filePath != nil else { return }
-        guard let processor = try? ProcessorModel(path: filePath!, type: .userAdded) else { return }
+        let name = url.deletingPathExtension().lastPathComponent
+        guard let processor = try? ProcessorModel(path: filePath!, type: .userAdded, name: name) else { return }
         
         userAddedProcessors.append(processor)
         settings.add(processor)

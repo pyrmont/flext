@@ -116,6 +116,11 @@ class ProcessorModel {
         self.type = type
     }
     
+    convenience init(path: URL, type: ProcessorType, name: String) throws {
+        try self.init(path: path, type: type)
+        self.externalName = name
+    }
+    
     // MARK: - Options
 
     private func checkForOptions() throws -> Bool {
