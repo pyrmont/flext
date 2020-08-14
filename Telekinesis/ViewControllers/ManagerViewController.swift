@@ -10,11 +10,21 @@ import UIKit
 import JavaScriptCore
 import MobileCoreServices
 
+class ManagerTextField: UITextField {
+    weak var containingCell: ManagerTableViewCell!
+}
+
 class ManagerTableViewCell: UITableViewCell {
     @IBOutlet var titleLabel: UILabel?
     @IBOutlet var enabledToggle: UISwitch?
+    @IBOutlet var textField: UITextField?
     
     weak var processor: ProcessorModel!
+    
+    func set(text: String) {
+        titleLabel?.text = text
+        textField?.text = text
+    }
 }
 
 class ManagerViewController: UIViewController {
@@ -45,6 +55,18 @@ class ManagerViewController: UIViewController {
         }
     }
     
+    @IBAction func finishedRelabelling(_ sender: ManagerTextField) {
+        guard let text = sender.text else { return }
+        guard !text.isEmpty else { return }
+
+        guard let cell = sender.containingCell else { return }
+        cell.processor.name = text
+        
+        guard let enabledRow = settings.enabledProcessors.firstIndex(of: cell.processor) else { return }
+        guard let enabledCell = tableView.cellForRow(at: IndexPath(row: enabledRow, section: 0)) as? ManagerTableViewCell else { return }
+        enabledCell.set(text: text)
+    }
+    
     @IBAction func openDocumentPicker(_ sender: UIBarButtonItem) {
         present(documentPicker, animated: true, completion: nil)
     }
@@ -67,10 +89,10 @@ class ManagerViewController: UIViewController {
     var documentPicker: UIDocumentPickerViewController!
     var appDocumentsDirectory: URL!
     
-    var leadingActions: UISwipeActionsConfiguration!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupListeners()
 
         for processor in settings.processors {
             switch processor.type {
@@ -98,16 +120,35 @@ class ManagerViewController: UIViewController {
         documentPicker.delegate = self
         
         appDocumentsDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-        
-        leadingActions = UISwipeActionsConfiguration(actions: [UIContextualAction(style: .normal, title: "Edit", handler: {_,_,_ in
-            print("Edit")
-        })])
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let editor = segue.destination as? EditorViewController else { return }
         editor.setupProcessor(using: settings.selectedProcessor!)
         editor.runProcessor()
+    }
+    
+    func setupListeners() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(ManagerViewController.adjustTextEditorHeight(notification:)),
+            name: UIResponder.keyboardDidShowNotification,
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(ManagerViewController.adjustTextEditorHeight(notification:)),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil)
+    }
+    
+    @objc func adjustTextEditorHeight(notification: Notification) {
+        if notification.name == UIResponder.keyboardDidShowNotification {
+            guard let keyboardRect = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+            tableView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardRect.cgRectValue.size.height, right: 0.0)
+        } else if notification.name == UIResponder.keyboardWillHideNotification {
+            tableView.contentInset = .zero
+        }
     }
     
     func addFile(at url: URL) throws -> URL? {
@@ -161,7 +202,7 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return userAddedProcessors.isEmpty ? 2 : 3
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 1:
@@ -186,27 +227,28 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var processor: ProcessorModel
-        var cellID: String
+        var cell: ManagerTableViewCell
         
         switch indexPath.section {
         case 1:
             processor = builtInProcessors[indexPath.row]
-            cellID = "Enabling Cell"
+            cell = tableView.dequeueReusableCell(withIdentifier: "Enabling Cell", for: indexPath) as! ManagerTableViewCell
+            cell.textField!.text = processor.name
+            cell.textField!.isEnabled = false
+            cell.enabledToggle!.isOn = processor.isEnabled
+            cell.enabledToggle!.isEnabled = settings.enabledProcessors.count == 1 ? !cell.enabledToggle!.isOn : true
         case 2:
             processor = userAddedProcessors[indexPath.row]
-            cellID = "Enabling Cell"
+            cell = tableView.dequeueReusableCell(withIdentifier: "Enabling Cell", for: indexPath) as! ManagerTableViewCell
+            cell.textField!.text = processor.name
+            cell.textField!.delegate = self
+            (cell.textField! as! ManagerTextField).containingCell = cell
+            cell.enabledToggle!.isOn = processor.isEnabled
+            cell.enabledToggle!.isEnabled = settings.enabledProcessors.count == 1 ? !cell.enabledToggle!.isOn : true
         default:
             processor = settings.enabledProcessors[indexPath.row]
-            cellID = "Reordering Cell"
-        }
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! ManagerTableViewCell
-        
-        cell.titleLabel?.text = processor.name
-        
-        if let toggle = cell.enabledToggle {
-            toggle.isOn = processor.isEnabled
-            toggle.isEnabled = settings.enabledProcessors.count == 1 ? !toggle.isOn : true
+            cell = tableView.dequeueReusableCell(withIdentifier: "Reordering Cell", for: indexPath) as! ManagerTableViewCell
+            cell.titleLabel!.text = processor.name
         }
         
         cell.processor = processor
@@ -247,14 +289,6 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
    
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .delete
-    }
-
-    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
         
@@ -292,10 +326,6 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
         
         tableView.endUpdates()
     }
-    
-    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        return leadingActions
-    }
 }
 
 extension ManagerViewController: UITableViewDragDelegate, UITableViewDropDelegate {
@@ -311,6 +341,14 @@ extension ManagerViewController: UITableViewDragDelegate, UITableViewDropDelegat
     }
 
     func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+    }
+}
+
+extension ManagerViewController: UITextFieldDelegate {
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        guard let text = textField.text else { return false }
+        guard !text.isEmpty else { return false }
+        return true
     }
 }
     

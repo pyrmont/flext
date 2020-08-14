@@ -60,6 +60,8 @@ class ProcessorModel {
     var isEnabled: Bool = true
     var type: ProcessorType = .builtIn
     
+    private var externalName: String?
+    
     lazy var function: JSValue? = {
         guard let jsContext = JSContext() else { return nil }
         
@@ -91,7 +93,16 @@ class ProcessorModel {
     
     var filename: String { get { path.lastPathComponent } }
     var basename: String { get { filename.replacingOccurrences(of: ".js", with: "") } }
-    var name: String { get { basename.replacingOccurrences(of: "-", with: " ") } }
+    
+    var name: String {
+        get {
+            externalName = externalName ?? basename.replacingOccurrences(of: "-", with: " ")
+            return externalName!
+        }
+        set {
+            externalName = newValue
+        }
+    }
 
     // MARK: - Initialiser
     
