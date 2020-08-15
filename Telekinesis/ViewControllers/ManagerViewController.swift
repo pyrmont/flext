@@ -333,7 +333,25 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
     
     // MARK: - Inserting
     
-    func insertRows(for processor: Processor) {
+    func insertProcessor(with url: URL) {
+        var processor: Processor
+        
+        do {
+            let filePath = try addFile(at: url)
+            let name = url.deletingPathExtension().lastPathComponent
+            processor = try Processor(path: filePath!, type: .userAdded, name: name)
+        } catch {
+            guard let error = error as? TelekinesisError else { return }
+            
+            let alert = UIAlertController(title: "Import Failed", message: error.localizedDescription, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default) { _ in
+                NSLog(error.logMessage)
+            })
+            self.present(alert, animated: true, completion: nil)
+            
+            return
+        }
+        
         userAddedProcessors.append(processor)
         settings.add(processor)
        
@@ -358,7 +376,6 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
-        
         guard let processor = userAddedProcessors.at(indexPath.row) else { return }
         
         do {
@@ -429,26 +446,6 @@ extension ManagerViewController: UITextFieldDelegate {
     
 extension ManagerViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
-        var filePath: URL?
-        
-        do {
-            filePath = try addFile(at: url)
-        } catch {
-            guard let error = error as? TelekinesisError else { return }
-            
-            let alert = UIAlertController(title: "Import Failed", message: error.localizedDescription, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default) { _ in
-                NSLog(error.logMessage)
-            })
-            self.present(alert, animated: true, completion: nil)
-            
-            return
-        }
-        
-        guard filePath != nil else { return }
-        let name = url.deletingPathExtension().lastPathComponent
-        guard let processor = try? Processor(path: filePath!, type: .userAdded, name: name) else { return }
-        
-        insertRows(for: processor)
+        insertProcessor(with: url)
     }
 }
