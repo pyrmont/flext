@@ -415,7 +415,7 @@
                                 <items>
                                     <barButtonItem title="Remove" id="W4f-jg-6aX">
                                         <connections>
-                                            <action selector="enableEditing:" destination="3Ul-7A-0Ti" id="vr2-AK-0q6"/>
+                                            <action selector="toggleEditing:" destination="3Ul-7A-0Ti" id="vr2-AK-0q6"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="sV6-hP-zQY"/>

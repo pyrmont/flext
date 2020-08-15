@@ -105,7 +105,7 @@ class ManagerViewController: UIViewController {
     
     // MARK: Editing Mode
     
-    @IBAction func enableEditing(_ sender: UIBarButtonItem) {
+    @IBAction func toggleEditing(_ sender: UIBarButtonItem) {
         if tableView.isEditing {
             removeButton.title = "Remove"
             tableView.setEditing(false, animated: true)
@@ -344,7 +344,7 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
 
         tableView.insertRows(at: [enabledIndexPath], with: .automatic)
         if userAddedIndexPath.row == 0 {
-            tableView.insertSections([2], with: .automatic)
+            tableView.insertSections([Section.userAdded.rawValue], with: .automatic)
             removeButton.isEnabled = true
         } else {
             tableView.insertRows(at: [userAddedIndexPath], with: .automatic)
@@ -380,8 +380,9 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
         tableView.beginUpdates()
 
         if userAddedProcessors.isEmpty {
-            tableView.deleteSections([indexPath.section], with: .automatic)
+            tableView.deleteSections([Section.userAdded.rawValue], with: .automatic)
             removeButton.isEnabled = false
+            toggleEditing(removeButton)
         } else {
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
