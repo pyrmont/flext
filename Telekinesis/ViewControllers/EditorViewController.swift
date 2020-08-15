@@ -24,6 +24,7 @@ class EditorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupMargins()
         setupListeners()
         setupDefaultProcessor()
     }
@@ -103,12 +104,20 @@ class EditorViewController: UIViewController {
     
     // MARK: - UI Adjustments
     
+    func setupMargins() {
+        let marginReduction = -(textPreview.textContainer.lineFragmentPadding)
+        textPreview.textContainerInset.left = marginReduction
+        textPreview.textContainerInset.right = marginReduction
+        textEditor.textContainerInset.left = marginReduction
+        textEditor.textContainerInset.right = marginReduction
+    }
+    
     @objc func adjustTextEditorHeight(notification: Notification) {
         if notification.name == UIResponder.keyboardDidShowNotification {
             guard let keyboardRect = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-            textEditor.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardRect.cgRectValue.size.height, right: 0.0)
+            textEditor.contentInset.bottom = keyboardRect.cgRectValue.size.height
         } else if notification.name == UIResponder.keyboardWillHideNotification {
-            textEditor.contentInset = .zero
+            textEditor.contentInset.bottom = textPreview.contentInset.bottom
         }
     }
     
