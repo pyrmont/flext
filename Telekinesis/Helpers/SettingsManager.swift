@@ -1,32 +1,32 @@
 //
-//  SettingsModel.swift
+//  SettingsManager.swift
 //  Telekinesis
 //
-//  Created by Michael Camilleri on 8/8/20.
+//  Created by Michael Camilleri on 15/8/20.
 //  Copyright © 2020 Michael Camilleri. All rights reserved.
 //
 
 import Foundation
 
-enum SettingType {
-    case manager
-    case page
-    case processor
-    case processors
-    case section
-}
-
 protocol SettingValue { }
-extension Array: SettingValue where Element == SettingModel {}
+extension Array: SettingValue where Element == Setting {}
 extension String: SettingValue {}
 
 protocol SettingItem {
     var name: String { get }
 }
 
-extension ProcessorModel: SettingItem {}
+extension Processor: SettingItem {}
 
-class SettingModel: SettingItem {
+class Setting: SettingItem {
+    enum SettingType {
+        case manager
+        case page
+        case processor
+        case processors
+        case section
+    }
+    
     var name: String
     var type: SettingType
     var value: SettingValue
@@ -38,56 +38,69 @@ class SettingModel: SettingItem {
     }
 }
 
-class SettingsModel {
+class Settings {
     enum SettingsError: Error {
         case emptySection
-        case invalidCast
         case noProcessor
         case notSection
     }
     
-    var processors: [ProcessorModel]
-    var enabledProcessors: [ProcessorModel]
+    var processors: [Processor]
+    var enabledProcessors: [Processor]
     var selectedProcessorPath: IndexPath?
     
-    var selectedProcessor: ProcessorModel? {
-        guard let row = selectedProcessorPath?.row else { return nil }
-        guard let selection = enabledProcessors.at(row) else { return nil }
-        guard selection.isEnabled else { return nil }
-        return selection
+    var selectedProcessor: Processor {
+        if let processorPath = selectedProcessorPath, let selection = enabledProcessors.at(processorPath.row), selection.isEnabled {
+            return selection
+        }
+        
+        for processor in processors {
+            if processor.isEnabled, let isSelected = PreferencesManager.processors[processor.filename]?.isSelected, isSelected {
+                selectedProcessorPath = IndexPath(row: enabledProcessors.firstIndex(of: processor)!, section: enabledSection)
+                return processor
+            }
+        }
+        
+        selectedProcessorPath = IndexPath(row: 0, section: enabledSection)
+        return processors.first!
     }
     
-    private var settings: [SettingModel]
+    private var settings: [Setting]
+    private let enabledSection = ManagerViewController.Section.enabled.rawValue
     
     // MARK: - Initialisers
     
-    init(processors: [ProcessorModel]) {
+    init(processors: [Processor]) {
         self.processors = processors
-        self.enabledProcessors = processors.filter { $0.isEnabled }
-        self.selectedProcessorPath = IndexPath(row: 0, section: 0)
+        self.enabledProcessors = processors
+            .filter({ $0.isEnabled })
+            .sorted(by: {
+                guard let first = PreferencesManager.processors[$0.filename]?.order else { return false }
+                guard let second = PreferencesManager.processors[$1.filename]?.order else { return false }
+                
+                return first < second
+            })
+        self.selectedProcessorPath = nil
         self.settings = SettingsData.settings()
     }
     
-    init(processors: [ProcessorModel], selected processor: ProcessorModel) throws {
-        self.processors = processors
-        self.enabledProcessors = processors.filter { $0.isEnabled }
+    convenience init(processors: [Processor], selected processor: Processor) throws {
+        self.init(processors: processors)
         
         guard let row = enabledProcessors.firstIndex(of: processor) else { throw SettingsError.noProcessor }
-        self.selectedProcessorPath = IndexPath(row: row, section: 0)
-        
-        self.settings = SettingsData.settings()
+        self.selectedProcessorPath = IndexPath(row: row, section: enabledSection)
     }
     
     // MARK: - Processor Inserters and Removers
     
-    func add(_ processor: ProcessorModel) {
+    func add(_ processor: Processor) {
         self.processors.append(processor)
         
         guard processor.isEnabled else { return }
         self.enabledProcessors.append(processor)
     }
     
-    func remove(_ processor: ProcessorModel) {
+    func remove(_ processor: Processor) {
         self.processors.remove(at: self.processors.firstIndex(of: processor)!)
         
         guard processor.isEnabled else { return }
@@ -98,19 +111,19 @@ class SettingsModel {
     
     func resetSelectedProcessor() {
         if enabledProcessors.first != nil {
-            selectedProcessorPath = IndexPath(row: 0, section: 0)
+            selectedProcessorPath = IndexPath(row: 0, section: enabledSection)
         } else {
-            print("There are no enabled processors")
+            NSLog("There are no enabled processors")
             selectedProcessorPath = nil
         }
     }
     
-    func updateSelectedProcessor(with processor: ProcessorModel) {
+    func updateSelectedProcessor(with processor: Processor) {
         if let row = enabledProcessors.firstIndex(of: processor) {
-            selectedProcessorPath = IndexPath(row: row, section: 0)
+            selectedProcessorPath = IndexPath(row: row, section: enabledSection)
         } else {
-            print("The selected processor is not enabled")
-            selectedProcessorPath = IndexPath(row: 0, section: 0)
+            NSLog("The selected processor is not enabled")
+            selectedProcessorPath = IndexPath(row: 0, section: enabledSection)
         }
     }
     
@@ -145,7 +158,7 @@ class SettingsModel {
         return hasExtractableSettings(for: settings) ? settings[section].name : nil
     }
     
-    func setting(at indexPath: IndexPath, using trail: [Int]) throws -> SettingModel {
+    func setting(at indexPath: IndexPath, using trail: [Int]) throws -> Setting {
         let settings = try extractSettings(for: indexPath.section, using: trail)
         return settings[indexPath.row]
     }
@@ -160,23 +173,23 @@ class SettingsModel {
     
     // MARK: - Setting Extractors
 
-    private func extractSettings(using trail: [Int]) throws -> [SettingModel] {
+    private func extractSettings(using trail: [Int]) throws -> [Setting] {
         var result = settings
         
         for section in trail {
-            guard result[section].value is [SettingModel] else { throw SettingsError.notSection }
-            result = result[section].value as! [SettingModel]
+            guard result[section].value is [Setting] else { throw SettingsError.notSection }
+            result = result[section].value as! [Setting]
         }
         
         return result
     }
 
-    private func extractSettings(for section: Int, using trail: [Int]) throws -> [SettingModel] {
+    private func extractSettings(for section: Int, using trail: [Int]) throws -> [Setting] {
         let parentSettings = try extractSettings(using: trail)
         
         // TODO: Not sure this works with deeply nested settings
         if hasExtractableSettings(for: parentSettings) {
-            guard let sectionSettings = parentSettings[section].value as? [SettingModel] else { throw SettingsError.notSection }
+            guard let sectionSettings = parentSettings[section].value as? [Setting] else { throw SettingsError.notSection }
             return sectionSettings
         } else if section == 0 {
             return parentSettings
@@ -185,12 +198,22 @@ class SettingsModel {
         }
     }
     
-    private func hasExtractableSettings(for parent: [SettingModel]) -> Bool {
-        guard let firstType = parent.first?.type else {
-            print("The parent was empty.")
-            return false
-        }
+    private func hasExtractableSettings(for parent: [Setting]) -> Bool {
+        guard let firstType = parent.first?.type else { return false }
         
         return firstType == .section
     }
+}
+
+struct SettingsManager {
+    static var settings: Settings {
+        if let settings = sharedSettings {
+            return settings
+        } else {
+            sharedSettings = Settings(processors: Processor.all)
+            return sharedSettings!
+        }
+    }
+    
+    private static var sharedSettings: Settings?
 }

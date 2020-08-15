@@ -19,7 +19,7 @@ class ProcessorOptionsViewController: UIViewController {
     @IBOutlet var optionsTable: UITableView!
     @IBOutlet var optionsTableHeight: NSLayoutConstraint!
     
-    var processor: ProcessorModel!
+    var processor: Processor!
 
     override func viewDidLoad() {
         super.viewDidLoad()

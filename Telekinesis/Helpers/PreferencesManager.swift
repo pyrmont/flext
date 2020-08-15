@@ -11,62 +11,103 @@ import Foundation
 struct ProcessorPreferences: Codable {
     var name: String
     var isEnabled: Bool
+    var isSelected: Bool
+    var order: Int?
     var options: [String: String]
     
-    init(for processor: ProcessorModel) {
+    init(for processor: Processor, isSelected: Bool = false) {
         self.name = processor.name
         self.isEnabled = processor.isEnabled
+        self.isSelected = isSelected
+        self.order = nil
         self.options = [:]
+    }
+    
+    mutating func update(option: String, value: String) {
+        options[option] = value
     }
 }
 
 struct Preferences: Codable {
-    var processors: [URL: ProcessorPreferences] = [:]
+    var processors: [String: ProcessorPreferences] = [:]
+
+    mutating func save(_ processorModel: Processor, isSelected: Bool) {
+        var processorPreferences = ProcessorPreferences(for: processorModel, isSelected: isSelected)
+        
+        for option in processorModel.options {
+            guard let value = option.value else { continue }
+            processorPreferences.update(option: option.name, value: value)
+        }
+        
+        processors[processorModel.filename] = processorPreferences
+    }
+    
+    mutating func save(_ processorModels: [Processor], ordering: [Processor], selected: Processor?) {
+        for processorModel in processorModels {
+            save(processorModel, isSelected: processorModel == selected)
+        }
+        
+        for (index, processorModel) in ordering.enumerated() {
+            processors[processorModel.filename]?.order = index
+        }
+    }
 }
 
 struct PreferencesManager {
-    enum PreferenceType {
-        case processors
-    }
+    static var processors: [String: ProcessorPreferences] = preferences.processors
     
-    static var encoder = PropertyListEncoder()
-    static var decoder = PropertyListDecoder()
+    private static var preferenceFilename = "user_prefs.plist"
+    private static var encoder = PropertyListEncoder()
+    private static var decoder = PropertyListDecoder()
     
-    static var processors: [URL: ProcessorPreferences] = {
-        return preferences.processors
-    }()
+    private static var preferences = load()
     
-    private static var preferences: Preferences = {
+    static func load() -> Preferences {
         guard let appSupportDirectory = try? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true) else {
-            print("There was an error reading the application support directory.")
+            NSLog("There was an error reading the application support directory")
             return Preferences()
         }
         
-        let preferencesFile = appSupportDirectory.appendingPathComponent("user_prefs.plist")
+        let preferencesFile = appSupportDirectory.appendingPathComponent(preferenceFilename)
         guard FileManager.default.fileExists(atPath: preferencesFile.path) else {
-            print("The preferences file does not exist.")
+            NSLog("The preferences file does not exist")
             return Preferences()
         }
         
         guard let data = try? Data.init(contentsOf: preferencesFile) else {
-            print("There was an error reading the data from the preferences file (possibly it does not exist).")
+            NSLog("There was an error reading the data from the preferences file")
             return Preferences()
         }
         
         guard let preferences = try? decoder.decode(Preferences.self, from: data) else {
-            print("There was an error decoding the data from the preferences file.")
+            NSLog("There was an error decoding the data from the preferences file")
             return Preferences()
         }
         
         return preferences
-    }()
+    }
     
-    static func save(_ processorModel: ProcessorModel) {
-        var preferences = processors[processorModel.path] ?? ProcessorPreferences(for: processorModel)
-        for option in processorModel.options {
-            preferences.options[option.name] = option.value
+    static func save(_ processorModels: [Processor], ordering: [Processor], selected: Processor?) {
+        var newPreferences = Preferences()
+        newPreferences.save(processorModels, ordering: ordering, selected: selected)
+        
+        guard let appSupportDirectory = try? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true) else {
+            NSLog("There was an error reading the application support directory")
+            return
         }
-        processors[processorModel.path] = preferences
+        
+        guard let data = try? encoder.encode(newPreferences) else {
+            NSLog("The preferences could not be converted to data")
+            return
+        }
+        
+        let preferencesFile = appSupportDirectory.appendingPathComponent(preferenceFilename)
+        do {
+            try data.write(to: preferencesFile)
+            preferences = newPreferences
+        } catch {
+            NSLog("Could not write the preferences file")
+        }
     }
 }
 

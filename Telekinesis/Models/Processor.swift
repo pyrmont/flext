@@ -45,7 +45,7 @@ extension Array where Element == ProcessorOption {
 
 // MARK: - ProcessorModel
 
-class ProcessorModel {
+class Processor {
     enum ProcessorError: Error {
         case invalidPath
     }
@@ -70,7 +70,7 @@ class ProcessorModel {
             jsContext.evaluateScript(jsSourceContents)
             return jsContext.objectForKeyedSubscript("process")
         } catch {
-            print(error.localizedDescription)
+            NSLog(error.localizedDescription)
         }
         
         return nil
@@ -82,7 +82,7 @@ class ProcessorModel {
         var result = parseOptions()
         
         for (index, option) in result.enumerated() {
-            guard let savedValue = PreferencesManager.processors[path]?.options[option.name] else { continue }
+            guard let savedValue = PreferencesManager.processors[filename]?.options[option.name] else { continue }
             result[index].value = savedValue
         }
         
@@ -96,7 +96,14 @@ class ProcessorModel {
     
     var name: String {
         get {
-            externalName = externalName ?? basename.replacingOccurrences(of: "-", with: " ")
+            guard externalName == nil else { return externalName! }
+            
+            if let savedName = PreferencesManager.processors[filename]?.name {
+                externalName = savedName
+            } else {
+                externalName = basename.replacingOccurrences(of: "-", with: " ")
+            }
+            
             return externalName!
         }
         set {
@@ -108,6 +115,7 @@ class ProcessorModel {
     
     init(path: URL) throws {
         self.path = path
+        self.isEnabled = PreferencesManager.processors[filename]?.isEnabled ?? true
         self.hasOptions = try checkForOptions()
     }
     
@@ -298,8 +306,8 @@ class ProcessorModel {
 
 // MARK: - Processor Model Factory
 
-extension ProcessorModel {
-    static var all: [ProcessorModel] {
+extension Processor {
+    static var all: [Processor] {
         guard let builtInProcessorURLs = Bundle.main.urls(forResourcesWithExtension: "js", subdirectory: "Processors") else { return [] }
 
         var userAddedProcessorURLs: [URL] = []
@@ -315,28 +323,28 @@ extension ProcessorModel {
         
         let builtInProcessors = builtInProcessorURLs
             .sorted(by: { $0.lastPathComponent < $1.lastPathComponent })
-            .map { try! ProcessorModel(path: $0)}
+            .map { try! Processor(path: $0)}
         
         let userAddedProcessors = userAddedProcessorURLs
             .sorted(by: { $0.lastPathComponent < $1.lastPathComponent })
-            .map { try! ProcessorModel(path: $0, type: .userAdded)}
+            .map { try! Processor(path: $0, type: .userAdded)}
         
         return builtInProcessors + userAddedProcessors
     }
 }
 
-extension ProcessorModel: Equatable {
-    static func == (lhs: ProcessorModel, rhs: ProcessorModel) -> Bool {
+extension Processor: Equatable {
+    static func == (lhs: Processor, rhs: Processor) -> Bool {
         lhs.path == rhs.path
     }
 }
 
-extension Array where Element == ProcessorModel {
-    func find(path: URL) -> ProcessorModel? {
+extension Array where Element == Processor {
+    func find(path: URL) -> Processor? {
         first(where: { $0.path == path })
     }
     
-    func at(_ index: Index) -> ProcessorModel? {
+    func at(_ index: Index) -> Processor? {
         guard index >= 0, index < count else { return nil }
         return self[index]
     }

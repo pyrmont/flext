@@ -29,13 +29,12 @@ class SettingsViewController: UIViewController {
     
     @IBAction func unwindToSettings(unwindSegue: UIStoryboardSegue) { }
     
-    var settings: SettingsModel!
+    var settings: Settings = SettingsManager.settings
     var trail: [Int]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        settings = settings ?? SettingsModel(processors: ProcessorModel.all)
         trail = trail ?? []
 
         tableView.delegate = self
@@ -55,9 +54,9 @@ class SettingsViewController: UIViewController {
             if let manager = segue.destination as? ManagerViewController {
                 manager.settings = settings
             } else if let options = segue.destination as? ProcessorOptionsViewController {
-                options.processor = item as? ProcessorModel
+                options.processor = item as? Processor
             } else if let page = segue.destination as? PageViewController {
-                page.textKey = (item as! SettingModel).value as! String
+                page.textKey = (item as! Setting).value as! String
             } else if let section = segue.destination as? SettingsViewController {
                 section.settings = settings
                 section.trail = trail + [indexPath.section, indexPath.row]
@@ -90,9 +89,9 @@ class SettingsViewController: UIViewController {
 
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func typeOfCell(for item: SettingItem) -> String {
-        if let processor = item as? ProcessorModel {
+        if let processor = item as? Processor {
             return processor.hasOptions ? "Processor Cell (Options)" : "Processor Cell"
-        } else if let setting = item as? SettingModel {
+        } else if let setting = item as? Setting {
             switch setting.type {
             case .manager:
                 return "Manager Cell"
@@ -126,7 +125,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellType, for: indexPath)
         cell.textLabel?.text = item.name
         
-        if let setting = item as? SettingModel {
+        if let setting = item as? Setting {
             if setting.type == .manager {
                 let processor_counter = setting.value as! String
                 cell.detailTextLabel?.text = processor_counter.replacingOccurrences(of: "#", with: String(settings.processors.count))

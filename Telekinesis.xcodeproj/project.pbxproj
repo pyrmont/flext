@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		702D0DCC24E3919600C86782 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 702D0DCB24E3919600C86782 /* Errors.swift */; };
+		70514C0124E7AD7B004303A9 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70514C0024E7AD7B004303A9 /* SettingsManager.swift */; };
 		708BF85024CFB0E30004A404 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708BF84F24CFB0E30004A404 /* AppDelegate.swift */; };
 		708BF85224CFB0E30004A404 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708BF85124CFB0E30004A404 /* SceneDelegate.swift */; };
 		708BF85424CFB0E30004A404 /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708BF85324CFB0E30004A404 /* EditorViewController.swift */; };
@@ -17,9 +18,8 @@
 		708BF86424CFDA3C0004A404 /* TextViewWithPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708BF86324CFDA3C0004A404 /* TextViewWithPlaceholder.swift */; };
 		7096B74324D1050900B2C132 /* Processors in Resources */ = {isa = PBXBuildFile; fileRef = 7096B74224D1050900B2C132 /* Processors */; };
 		7096B74924D107D100B2C132 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7096B74824D107D100B2C132 /* SettingsViewController.swift */; };
-		7096B74F24D109CA00B2C132 /* ProcessorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7096B74E24D109CA00B2C132 /* ProcessorModel.swift */; };
+		7096B74F24D109CA00B2C132 /* Processor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7096B74E24D109CA00B2C132 /* Processor.swift */; };
 		709899F624DBF642005F2C44 /* PreferencesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709899F524DBF642005F2C44 /* PreferencesManager.swift */; };
-		709899F824DE5A3D005F2C44 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709899F724DE5A3D005F2C44 /* SettingsModel.swift */; };
 		709899FA24DF8AAB005F2C44 /* ManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709899F924DF8AAB005F2C44 /* ManagerViewController.swift */; };
 		70B2311324D52AB6004760B1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 70B2311524D52AB6004760B1 /* Localizable.strings */; };
 		70B2311924D53C33004760B1 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2311824D53C33004760B1 /* PageViewController.swift */; };
@@ -32,6 +32,7 @@
 
 /* Begin PBXFileReference section */
 		702D0DCB24E3919600C86782 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		70514C0024E7AD7B004303A9 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		708BF84C24CFB0E30004A404 /* Telekinesis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Telekinesis.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		708BF84F24CFB0E30004A404 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		708BF85124CFB0E30004A404 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -43,9 +44,8 @@
 		708BF86324CFDA3C0004A404 /* TextViewWithPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewWithPlaceholder.swift; sourceTree = "<group>"; };
 		7096B74224D1050900B2C132 /* Processors */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Processors; sourceTree = "<group>"; };
 		7096B74824D107D100B2C132 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		7096B74E24D109CA00B2C132 /* ProcessorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessorModel.swift; sourceTree = "<group>"; };
+		7096B74E24D109CA00B2C132 /* Processor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Processor.swift; sourceTree = "<group>"; };
 		709899F524DBF642005F2C44 /* PreferencesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesManager.swift; sourceTree = "<group>"; };
-		709899F724DE5A3D005F2C44 /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
 		709899F924DF8AAB005F2C44 /* ManagerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerViewController.swift; sourceTree = "<group>"; };
 		70B2311424D52AB6004760B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70B2311824D53C33004760B1 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
@@ -118,8 +118,7 @@
 		7096B75124D10A5F00B2C132 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				7096B74E24D109CA00B2C132 /* ProcessorModel.swift */,
-				709899F724DE5A3D005F2C44 /* SettingsModel.swift */,
+				7096B74E24D109CA00B2C132 /* Processor.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -136,9 +135,10 @@
 			isa = PBXGroup;
 			children = (
 				70B2312424D660AF004760B1 /* DownHelper.swift */,
+				702D0DCB24E3919600C86782 /* Errors.swift */,
 				70D9C71724D8F66F002A74AD /* LineReader.swift */,
 				709899F524DBF642005F2C44 /* PreferencesManager.swift */,
-				702D0DCB24E3919600C86782 /* Errors.swift */,
+				70514C0024E7AD7B004303A9 /* SettingsManager.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -238,13 +238,13 @@
 				708BF85024CFB0E30004A404 /* AppDelegate.swift in Sources */,
 				70B2312524D660AF004760B1 /* DownHelper.swift in Sources */,
 				709899FA24DF8AAB005F2C44 /* ManagerViewController.swift in Sources */,
-				7096B74F24D109CA00B2C132 /* ProcessorModel.swift in Sources */,
+				7096B74F24D109CA00B2C132 /* Processor.swift in Sources */,
 				70B2312824D68113004760B1 /* SettingsData.swift in Sources */,
 				708BF85224CFB0E30004A404 /* SceneDelegate.swift in Sources */,
 				70D9C71A24D967EA002A74AD /* ProcessorOptionsViewController.swift in Sources */,
+				70514C0124E7AD7B004303A9 /* SettingsManager.swift in Sources */,
 				7096B74924D107D100B2C132 /* SettingsViewController.swift in Sources */,
 				708BF86424CFDA3C0004A404 /* TextViewWithPlaceholder.swift in Sources */,
-				709899F824DE5A3D005F2C44 /* SettingsModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

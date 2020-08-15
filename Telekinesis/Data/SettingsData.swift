@@ -9,33 +9,33 @@
 import Foundation
 
 struct SettingsData {
-    static func settings() -> [SettingModel] { [processors(), management(), help(), general()] }
+    static func settings() -> [Setting] { [processors(), management(), help(), general()] }
     
-    private static func help() -> SettingModel {
-        return SettingModel(name: "User Guide", type: .section, value: [
-            SettingModel(name: "Adding Processors", type: .page, value: "page-adding"),
-            SettingModel(name: "Writing Processors", type: .page, value: "page-writing")])
+    private static func help() -> Setting {
+        return Setting(name: "User Guide", type: .section, value: [
+            Setting(name: "Adding Processors", type: .page, value: "page-adding"),
+            Setting(name: "Writing Processors", type: .page, value: "page-writing")])
     }
     
-    private static func licences() -> SettingModel {
-        return SettingModel(name: "Licences", type: .section, value: [
-            SettingModel(name: "Down", type: .page, value: "page-down-licence"),
-            SettingModel(name: "cmark", type: .page, value: "page-cmark-licence")])
+    private static func licences() -> Setting {
+        return Setting(name: "Licences", type: .section, value: [
+            Setting(name: "Down", type: .page, value: "page-down-licence"),
+            Setting(name: "cmark", type: .page, value: "page-cmark-licence")])
     }
     
-    private static func management() -> SettingModel {
-        return SettingModel(name: "Management", type: .section, value: [
-            SettingModel(name: "Processors", type: .manager, value: "# Processors")])
+    private static func management() -> Setting {
+        return Setting(name: "Management", type: .section, value: [
+            Setting(name: "Processors", type: .manager, value: "# Processors")])
     }
     
-    private static func general() -> SettingModel {
-        return SettingModel(name: "General", type: .section, value: [
-            SettingModel(name: "About", type: .page, value: "page-about"),
-            SettingModel(name: "Contact", type: .page, value: "page-contact"),
+    private static func general() -> Setting {
+        return Setting(name: "General", type: .section, value: [
+            Setting(name: "About", type: .page, value: "page-about"),
+            Setting(name: "Contact", type: .page, value: "page-contact"),
             licences()])
     }
     
-    private static func processors() -> SettingModel {
-        return SettingModel(name: "Enabled Processors", type: .section, value: [])
+    private static func processors() -> Setting {
+        return Setting(name: "Enabled Processors", type: .section, value: [])
     }
 }

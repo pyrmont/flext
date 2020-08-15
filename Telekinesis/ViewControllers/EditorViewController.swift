@@ -15,9 +15,10 @@ class EditorViewController: UIViewController {
     @IBOutlet var processorButton: UIButton!
 
     @IBAction func unwindToEditor(unwindSegue: UIStoryboardSegue) { }
+
+    var settings: Settings = SettingsManager.settings
     
-    var settings: SettingsModel!
-    var processor: ProcessorModel!
+    var processor: Processor!
     var arguments: [Any]!
     
     override func viewDidLoad() {
@@ -30,9 +31,6 @@ class EditorViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let navigationController = segue.destination as? UINavigationController else { return }
         navigationController.presentationController?.delegate = self as UIAdaptivePresentationControllerDelegate
-
-        guard let settingsController = navigationController.topViewController as? SettingsViewController else { return }
-        settingsController.settings = settings
     }
     
     // MARK: - Listener Setup
@@ -56,13 +54,12 @@ class EditorViewController: UIViewController {
     // MARK: - Processor Setup
 
     func setupDefaultProcessor() {
-        let processors = ProcessorModel.all
-        let processor = processors.first!
-        settings = try! SettingsModel(processors: processors, selected: processor)
-        setupProcessor(using: processor)
+//        let processors = ProcessorModel.all
+//        settings = SettingsModel(processors: processors)
+        setupProcessor(using: settings.selectedProcessor)
     }
     
-    func setupProcessor(using processor: ProcessorModel) {
+    func setupProcessor(using processor: Processor) {
         processorButton.setTitle(processor.name, for: .normal)
         
         self.processor = processor
@@ -129,7 +126,7 @@ class EditorViewController: UIViewController {
     // MARK: - Other Functions
     
     func returnToEditor() {
-        setupProcessor(using: settings.selectedProcessor!)
+        setupProcessor(using: settings.selectedProcessor)
         runProcessor()
     }
     

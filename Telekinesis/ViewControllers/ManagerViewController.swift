@@ -19,7 +19,7 @@ class ManagerTableViewCell: UITableViewCell {
     @IBOutlet var enabledToggle: UISwitch?
     @IBOutlet var textField: UITextField?
     
-    weak var processor: ProcessorModel!
+    weak var processor: Processor!
     
     func set(text: String) {
         titleLabel?.text = text
@@ -88,9 +88,10 @@ class ManagerViewController: UIViewController {
         }
     }
     
-    var settings: SettingsModel!
-    var builtInProcessors: [ProcessorModel] = []
-    var userAddedProcessors: [ProcessorModel] = []
+    var settings: Settings = SettingsManager.settings
+    
+    var builtInProcessors: [Processor] = []
+    var userAddedProcessors: [Processor] = []
     
     var documentPicker: UIDocumentPickerViewController!
     var appDocumentsDirectory: URL!
@@ -130,8 +131,7 @@ class ManagerViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let editor = segue.destination as? EditorViewController else { return }
-        editor.setupProcessor(using: settings.selectedProcessor!)
-        editor.runProcessor()
+        editor.returnToEditor()
     }
     
     func setupListeners() {
@@ -236,7 +236,7 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var processor: ProcessorModel
+        var processor: Processor
         var cell: ManagerTableViewCell
         
         switch Section(rawValue: indexPath.section) {
@@ -384,7 +384,7 @@ extension ManagerViewController: UIDocumentPickerDelegate {
         
         guard filePath != nil else { return }
         let name = url.deletingPathExtension().lastPathComponent
-        guard let processor = try? ProcessorModel(path: filePath!, type: .userAdded, name: name) else { return }
+        guard let processor = try? Processor(path: filePath!, type: .userAdded, name: name) else { return }
         
         userAddedProcessors.append(processor)
         settings.add(processor)
