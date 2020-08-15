@@ -43,7 +43,7 @@ class ManagerViewController: UIViewController {
     // MARK: Public Properties
     
     @IBOutlet var tableView: UITableView!
-    @IBOutlet var editingButton: UIBarButtonItem!
+    @IBOutlet var removeButton: UIBarButtonItem!
 
     var settings: Settings = SettingsManager.settings
     
@@ -80,6 +80,8 @@ class ManagerViewController: UIViewController {
                 recognizer.minimumPressDuration = 0.2
             }
         }
+        
+        removeButton.isEnabled = !userAddedProcessors.isEmpty
 
         documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeJavaScript as String], in: .import)
         documentPicker.delegate = self
@@ -105,10 +107,10 @@ class ManagerViewController: UIViewController {
     
     @IBAction func enableEditing(_ sender: UIBarButtonItem) {
         if tableView.isEditing {
-            editingButton.title = "Remove"
+            removeButton.title = "Remove"
             tableView.setEditing(false, animated: true)
         } else {
-            editingButton.title = "Done"
+            removeButton.title = "Done"
             tableView.setEditing(true, animated: true)
             tableView.scrollToRow(at: IndexPath(row: 0, section: Section.userAdded.rawValue), at: .top, animated: true)
         }
@@ -342,9 +344,10 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
 
         tableView.insertRows(at: [enabledIndexPath], with: .automatic)
         if userAddedIndexPath.row == 0 {
-           tableView.insertSections([2], with: .automatic)
+            tableView.insertSections([2], with: .automatic)
+            removeButton.isEnabled = true
         } else {
-           tableView.insertRows(at: [userAddedIndexPath], with: .automatic)
+            tableView.insertRows(at: [userAddedIndexPath], with: .automatic)
         }
 
         tableView.endUpdates()
@@ -378,6 +381,7 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
 
         if userAddedProcessors.isEmpty {
             tableView.deleteSections([indexPath.section], with: .automatic)
+            removeButton.isEnabled = false
         } else {
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
