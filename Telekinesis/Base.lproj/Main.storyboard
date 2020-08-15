@@ -313,10 +313,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="nRI-HJ-D7G">
-                                <rect key="frame" x="0.0" y="56" width="375" height="619"/>
+                                <rect key="frame" x="0.0" y="56" width="375" height="624"/>
                                 <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="sW4-qB-wYi" userLabel="Table Footer">
-                                    <rect key="frame" x="0.0" y="160.66666412353516" width="375" height="69"/>
+                                    <rect key="frame" x="0.0" y="160.33333206176758" width="375" height="69"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For more information on how to add your own processors, see 'Adding Processors' in Settings." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rqM-eU-VnL" userLabel="Instructions">
@@ -335,20 +335,20 @@
                                 </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Reordering Cell" id="RZz-h6-Eb6" customClass="ManagerTableViewCell" customModule="Telekinesis" customModuleProvider="target">
-                                        <rect key="frame" x="15" y="55.333332061767578" width="345" height="43"/>
+                                        <rect key="frame" x="15" y="55.333332061767578" width="345" height="42.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="right" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RZz-h6-Eb6" id="haS-AN-WGn">
-                                            <rect key="frame" x="0.0" y="0.0" width="345" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="345" height="42.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vTL-jj-LXD">
-                                                    <rect key="frame" x="15" y="11" width="271" height="21"/>
+                                                    <rect key="frame" x="15" y="11.000000000000002" width="271" height="20.666666666666671"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="line.horizontal.3" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="bLP-gv-lI6" userLabel="Reorder Widget">
-                                                    <rect key="frame" x="301" y="14.666666666666668" width="28" height="14.333333333333325"/>
+                                                    <rect key="frame" x="301" y="14.333333333333332" width="28" height="14.333333333333339"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
@@ -371,7 +371,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Enabling Cell" id="hdk-zS-ESQ" customClass="ManagerTableViewCell" customModule="Telekinesis" customModuleProvider="target">
-                                        <rect key="frame" x="15" y="98.333332061767578" width="345" height="44.333332061767578"/>
+                                        <rect key="frame" x="15" y="98" width="345" height="44.333332061767578"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="right" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hdk-zS-ESQ" id="6Vj-C6-8TG">
                                             <rect key="frame" x="0.0" y="0.0" width="345" height="44.333332061767578"/>
@@ -382,7 +382,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                                     <connections>
-                                                        <action selector="finishedRelabelling:" destination="3Ul-7A-0Ti" eventType="editingDidEndOnExit" id="fKB-A8-4Yu"/>
+                                                        <action selector="finishedRenaming:" destination="3Ul-7A-0Ti" eventType="editingDidEndOnExit" id="fKB-A8-4Yu"/>
                                                     </connections>
                                                 </textField>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x3M-aX-yg9">
@@ -412,7 +412,7 @@
                                 </prototypes>
                             </tableView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" semanticContentAttribute="playback" translatesAutoresizingMaskIntoConstraints="NO" id="QKv-94-fCt">
-                                <rect key="frame" x="0.0" y="675" width="375" height="49"/>
+                                <rect key="frame" x="0.0" y="680" width="375" height="44"/>
                                 <items>
                                     <barButtonItem title="Remove" id="W4f-jg-6aX">
                                         <connections>
@@ -450,10 +450,10 @@
             </objects>
             <point key="canvasLocation" x="2772" y="-184.72906403940888"/>
         </scene>
-        <!--Processor Options-->
+        <!--Options-->
         <scene sceneID="ZgI-Ya-O0x">
             <objects>
-                <viewController id="H5D-nE-3cQ" userLabel="Processor Options" customClass="ProcessorOptionsViewController" customModule="Telekinesis" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="H5D-nE-3cQ" userLabel="Options" customClass="OptionsViewController" customModule="Telekinesis" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7kG-Cx-gKE">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="758"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -474,7 +474,7 @@
                                 <rect key="frame" x="16" y="66" width="343" height="658"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Option Cell" rowHeight="100" id="Oj8-5m-KyM" customClass="ProcessorOptionTableViewCell" customModule="Telekinesis" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Option Cell" rowHeight="100" id="Oj8-5m-KyM" customClass="OptionTableViewCell" customModule="Telekinesis" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="343" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Oj8-5m-KyM" id="76r-t7-eLs">
@@ -482,7 +482,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Parameter Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LkG-Rl-xUg">
-                                                    <rect key="frame" x="0.0" y="9.9999999999999982" width="343" height="20.333333333333329"/>
+                                                    <rect key="frame" x="0.0" y="10.000000000000002" width="343" height="20.666666666666671"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -494,7 +494,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Default value" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ysf-Oe-IV3">
-                                                    <rect key="frame" x="0.0" y="38.333333333333336" width="343" height="28.666666666666664"/>
+                                                    <rect key="frame" x="0.0" y="38.666666666666664" width="343" height="28.333333333333336"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                                     <connections>

@@ -10,9 +10,13 @@ import UIKit
 import JavaScriptCore
 import MobileCoreServices
 
+// MARK: - Manager Text Field Definition
+
 class ManagerTextField: UITextField {
     weak var containingCell: ManagerTableViewCell!
 }
+
+// MARK: - Manager Table View Cell Definition
 
 class ManagerTableViewCell: UITableViewCell {
     @IBOutlet var titleLabel: UILabel?
@@ -27,6 +31,8 @@ class ManagerTableViewCell: UITableViewCell {
     }
 }
 
+// MARK: - Manager View Controller Definition
+
 class ManagerViewController: UIViewController {
     enum Section: Int {
         case enabled
@@ -34,8 +40,81 @@ class ManagerViewController: UIViewController {
         case userAdded
     }
     
+    // MARK: Public Properties
+    
     @IBOutlet var tableView: UITableView!
     @IBOutlet var editingButton: UIBarButtonItem!
+
+    var settings: Settings = SettingsManager.settings
+    
+    var builtInProcessors: [Processor] = []
+    var userAddedProcessors: [Processor] = []
+    
+    var documentPicker: UIDocumentPickerViewController!
+    
+    // MARK: - Controller Loading
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupListeners()
+        
+        for processor in settings.processors {
+            switch processor.type {
+            case .builtIn:
+                builtInProcessors.append(processor)
+            case .userAdded:
+                userAddedProcessors.append(processor)
+            }
+        }
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        tableView.dragInteractionEnabled = true
+        tableView.dragDelegate = self
+        tableView.dropDelegate = self
+        
+        if let recognizers = tableView.gestureRecognizers {
+            for case let recognizer as UILongPressGestureRecognizer in recognizers {
+                recognizer.minimumPressDuration = 0.2
+            }
+        }
+
+        documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeJavaScript as String], in: .import)
+        documentPicker.delegate = self
+    }
+    
+    // MARK: - Listener Setup
+    
+    func setupListeners() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(ManagerViewController.adjustTextEditorHeight(notification:)),
+            name: UIResponder.keyboardDidShowNotification,
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(ManagerViewController.adjustTextEditorHeight(notification:)),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil)
+    }
+    
+    // MARK: Editing Mode
+    
+    @IBAction func enableEditing(_ sender: UIBarButtonItem) {
+        if tableView.isEditing {
+            editingButton.title = "Remove"
+            tableView.setEditing(false, animated: true)
+        } else {
+            editingButton.title = "Done"
+            tableView.setEditing(true, animated: true)
+            tableView.scrollToRow(at: IndexPath(row: 0, section: Section.userAdded.rawValue), at: .top, animated: true)
+        }
+    }
+    
+    // MARK: - Enabling Processors
     
     @IBAction func enableProcessor(_ sender: UISwitch) {
         guard let cell = sender.superview?.superview as? ManagerTableViewCell else { return }
@@ -61,7 +140,9 @@ class ManagerViewController: UIViewController {
         }
     }
     
-    @IBAction func finishedRelabelling(_ sender: ManagerTextField) {
+    // MARK: Renaming Processors
+    
+    @IBAction func finishedRenaming(_ sender: ManagerTextField) {
         guard let text = sender.text else { return }
         guard !text.isEmpty else { return }
 
@@ -73,90 +154,12 @@ class ManagerViewController: UIViewController {
         enabledCell.set(text: text)
     }
     
+    // MARK: Adding Files
+    
     @IBAction func openDocumentPicker(_ sender: UIBarButtonItem) {
         present(documentPicker, animated: true, completion: nil)
     }
-    
-    @IBAction func enableEditing(_ sender: UIBarButtonItem) {
-        if tableView.isEditing {
-            editingButton.title = "Remove"
-            tableView.setEditing(false, animated: true)
-        } else {
-            editingButton.title = "Done"
-            tableView.setEditing(true, animated: true)
-            tableView.scrollToRow(at: IndexPath(row: 0, section: Section.userAdded.rawValue), at: .top, animated: true)
-        }
-    }
-    
-    var settings: Settings = SettingsManager.settings
-    
-    var builtInProcessors: [Processor] = []
-    var userAddedProcessors: [Processor] = []
-    
-    var documentPicker: UIDocumentPickerViewController!
-    var appDocumentsDirectory: URL!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        setupListeners()
 
-        for processor in settings.processors {
-            switch processor.type {
-            case .builtIn:
-                builtInProcessors.append(processor)
-            case .userAdded:
-                userAddedProcessors.append(processor)
-            }
-        }
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        tableView.dragInteractionEnabled = true
-        tableView.dragDelegate = self
-        tableView.dropDelegate = self
-        
-        if let recognizers = tableView.gestureRecognizers {
-            for case let recognizer as UILongPressGestureRecognizer in recognizers {
-                recognizer.minimumPressDuration = 0.2
-            }
-        }
-
-        documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeJavaScript as String], in: .import)
-        documentPicker.delegate = self
-        
-        appDocumentsDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let editor = segue.destination as? EditorViewController else { return }
-        editor.returnToEditor()
-    }
-    
-    func setupListeners() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(ManagerViewController.adjustTextEditorHeight(notification:)),
-            name: UIResponder.keyboardDidShowNotification,
-            object: nil)
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(ManagerViewController.adjustTextEditorHeight(notification:)),
-            name: UIResponder.keyboardWillHideNotification,
-            object: nil)
-    }
-    
-    @objc func adjustTextEditorHeight(notification: Notification) {
-        if notification.name == UIResponder.keyboardDidShowNotification {
-            guard let keyboardRect = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-            tableView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardRect.cgRectValue.size.height, right: 0.0)
-        } else if notification.name == UIResponder.keyboardWillHideNotification {
-            tableView.contentInset = .zero
-        }
-    }
-    
     func addFile(at url: URL) throws -> URL? {
         var importURL: URL? = nil
         var importError: TelekinesisError? = nil
@@ -169,6 +172,7 @@ class ManagerViewController: UIViewController {
                 jsContext.evaluateScript(jsSource)
                 guard let jsValue = jsContext.objectForKeyedSubscript("process") else { throw TelekinesisError(type: .failedToEvaluateJavaScript) }
                 guard !jsValue.isUndefined else { throw TelekinesisError(type: .failedToFindProcessFunction) }
+                guard let appDocumentsDirectory = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true) else { throw TelekinesisError(type: .failedToLoadPath) }
 
                 importURL = URL(fileURLWithPath: UUID().uuidString + "." + url.pathExtension, isDirectory: false, relativeTo: appDocumentsDirectory)
                 try FileManager.default.copyItem(at: url, to: importURL!)
@@ -186,6 +190,8 @@ class ManagerViewController: UIViewController {
         return importURL
     }
     
+    // MARK: - Removing Files
+    
     func removeFile(at url: URL) throws {
         var deleteError: TelekinesisError? = nil
 
@@ -202,24 +208,27 @@ class ManagerViewController: UIViewController {
         
         guard deleteError == nil else { throw deleteError! }
     }
+
+    // MARK: - UI Adjustments
+    
+    @objc func adjustTextEditorHeight(notification: Notification) {
+        if notification.name == UIResponder.keyboardDidShowNotification {
+            guard let keyboardRect = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+            tableView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardRect.cgRectValue.size.height, right: 0.0)
+        } else if notification.name == UIResponder.keyboardWillHideNotification {
+            tableView.contentInset = .zero
+        }
+    }
 }
 
+// MARK: - Data Source and Delegate
+
 extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
+
+    // MARK: - Sections
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return userAddedProcessors.isEmpty ? 2 : 3
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch Section(rawValue: section) {
-        case .enabled:
-            return settings.enabledProcessors.count
-        case .builtIn:
-            return builtInProcessors.count
-        case .userAdded:
-            return userAddedProcessors.count
-        default:
-            return 0
-        }
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -232,6 +241,21 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
             return "User-Added Processors"
         default:
             return nil
+        }
+    }
+
+    // MARK: - Rows
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch Section(rawValue: section) {
+        case .enabled:
+            return settings.enabledProcessors.count
+        case .builtIn:
+            return builtInProcessors.count
+        case .userAdded:
+            return userAddedProcessors.count
+        default:
+            return 0
         }
     }
     
@@ -268,9 +292,13 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
+    // MARK: - Editing
+    
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return indexPath.section == Section.userAdded.rawValue ? true : false
     }
+    
+    // MARK: - Moving
     
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return indexPath.section == Section.enabled.rawValue ? true : false
@@ -300,6 +328,30 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
             settings.selectedProcessorPath?.row += 1
         }
     }
+    
+    // MARK: - Inserting
+    
+    func insertRows(for processor: Processor) {
+        userAddedProcessors.append(processor)
+        settings.add(processor)
+       
+        let enabledIndexPath = IndexPath(row: settings.enabledProcessors.count - 1, section: Section.enabled.rawValue)
+        let userAddedIndexPath = IndexPath(row: userAddedProcessors.count - 1, section: Section.userAdded.rawValue)
+
+        tableView.beginUpdates()
+
+        tableView.insertRows(at: [enabledIndexPath], with: .automatic)
+        if userAddedIndexPath.row == 0 {
+           tableView.insertSections([2], with: .automatic)
+        } else {
+           tableView.insertRows(at: [userAddedIndexPath], with: .automatic)
+        }
+
+        tableView.endUpdates()
+        tableView.scrollToRow(at: userAddedIndexPath, at: .top, animated: true)
+    }
+    
+    // MARK: - Deleting
    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
@@ -340,6 +392,8 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
+// MARK: - Dragging and Dropping
+
 extension ManagerViewController: UITableViewDragDelegate, UITableViewDropDelegate {
     func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         guard indexPath.section == Section.enabled.rawValue else { return [] }
@@ -356,6 +410,8 @@ extension ManagerViewController: UITableViewDragDelegate, UITableViewDropDelegat
     }
 }
 
+// MARK: - Text Field
+
 extension ManagerViewController: UITextFieldDelegate {
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         guard let text = textField.text else { return false }
@@ -363,6 +419,8 @@ extension ManagerViewController: UITextFieldDelegate {
         return true
     }
 }
+
+// MARK: - Document Picker
     
 extension ManagerViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
@@ -386,22 +444,6 @@ extension ManagerViewController: UIDocumentPickerDelegate {
         let name = url.deletingPathExtension().lastPathComponent
         guard let processor = try? Processor(path: filePath!, type: .userAdded, name: name) else { return }
         
-        userAddedProcessors.append(processor)
-        settings.add(processor)
-        
-        let enabledIndexPath = IndexPath(row: settings.enabledProcessors.count - 1, section: Section.enabled.rawValue)
-        let userAddedIndexPath = IndexPath(row: userAddedProcessors.count - 1, section: Section.userAdded.rawValue)
-        
-        tableView.beginUpdates()
-        
-        tableView.insertRows(at: [enabledIndexPath], with: .automatic)
-        if userAddedIndexPath.row == 0 {
-            tableView.insertSections([2], with: .automatic)
-        } else {
-            tableView.insertRows(at: [userAddedIndexPath], with: .automatic)
-        }
-        
-        tableView.endUpdates()
-        tableView.scrollToRow(at: userAddedIndexPath, at: .top, animated: true)
+        insertRows(for: processor)
     }
 }

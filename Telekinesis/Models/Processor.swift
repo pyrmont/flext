@@ -1,5 +1,5 @@
 //
-//  ProcessorModel.swift
+//  Processor.swift
 //  Telekinesis
 //
 //  Created by Michael Camilleri on 29/7/20.
@@ -9,9 +9,9 @@
 import Foundation
 import JavaScriptCore
 
-// MARK: - ProcessorOption
+// MARK: - ProcessorOption Definition
 
-class ProcessorOption: Codable {
+class ProcessorOption {
     var name: String
     var value: String?
     var defaultValue: String?
@@ -43,24 +43,26 @@ extension Array where Element == ProcessorOption {
     }
 }
 
-// MARK: - ProcessorModel
+// MARK: - Processor Definition
 
 class Processor {
-    enum ProcessorError: Error {
-        case invalidPath
+    enum ProcessorType: Int {
+        case builtIn
+        case userAdded
     }
     
-    enum ProcessorType: Int {
-        case builtIn = 0
-        case userAdded = 1
-    }
+    // MARK: - Public Properties
     
     var path: URL
     var hasOptions: Bool = false
     var isEnabled: Bool = true
     var type: ProcessorType = .builtIn
     
+    // MARK: - Private Properties
+    
     private var externalName: String?
+    
+    // MARK: - Lazy Properties
     
     lazy var function: JSValue? = {
         guard let jsContext = JSContext() else { return nil }
@@ -129,10 +131,10 @@ class Processor {
         self.externalName = name
     }
     
-    // MARK: - Options
+    // MARK: - Option Parsing
 
     private func checkForOptions() throws -> Bool {
-        guard let reader = LineReader(at: path) else { throw ProcessorError.invalidPath }
+        guard let reader = LineReader(at: path) else { throw TelekinesisError(type: .failedToLoadPath, location: (#file, #line)) }
         
         while let line = reader.nextLine {
             if !line.starts(with: "var process = function") { continue }
@@ -304,7 +306,7 @@ class Processor {
     }
 }
 
-// MARK: - Processor Model Factory
+// MARK: - Processor Factory
 
 extension Processor {
     static var all: [Processor] {
@@ -332,6 +334,8 @@ extension Processor {
         return builtInProcessors + userAddedProcessors
     }
 }
+
+// MARK: - Extensions
 
 extension Processor: Equatable {
     static func == (lhs: Processor, rhs: Processor) -> Bool {

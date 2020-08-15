@@ -14,22 +14,26 @@ extension String: SettingValue {}
 
 protocol SettingItem {
     var name: String { get }
+    var settingType: Setting.SettingType { get }
 }
 
-extension Processor: SettingItem {}
+extension Processor: SettingItem {
+    var settingType: Setting.SettingType { .processor }
+}
 
 class Setting: SettingItem {
     enum SettingType {
         case manager
         case page
         case processor
-        case processors
         case section
     }
     
     var name: String
     var type: SettingType
     var value: SettingValue
+    
+    var settingType: SettingType { type }
     
     init(name: String, type: SettingType, value: SettingValue) {
         self.name = name

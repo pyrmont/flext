@@ -14,12 +14,12 @@ class EditorViewController: UIViewController {
     @IBOutlet var textEditor: UITextView!
     @IBOutlet var processorButton: UIButton!
 
-    @IBAction func unwindToEditor(unwindSegue: UIStoryboardSegue) { }
-
     var settings: Settings = SettingsManager.settings
     
     var processor: Processor!
     var arguments: [Any]!
+    
+    // MARK: - Controller Loading
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +27,11 @@ class EditorViewController: UIViewController {
         setupListeners()
         setupDefaultProcessor()
     }
+
+    // MARK: - Segues
     
+    @IBAction func unwindToEditor(unwindSegue: UIStoryboardSegue) { }
+   
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let navigationController = segue.destination as? UINavigationController else { return }
         navigationController.presentationController?.delegate = self as UIAdaptivePresentationControllerDelegate
@@ -54,8 +58,6 @@ class EditorViewController: UIViewController {
     // MARK: - Processor Setup
 
     func setupDefaultProcessor() {
-//        let processors = ProcessorModel.all
-//        settings = SettingsModel(processors: processors)
         setupProcessor(using: settings.selectedProcessor)
     }
     
