@@ -122,17 +122,12 @@ class EditorViewController: UIViewController {
             textEditor.contentInset.bottom = halfKeyboardHeight
             appContainerBottomConstraint.constant = -(halfKeyboardHeight)
             
-            self.view.setNeedsLayout()
-            UIView.animate(withDuration: 0.5) {
-                self.view.layoutIfNeeded()
-            }
+            UIView.animate(withDuration: 0.5) { self.view.layoutIfNeeded() }
         } else if notification.name == UIResponder.keyboardWillHideNotification {
             textEditor.contentInset.bottom = textPreview.contentInset.bottom
             appContainerBottomConstraint.constant = .zero
-            self.view.setNeedsLayout()
-            UIView.animate(withDuration: 0.5) {
-                self.view.layoutIfNeeded()
-            }
+            
+            UIView.animate(withDuration: 0.5) { self.view.layoutIfNeeded() }
         }
     }
     
