@@ -112,7 +112,7 @@
                                             <constraint firstItem="MQP-Mf-Apb" firstAttribute="leading" secondItem="yiQ-wt-UCX" secondAttribute="leading" constant="20" id="l5d-b5-Azh"/>
                                         </constraints>
                                     </view>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" text="Enter your text." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="umn-vp-8yr" customClass="TextViewWithPlaceholder" customModule="Telekinesis" customModuleProvider="target">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" keyboardDismissMode="interactive" text="Enter your text." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="umn-vp-8yr" customClass="TextViewWithPlaceholder" customModule="Telekinesis" customModuleProvider="target">
                                         <rect key="frame" x="20" y="441" width="374" height="421"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -138,6 +138,8 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="appContainer" destination="JWA-UX-Ynu" id="doj-V1-R6M"/>
+                        <outlet property="appContainerBottomConstraint" destination="dJY-Ih-wPR" id="Pcl-vz-rFC"/>
                         <outlet property="processorButton" destination="TRg-Yt-nJF" id="syl-1A-bVE"/>
                         <outlet property="textEditor" destination="umn-vp-8yr" id="Qns-Pf-e7d"/>
                         <outlet property="textPreview" destination="9AQ-IT-9vY" id="nXi-wU-oii"/>

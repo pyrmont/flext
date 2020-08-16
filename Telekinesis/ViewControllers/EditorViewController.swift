@@ -10,6 +10,8 @@ import UIKit
 import JavaScriptCore
 
 class EditorViewController: UIViewController {
+    @IBOutlet var appContainer: UIStackView!
+    @IBOutlet var appContainerBottomConstraint: NSLayoutConstraint!
     @IBOutlet var textPreview: UITextView!
     @IBOutlet var textEditor: UITextView!
     @IBOutlet var processorButton: UIButton!
@@ -44,7 +46,7 @@ class EditorViewController: UIViewController {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(EditorViewController.adjustTextEditorHeight(notification:)),
-            name: UIResponder.keyboardDidShowNotification,
+            name: UIResponder.keyboardWillShowNotification,
             object: nil)
         
         NotificationCenter.default.addObserver(
@@ -113,11 +115,24 @@ class EditorViewController: UIViewController {
     }
     
     @objc func adjustTextEditorHeight(notification: Notification) {
-        if notification.name == UIResponder.keyboardDidShowNotification {
+        if notification.name == UIResponder.keyboardWillShowNotification {
             guard let keyboardRect = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-             textEditor.contentInset.bottom = keyboardRect.cgRectValue.size.height
+            let halfKeyboardHeight = keyboardRect.cgRectValue.size.height / 2
+            
+            textEditor.contentInset.bottom = halfKeyboardHeight
+            appContainerBottomConstraint.constant = -(halfKeyboardHeight)
+            
+            self.view.setNeedsLayout()
+            UIView.animate(withDuration: 0.5) {
+                self.view.layoutIfNeeded()
+            }
         } else if notification.name == UIResponder.keyboardWillHideNotification {
-             textEditor.contentInset.bottom = textPreview.contentInset.bottom
+            textEditor.contentInset.bottom = textPreview.contentInset.bottom
+            appContainerBottomConstraint.constant = .zero
+            self.view.setNeedsLayout()
+            UIView.animate(withDuration: 0.5) {
+                self.view.layoutIfNeeded()
+            }
         }
     }
     
