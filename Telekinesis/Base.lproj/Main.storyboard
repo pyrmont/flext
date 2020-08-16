@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -34,9 +35,9 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="tailTruncation" pointerInteraction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TRg-Yt-nJF">
-                                                                <rect key="frame" x="90.5" y="48" width="283.5" height="20.5"/>
+                                                                <rect key="frame" x="90.5" y="48" width="283.5" height="21"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="5" maxY="0.0"/>
                                                                 <state key="normal" title="Processor" image="gear" catalog="system">
                                                                     <color key="titleColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -60,23 +61,31 @@
                                                         <rect key="frame" x="0.0" y="83" width="374" height="338"/>
                                                         <subviews>
                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9AQ-IT-9vY">
-                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="290"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="276"/>
                                                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                             </textView>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="aNO-kr-1CK" userLabel="Control Bar">
-                                                                <rect key="frame" x="0.0" y="290" width="374" height="48"/>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="aNO-kr-1CK" userLabel="Control Bar">
+                                                                <rect key="frame" x="0.0" y="276" width="374" height="62"/>
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q3v-ZA-8NM">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="167" height="48"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="80" height="62"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="sAf-8Y-yZO"/>
+                                                                        </constraints>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                                         <state key="normal" title="Reset"/>
                                                                         <connections>
                                                                             <action selector="resetText:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2O2-nl-L69"/>
                                                                         </connections>
                                                                     </button>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eta-Tk-QN7">
-                                                                        <rect key="frame" x="207" y="0.0" width="167" height="48"/>
+                                                                        <rect key="frame" x="294" y="0.0" width="80" height="62"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="cQP-Eo-BYg"/>
+                                                                        </constraints>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                                         <state key="normal" title="Copy"/>
                                                                         <connections>
                                                                             <action selector="copyText:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Zf0-YB-REL"/>
@@ -85,16 +94,16 @@
                                                                 </subviews>
                                                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="height" constant="48" id="fCK-MW-mfp"/>
+                                                                    <constraint firstAttribute="height" constant="62" id="fCK-MW-mfp"/>
                                                                 </constraints>
                                                             </stackView>
                                                         </subviews>
                                                         <color key="backgroundColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
+                                                            <constraint firstAttribute="trailing" secondItem="aNO-kr-1CK" secondAttribute="trailing" id="6it-Cu-EdK"/>
                                                             <constraint firstItem="9AQ-IT-9vY" firstAttribute="leading" secondItem="Kak-Iy-6Th" secondAttribute="leading" id="6zy-QC-KCE"/>
-                                                            <constraint firstItem="aNO-kr-1CK" firstAttribute="leading" secondItem="Kak-Iy-6Th" secondAttribute="leading" id="8tQ-MA-BZC"/>
-                                                            <constraint firstAttribute="trailing" secondItem="aNO-kr-1CK" secondAttribute="trailing" id="TZt-Hf-iH0"/>
                                                             <constraint firstAttribute="trailing" secondItem="9AQ-IT-9vY" secondAttribute="trailing" id="rPo-RT-ziP"/>
+                                                            <constraint firstItem="aNO-kr-1CK" firstAttribute="leading" secondItem="Kak-Iy-6Th" secondAttribute="leading" id="xv7-EE-XzK"/>
                                                         </constraints>
                                                     </stackView>
                                                 </subviews>
@@ -119,7 +128,7 @@
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="umn-vp-8yr" secondAttribute="trailing" constant="20" id="Vya-Ff-V53"/>
                                     <constraint firstItem="yiQ-wt-UCX" firstAttribute="leading" secondItem="JWA-UX-Ynu" secondAttribute="leading" id="Y9k-Ga-8fr"/>
@@ -552,10 +561,10 @@
             </objects>
             <point key="canvasLocation" x="1800.8" y="869.70443349753702"/>
         </scene>
-        <!--Settings Page-->
+        <!--Page-->
         <scene sceneID="DPy-EQ-TIc">
             <objects>
-                <viewController id="4cC-Ko-Dhb" userLabel="Settings Page" customClass="PageViewController" customModule="Telekinesis" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="4cC-Ko-Dhb" userLabel="Page" customClass="PageViewController" customModule="Telekinesis" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Fym-4Y-kyB">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
