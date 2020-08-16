@@ -115,9 +115,9 @@ class EditorViewController: UIViewController {
     @objc func adjustTextEditorHeight(notification: Notification) {
         if notification.name == UIResponder.keyboardDidShowNotification {
             guard let keyboardRect = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-            textEditor.contentInset.bottom = keyboardRect.cgRectValue.size.height
+             textEditor.contentInset.bottom = keyboardRect.cgRectValue.size.height
         } else if notification.name == UIResponder.keyboardWillHideNotification {
-            textEditor.contentInset.bottom = textPreview.contentInset.bottom
+             textEditor.contentInset.bottom = textPreview.contentInset.bottom
         }
     }
     

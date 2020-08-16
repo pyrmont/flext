@@ -23,7 +23,7 @@ class OptionsViewController: UIViewController {
     // MARK: - Public Properties
     
     @IBOutlet var processorTitle: UINavigationItem!
-    @IBOutlet var optionsTable: UITableView!
+    @IBOutlet var tableView: UITableView!
     
     var processor: Processor!
 
@@ -36,8 +36,8 @@ class OptionsViewController: UIViewController {
         
         setupListener()
         
-        optionsTable.delegate = self
-        optionsTable.dataSource = self
+        tableView.delegate = self
+        tableView.dataSource = self
     }
     
     // MARK: - Listener Setup
@@ -48,6 +48,29 @@ class OptionsViewController: UIViewController {
             selector: #selector(OptionsViewController.updateOption(notification:)),
             name: UITextField.textDidChangeNotification,
             object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(ManagerViewController.adjustTableViewHeight(notification:)),
+            name: UIResponder.keyboardDidShowNotification,
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(ManagerViewController.adjustTableViewHeight(notification:)),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil)
+    }
+    
+    // MARK: - UI Adjustments
+    
+    @objc func adjustTableViewHeight(notification: Notification) {
+        if notification.name == UIResponder.keyboardDidShowNotification {
+            guard let keyboardRect = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+            tableView.contentInset.bottom = keyboardRect.cgRectValue.size.height
+        } else if notification.name == UIResponder.keyboardWillHideNotification {
+            tableView.contentInset.bottom = .zero
+        }
     }
     
     // MARK: - Updating
@@ -55,7 +78,7 @@ class OptionsViewController: UIViewController {
     @objc func updateOption(notification: Notification) {
         guard let textField = notification.object as? UITextField else { return }
         guard let cell = textField.superview?.superview as? UITableViewCell else { return }
-        guard let indexPath = optionsTable.indexPath(for: cell) else { return }
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
         
         if let text = textField.text, !text.isEmpty {
             processor.options[indexPath.row].value = text

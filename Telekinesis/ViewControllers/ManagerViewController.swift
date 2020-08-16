@@ -92,13 +92,13 @@ class ManagerViewController: UIViewController {
     func setupListeners() {
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(ManagerViewController.adjustTextEditorHeight(notification:)),
+            selector: #selector(ManagerViewController.adjustTableViewHeight(notification:)),
             name: UIResponder.keyboardDidShowNotification,
             object: nil)
         
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(ManagerViewController.adjustTextEditorHeight(notification:)),
+            selector: #selector(ManagerViewController.adjustTableViewHeight(notification:)),
             name: UIResponder.keyboardWillHideNotification,
             object: nil)
     }
@@ -213,12 +213,12 @@ class ManagerViewController: UIViewController {
 
     // MARK: - UI Adjustments
     
-    @objc func adjustTextEditorHeight(notification: Notification) {
+    @objc func adjustTableViewHeight(notification: Notification) {
         if notification.name == UIResponder.keyboardDidShowNotification {
             guard let keyboardRect = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-            tableView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardRect.cgRectValue.size.height, right: 0.0)
+            tableView.contentInset.bottom = keyboardRect.cgRectValue.size.height
         } else if notification.name == UIResponder.keyboardWillHideNotification {
-            tableView.contentInset = .zero
+            tableView.contentInset.bottom = .zero
         }
     }
 }
