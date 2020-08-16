@@ -10,7 +10,6 @@ import UIKit
 import JavaScriptCore
 
 class EditorViewController: UIViewController {
-    @IBOutlet var appContainer: UIStackView!
     @IBOutlet var appContainerBottomConstraint: NSLayoutConstraint!
     @IBOutlet var textPreview: UITextView!
     @IBOutlet var textEditor: UITextView!
@@ -117,10 +116,10 @@ class EditorViewController: UIViewController {
     @objc func adjustTextEditorHeight(notification: Notification) {
         if notification.name == UIResponder.keyboardWillShowNotification {
             guard let keyboardRect = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-            let halfKeyboardHeight = keyboardRect.cgRectValue.size.height / 2
+            let thirdKeyboardHeight = keyboardRect.cgRectValue.size.height / 3
             
-            textEditor.contentInset.bottom = halfKeyboardHeight
-            appContainerBottomConstraint.constant = -(halfKeyboardHeight)
+            textEditor.contentInset.bottom = thirdKeyboardHeight
+            appContainerBottomConstraint.constant = -(thirdKeyboardHeight * 2)
             
             UIView.animate(withDuration: 0.5) { self.view.layoutIfNeeded() }
         } else if notification.name == UIResponder.keyboardWillHideNotification {

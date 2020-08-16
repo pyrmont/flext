@@ -9,10 +9,10 @@
 import UIKit
 
 class TextViewWithPlaceholder: UITextView {
-    var activeTextColor: UIColor = .black
+    var activeTextColor: UIColor = .label
     
     var placeholderText: String = "Enter your text."
-    var placeholderColor: UIColor? = .lightGray
+    var placeholderColor: UIColor? = .placeholderText
 
     var placeholderIsEnabled: Bool = true
 
