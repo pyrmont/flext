@@ -165,6 +165,9 @@ class EditorViewController: UIViewController {
     // MARK: - Other Functions
     
     func returnToEditor() {
+        DispatchQueue.global(qos: .background).async {
+            PreferencesManager.save(self.settings.processors, ordering: self.settings.enabledProcessors, selected: self.settings.selectedProcessor)
+        }
         setupProcessor(using: settings.selectedProcessor)
         runProcessor()
     }
