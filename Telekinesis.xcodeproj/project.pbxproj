@@ -33,7 +33,7 @@
 /* Begin PBXFileReference section */
 		702D0DCB24E3919600C86782 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		70514C0024E7AD7B004303A9 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
-		708BF84C24CFB0E30004A404 /* Telekinesis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Telekinesis.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		708BF84C24CFB0E30004A404 /* Flext.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flext.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		708BF84F24CFB0E30004A404 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		708BF85124CFB0E30004A404 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		708BF85324CFB0E30004A404 /* EditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorViewController.swift; sourceTree = "<group>"; };
@@ -78,7 +78,7 @@
 		708BF84D24CFB0E30004A404 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				708BF84C24CFB0E30004A404 /* Telekinesis.app */,
+				708BF84C24CFB0E30004A404 /* Flext.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -171,7 +171,7 @@
 				70B2311E24D65A60004760B1 /* Down */,
 			);
 			productName = Telekinesis;
-			productReference = 708BF84C24CFB0E30004A404 /* Telekinesis.app */;
+			productReference = 708BF84C24CFB0E30004A404 /* Flext.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -404,7 +404,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.inqk.Telekinesis;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Flext;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -422,7 +422,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.inqk.Telekinesis;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Flext;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
