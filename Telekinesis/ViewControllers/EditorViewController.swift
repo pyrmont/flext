@@ -130,7 +130,7 @@ class EditorViewController: UIViewController {
         }
     }
     
-    // MARK: - Copying and Undoing
+    // MARK: - Copying, Pasting and Resetting
   
     @IBAction func copyText(_ sender: UIButton) {
         guard editorHasText() else { return }
@@ -141,6 +141,23 @@ class EditorViewController: UIViewController {
         guard editorHasText() else { return }
         textEditor.text = ""
         textViewDidChange(textEditor)
+    }
+    
+    @IBAction func interactWithText(_ sender: UISegmentedControl) {
+        guard editorHasText() else { return }
+        switch sender.selectedSegmentIndex {
+        case 0:
+            textEditor.text = ""
+            textViewDidChange(textEditor)
+        case 1:
+            UIPasteboard.general.string = textPreview.text
+        case 2:
+            guard let paste = UIPasteboard.general.string else { return }
+            textEditor.text = paste
+            textViewDidChange(textEditor)
+        default:
+            break
+        }
     }
     
     // MARK: - Other Functions
