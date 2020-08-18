@@ -19,6 +19,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
+        
+        guard let editor = window?.rootViewController as? EditorViewController else { return }
+        guard let userActivity = connectionOptions.userActivities.first ?? session.stateRestorationActivity else { return }
+        editor.restoreActivity(using: userActivity)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -31,11 +35,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidBecomeActive(_ scene: UIScene) {
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+        if let userActivity = window?.windowScene?.userActivity {
+            userActivity.becomeCurrent()
+        }
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
         // Called when the scene will move from an active state to an inactive state.
         // This may occur due to temporary interruptions (ex. an incoming phone call).
+        if let userActivity = window?.windowScene?.userActivity {
+            userActivity.resignCurrent()
+        }
     }
 
     func sceneWillEnterForeground(_ scene: UIScene) {
@@ -48,6 +58,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
         PreferencesManager.save(settings.processors, ordering: settings.enabledProcessors, selected: settings.selectedProcessor)
+    }
+    
+    func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
+        guard let editor = window?.rootViewController as? EditorViewController, editor.hasActivity() else { return scene.userActivity }
+        
+        editor.persistActivity()
+        editor.userActivity?.becomeCurrent()
+        return editor.userActivity
     }
 
 

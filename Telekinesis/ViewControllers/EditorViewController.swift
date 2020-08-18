@@ -10,12 +10,33 @@ import UIKit
 import JavaScriptCore
 
 class EditorViewController: UIViewController {
+    enum Button: Int {
+        case reset, copy, paste
+    }
+    
+    struct EnteredText {
+        var hasBeenRestored = false
+
+        var editor: TextViewWithPlaceholder?
+        var previousValue: String?
+
+        var value: String? {
+            guard let editor = editor else { return nil }
+            
+            return editor.placeholderIsEnabled ? nil : editor.text
+        }
+
+        var hasValue: Bool { value != nil }
+        var hasPreviousValue: Bool { previousValue != nil }
+    }
+    
     @IBOutlet var appContainerBottomConstraint: NSLayoutConstraint!
     @IBOutlet var textPreview: UITextView!
     @IBOutlet var textEditor: UITextView!
     @IBOutlet var processorButton: UIButton!
 
     var settings: Settings = SettingsManager.settings
+    var enteredText = EnteredText()
     
     var processor: Processor!
     var arguments: [Any]!
@@ -24,10 +45,12 @@ class EditorViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        setupUserActivity()
         setupMargins()
         setupListeners()
         setupDefaultProcessor()
+        setupTextEditor()
     }
 
     // MARK: - Segues
@@ -37,6 +60,34 @@ class EditorViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let navigationController = segue.destination as? UINavigationController else { return }
         navigationController.presentationController?.delegate = self as UIAdaptivePresentationControllerDelegate
+    }
+    
+    func returnToEditor() {
+        DispatchQueue.global(qos: .background).async {
+            PreferencesManager.save(self.settings.processors, ordering: self.settings.enabledProcessors, selected: self.settings.selectedProcessor)
+        }
+        setupProcessor(using: settings.selectedProcessor)
+        runProcessor()
+    }
+    
+    // MARK: - State Restoration
+    
+    func setupUserActivity() {
+        self.userActivity = NSUserActivity(activityType: "net.inqk.Telekinesis.staterestoration.editing")
+        self.userActivity?.title = "Editor"
+    }
+    
+    func hasActivity() -> Bool {
+        return enteredText.value != nil
+    }
+    
+    func persistActivity() {
+        self.userActivity?.userInfo?["editorText"] = enteredText.value
+    }
+    
+    func restoreActivity(using activity: NSUserActivity) {
+        enteredText.previousValue = activity.userInfo?["editorText"] as? String
+        enteredText.hasBeenRestored = false
     }
     
     // MARK: - Listener Setup
@@ -65,6 +116,7 @@ class EditorViewController: UIViewController {
     
     func setupProcessor(using processor: Processor) {
         processorButton.setTitle(processor.name, for: .normal)
+        UIView.animate(withDuration: 0) { self.view.layoutIfNeeded() }
         
         self.processor = processor
         self.arguments = [""]
@@ -88,12 +140,23 @@ class EditorViewController: UIViewController {
         }
     }
     
+    // MARK: - Text Editor Setup
+    
+    func setupTextEditor() {
+        enteredText.editor = textEditor as? TextViewWithPlaceholder
+        
+        if enteredText.hasPreviousValue {
+            enteredText.editor?.replaceText(with: enteredText.previousValue)
+        }
+        
+        textEditor.becomeFirstResponder()
+    }
+    
     // MARK: - Processor Execution
     
     func runProcessor() {
-        guard editorHasText() else { return }
+        guard let text = enteredText.value else { return }
         
-        let text = textEditor.text ?? ""
         if text.isEmpty {
             textPreview.text = text
         } else {
@@ -114,75 +177,67 @@ class EditorViewController: UIViewController {
     }
     
     @objc func adjustTextEditorHeight(notification: Notification) {
-        if notification.name == UIResponder.keyboardWillShowNotification {
+        if notification.name == UIResponder.keyboardWillShowNotification && appContainerBottomConstraint.constant == .zero {
             guard let keyboardRect = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
             let thirdKeyboardHeight = keyboardRect.cgRectValue.size.height / 3
-            
+
             textEditor.contentInset.bottom = thirdKeyboardHeight
             appContainerBottomConstraint.constant = -(thirdKeyboardHeight * 2)
-            
-            view.setNeedsLayout()
-            UIView.animate(withDuration: 0.5) { self.view.layoutIfNeeded() }
-        } else if notification.name == UIResponder.keyboardWillHideNotification {
+
+            if enteredText.hasBeenRestored {
+                view.setNeedsLayout()
+                UIView.animate(withDuration: 0.5) { self.view.layoutIfNeeded() }
+            }
+        } else if notification.name == UIResponder.keyboardWillHideNotification && appContainerBottomConstraint.constant != .zero {
             textEditor.contentInset.bottom = textPreview.contentInset.bottom
             appContainerBottomConstraint.constant = .zero
             
             view.setNeedsLayout()
             UIView.animate(withDuration: 0.5) { self.view.layoutIfNeeded() }
         }
+        
+        enteredText.hasBeenRestored = true
     }
     
     // MARK: - Copying, Pasting and Resetting
   
     @IBAction func copyText(_ sender: UIButton) {
-        guard editorHasText() else { return }
-        UIPasteboard.general.string = textPreview.text
+//        guard editorHasText() else { return }
+//        UIPasteboard.general.string = textPreview.text
     }
     
     @IBAction func resetText(_ sender: UIButton) {
-        guard editorHasText() else { return }
-        textEditor.text = ""
-        textViewDidChange(textEditor)
+//        guard editorHasText() else { return }
+//        textEditor.text = ""
+//        textViewDidChange(textEditor)
     }
     
     @IBAction func interactWithText(_ sender: UISegmentedControl) {
-        guard editorHasText() else { return }
+        guard enteredText.hasValue else { return }
+        
         switch sender.selectedSegmentIndex {
-        case 0:
-            textEditor.text = ""
-            textViewDidChange(textEditor)
-        case 1:
-            UIPasteboard.general.string = textPreview.text
-        case 2:
+        case Button.reset.rawValue:
+            enteredText.editor?.replaceText(with: "", allowEmpty: true)
+        case Button.copy.rawValue:
+            UIPasteboard.general.string = enteredText.value
+        case Button.paste.rawValue:
             guard let paste = UIPasteboard.general.string else { return }
-            textEditor.text = paste
-            textViewDidChange(textEditor)
+            enteredText.editor?.appendText(with: paste)
         default:
             break
         }
     }
-    
-    // MARK: - Other Functions
-    
-    func returnToEditor() {
-        DispatchQueue.global(qos: .background).async {
-            PreferencesManager.save(self.settings.processors, ordering: self.settings.enabledProcessors, selected: self.settings.selectedProcessor)
-        }
-        setupProcessor(using: settings.selectedProcessor)
-        runProcessor()
-    }
-    
-    func editorHasText() -> Bool {
-        let textEditor = self.textEditor as! TextViewWithPlaceholder
-        return !textEditor.placeholderIsEnabled
-    }
 }
+
+// MARK: - Text View Delegate
 
 extension EditorViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         runProcessor()
     }
 }
+
+// MARK: - Presentation Controller Delegate
 
 extension EditorViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {

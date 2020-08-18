@@ -68,4 +68,36 @@ class TextViewWithPlaceholder: UITextView {
         self.textColor = self.placeholderColor
         self.placeholderIsEnabled = true
     }
+    
+    // MARK: - Text Changes
+    
+    func replaceText(with text: String?, allowEmpty: Bool = false) {
+        guard self.text != text else { return }
+        
+        if let text = text, !text.isEmpty || allowEmpty {
+            self.text = text
+            self.textColor = self.activeTextColor
+            self.placeholderIsEnabled = false
+        } else {
+            self.text = self.placeholderText
+            self.textColor = self.placeholderColor
+            self.placeholderIsEnabled = true
+        }
+        
+        delegate?.textViewDidChange?(self)
+    }
+    
+    func appendText(with addition: String?) {
+        guard let addition = addition else { return }
+        
+        if self.placeholderIsEnabled {
+            self.text = addition
+            self.textColor = self.activeTextColor
+            self.placeholderIsEnabled = false
+        } else {
+            self.text += addition
+        }
+        
+        delegate?.textViewDidChange?(self)
+    }
 }
