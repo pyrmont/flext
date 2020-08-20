@@ -10,6 +10,8 @@ import UIKit
 import JavaScriptCore
 import MobileCoreServices
 
+// MARK: - Action View Controller Definition
+
 class ActionViewController: UIViewController {
     enum Button: Int {
         case reset, copy, paste
@@ -28,8 +30,6 @@ class ActionViewController: UIViewController {
     }
 
     @IBOutlet var processorTitle: UINavigationItem!
-    @IBOutlet var appContainer: UIStackView!
-    @IBOutlet var appContainerBottomConstraint: NSLayoutConstraint!
     @IBOutlet var textPreview: UITextView!
     @IBOutlet var textEditor: UITextView!
     
@@ -41,6 +41,8 @@ class ActionViewController: UIViewController {
     var processor: Processor!
     var arguments: [Any]!
 
+    // MARK: - Controller Loading
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -48,44 +50,34 @@ class ActionViewController: UIViewController {
         
         setupMargins()
         setupListeners()
+        setupDefaultProcessor()
         setupTextEditor()
         
-        // Get the item[s] we're handling from the extension context.
+        guard let items = self.extensionContext?.inputItems as? [NSExtensionItem] else { return }
+        guard let item = items.first else { return }
+        guard let provider = item.attachments?.first else { return }
+        guard provider.hasItemConformingToTypeIdentifier(kUTTypeText as String) else { return }
         
-        // For example, look for an image and place it into an image view.
-        // Replace this with something appropriate for the type[s] your extension supports.
-//        var imageFound = false
-//        for item in self.extensionContext!.inputItems as! [NSExtensionItem] {
-//            for provider in item.attachments! {
-//                if provider.hasItemConformingToTypeIdentifier(kUTTypeImage as String) {
-//                    // This is an image. We'll load it, then place it in our image view.
-//                    weak var weakImageView = self.imageView
-//                    provider.loadItem(forTypeIdentifier: kUTTypeImage as String, options: nil, completionHandler: { (imageURL, error) in
-//                        OperationQueue.main.addOperation {
-//                            if let strongImageView = weakImageView {
-//                                if let imageURL = imageURL as? URL {
-//                                    strongImageView.image = UIImage(data: try! Data(contentsOf: imageURL))
-//                                }
-//                            }
-//                        }
-//                    })
-//
-//                    imageFound = true
-//                    break
-//                }
-//            }
-//
-//            if (imageFound) {
-//                // We only handle one image, so stop looking for more.
-//                break
-//            }
-//        }
+        weak var weakTextEditor = enteredText.editor
+        
+        provider.loadItem(forTypeIdentifier: kUTTypeText as String, options: nil, completionHandler: { (text, error) in
+            OperationQueue.main.addOperation {
+                guard let textEditor = weakTextEditor else { return }
+                guard let text = text as? String else { return }
+                textEditor.replaceText(with: text)
+            }
+        })
     }
+    
+    // MARK: - Returning
 
     @IBAction func insert() {
-        // Return any edited content to the host app.
-        // This template doesn't do anything, so we just echo the passed in items.
-        self.extensionContext!.completeRequest(returningItems: self.extensionContext!.inputItems, completionHandler: nil)
+        guard let processedText = textPreview.text else { return }
+        guard let data = processedText.data(using: .utf8) else { return }
+        let provider = NSItemProvider(item: data as NSData, typeIdentifier: kUTTypeText as String)
+        let item = NSExtensionItem()
+        item.attachments?.append(provider)
+        self.extensionContext!.completeRequest(returningItems: [item], completionHandler: nil)
     }
     
     // MARK: - Segues
@@ -130,6 +122,10 @@ class ActionViewController: UIViewController {
     }
     
     // MARK: - Processor Setup
+    
+    func setupDefaultProcessor() {
+        setupProcessor(using: settings.selectedProcessor)
+    }
     
     func setupProcessor(using processor: Processor) {
         self.processorTitle.title = processor.name

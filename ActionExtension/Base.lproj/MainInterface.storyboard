@@ -130,8 +130,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="appContainer" destination="J30-5J-cTG" id="D6z-Yk-zzE"/>
-                        <outlet property="appContainerBottomConstraint" destination="EgU-xD-f40" id="1d7-8z-GeC"/>
                         <outlet property="processorTitle" destination="EUN-Yi-7FV" id="IfF-hL-sJj"/>
                         <outlet property="textEditor" destination="FVU-Tq-Yyq" id="BPE-kL-JUy"/>
                         <outlet property="textPreview" destination="san-N2-MuV" id="fh1-Jl-Zph"/>
