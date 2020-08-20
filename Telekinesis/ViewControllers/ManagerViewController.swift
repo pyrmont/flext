@@ -34,11 +34,7 @@ class ManagerTableViewCell: UITableViewCell {
 // MARK: - Manager View Controller Definition
 
 class ManagerViewController: UIViewController {
-    enum Section: Int {
-        case enabled
-        case builtIn
-        case userAdded
-    }
+    typealias Section = Settings.Section
     
     // MARK: Public Properties
     
@@ -174,9 +170,9 @@ class ManagerViewController: UIViewController {
                 jsContext.evaluateScript(jsSource)
                 guard let jsValue = jsContext.objectForKeyedSubscript("process") else { throw TelekinesisError(type: .failedToEvaluateJavaScript) }
                 guard !jsValue.isUndefined else { throw TelekinesisError(type: .failedToFindProcessFunction) }
-                guard let appDocumentsDirectory = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true) else { throw TelekinesisError(type: .failedToLoadPath) }
+                guard let appDirectory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.net.inqk.Telekinesis") else { throw TelekinesisError(type: .failedToLoadPath) }
 
-                importURL = URL(fileURLWithPath: UUID().uuidString + "." + url.pathExtension, isDirectory: false, relativeTo: appDocumentsDirectory)
+                importURL = URL(fileURLWithPath: UUID().uuidString + "." + url.pathExtension, isDirectory: false, relativeTo: appDirectory)
                 try FileManager.default.copyItem(at: url, to: importURL!)
             } catch let error as TelekinesisError {
                 importError = error.with(location: (#file, #line))

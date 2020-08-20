@@ -314,8 +314,8 @@ extension Processor {
 
         var userAddedProcessorURLs: [URL] = []
         do {
-            let appDocumentsDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-            let fileURLs = FileManager.default.enumerator(at: appDocumentsDirectory, includingPropertiesForKeys: nil)!
+            guard let appDirectory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.net.inqk.Telekinesis") else { throw TelekinesisError(type: .failedToLoadPath )}
+            let fileURLs = FileManager.default.enumerator(at: appDirectory, includingPropertiesForKeys: nil)!
             for case let fileURL as URL in fileURLs where fileURL.pathExtension == "js" {
                 userAddedProcessorURLs.append(fileURL)
             }

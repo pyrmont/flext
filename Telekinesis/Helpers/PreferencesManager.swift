@@ -55,6 +55,7 @@ struct Preferences: Codable {
 
 struct PreferencesManager {
     static var processors: [String: ProcessorPreferences] = preferences.processors
+    static var appDirectory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.net.inqk.Telekinesis")
     
     private static var preferenceFilename = "user_prefs.plist"
     private static var encoder = PropertyListEncoder()
@@ -63,12 +64,12 @@ struct PreferencesManager {
     private static var preferences = load()
     
     static func load() -> Preferences {
-        guard let appSupportDirectory = try? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true) else {
-            NSLog("There was an error reading the application support directory")
+        guard let appDirectory = PreferencesManager.appDirectory else {
+            NSLog("There was an error reading the application directory")
             return Preferences()
         }
         
-        let preferencesFile = appSupportDirectory.appendingPathComponent(preferenceFilename)
+        let preferencesFile = appDirectory.appendingPathComponent(preferenceFilename)
         guard FileManager.default.fileExists(atPath: preferencesFile.path) else {
             NSLog("The preferences file does not exist")
             return Preferences()
@@ -91,17 +92,17 @@ struct PreferencesManager {
         var newPreferences = Preferences()
         newPreferences.save(processorModels, ordering: ordering, selected: selected)
         
-        guard let appSupportDirectory = try? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true) else {
-            NSLog("There was an error reading the application support directory")
+        guard let appDirectory = PreferencesManager.appDirectory else {
+            NSLog("There was an error reading the application directory")
             return
         }
-        
+
         guard let data = try? encoder.encode(newPreferences) else {
             NSLog("The preferences could not be converted to data")
             return
         }
         
-        let preferencesFile = appSupportDirectory.appendingPathComponent(preferenceFilename)
+        let preferencesFile = appDirectory.appendingPathComponent(preferenceFilename)
         do {
             try data.write(to: preferencesFile)
             preferences = newPreferences

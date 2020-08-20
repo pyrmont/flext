@@ -49,6 +49,12 @@ class Settings {
         case notSection
     }
     
+    enum Section: Int {
+        case enabled
+        case builtIn
+        case userAdded
+    }
+    
     var processors: [Processor]
     var enabledProcessors: [Processor]
     var selectedProcessorPath: IndexPath?
@@ -70,7 +76,7 @@ class Settings {
     }
     
     private var settings: [Setting]
-    private let enabledSection = ManagerViewController.Section.enabled.rawValue
+    private let enabledSection = Section.enabled.rawValue
     
     // MARK: - Initialisers
     
