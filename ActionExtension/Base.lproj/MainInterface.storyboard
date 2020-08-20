@@ -102,19 +102,20 @@
                         <viewLayoutGuide key="safeArea" id="VVe-Uw-JpX"/>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="2KA-b9-NN6"/>
                                 <exclude reference="dT2-Ep-VkV"/>
+                                <exclude reference="2KA-b9-NN6"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact">
                             <mask key="constraints">
-                                <include reference="2KA-b9-NN6"/>
                                 <exclude reference="EgU-xD-f40"/>
                                 <include reference="dT2-Ep-VkV"/>
+                                <include reference="2KA-b9-NN6"/>
                             </mask>
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" title="Processor" id="EUN-Yi-7FV">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="RXc-J9-z07"/>
                         <barButtonItem key="leftBarButtonItem" title="Insert" image="arrow.up.circle" catalog="system" id="wqL-w1-UvD">
                             <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                             <connections>
@@ -123,6 +124,9 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Settings" image="gear" catalog="system" id="adF-IU-ufU">
                             <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <connections>
+                                <segue destination="8gb-Yw-bBd" kind="show" id="nun-mp-gUO"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
@@ -136,7 +140,78 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X47-rx-isc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="131.8840579710145" y="101.78571428571428"/>
+            <point key="canvasLocation" x="267" y="100"/>
+        </scene>
+        <!--Processors-->
+        <scene sceneID="dhl-5c-zKu">
+            <objects>
+                <viewController id="8gb-Yw-bBd" userLabel="Processors" customClass="ActionSettingsViewController" customModule="ActionExtension" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jws-qv-qoD">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Yxb-3E-Ous">
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <view key="tableFooterView" contentMode="scaleToFill" id="3ar-Wa-emV" userLabel="Table Footer">
+                                    <rect key="frame" x="0.0" y="117" width="414" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Configure the enabled processors in the Settings section of the Flext app." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vZj-sE-aBv">
+                                            <rect key="frame" x="15" y="10" width="384" height="34"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                            <color key="textColor" systemColor="tertiaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="vZj-sE-aBv" secondAttribute="trailing" constant="15" id="4RL-G8-FaY"/>
+                                        <constraint firstItem="vZj-sE-aBv" firstAttribute="leading" secondItem="3ar-Wa-emV" secondAttribute="leading" constant="15" id="L6D-GI-4rU"/>
+                                        <constraint firstItem="vZj-sE-aBv" firstAttribute="top" secondItem="3ar-Wa-emV" secondAttribute="top" constant="10" id="RED-NN-2Fh"/>
+                                    </constraints>
+                                </view>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" textLabel="VI7-eo-FpA" imageView="Sqd-zw-eN8" style="IBUITableViewCellStyleDefault" id="hN4-Md-5B0" customClass="ActionSettingsTableViewCell" customModule="ActionExtension" customModuleProvider="target">
+                                        <rect key="frame" x="20" y="55.5" width="374" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hN4-Md-5B0" id="Qlv-tq-KhZ">
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VI7-eo-FpA">
+                                                    <rect key="frame" x="59" y="0.0" width="295" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="circle" catalog="system" id="Sqd-zw-eN8">
+                                                    <rect key="frame" x="22" y="12" width="20" height="19"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </imageView>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Yxb-3E-Ous" firstAttribute="top" secondItem="nQo-uL-ZSB" secondAttribute="top" id="9JE-4T-aXE"/>
+                            <constraint firstItem="Yxb-3E-Ous" firstAttribute="leading" secondItem="nQo-uL-ZSB" secondAttribute="leading" id="Cxi-8x-hXN"/>
+                            <constraint firstItem="nQo-uL-ZSB" firstAttribute="trailing" secondItem="Yxb-3E-Ous" secondAttribute="trailing" id="d5o-Fa-WjA"/>
+                            <constraint firstItem="nQo-uL-ZSB" firstAttribute="bottom" secondItem="Yxb-3E-Ous" secondAttribute="bottom" id="m2t-Xg-eSo"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="nQo-uL-ZSB"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="dMn-p0-drI"/>
+                    <connections>
+                        <outlet property="tableView" destination="Yxb-3E-Ous" id="Wlu-nJ-OLv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="c8i-n9-qmG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1097" y="100"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="qfS-EP-nnC">
@@ -162,6 +237,7 @@
     </scenes>
     <resources>
         <image name="arrow.up.circle" catalog="system" width="128" height="121"/>
+        <image name="circle" catalog="system" width="128" height="121"/>
         <image name="gear" catalog="system" width="128" height="119"/>
     </resources>
 </document>

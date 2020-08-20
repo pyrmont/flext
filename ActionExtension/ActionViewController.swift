@@ -33,7 +33,7 @@ class ActionViewController: UIViewController {
     @IBOutlet var textPreview: UITextView!
     @IBOutlet var textEditor: UITextView!
     
-    var initialBottomConstraint: CGFloat!
+    var initialSafeAreaBottom: CGFloat!
     
     var settings: Settings = SettingsManager.settings
     var enteredText = EnteredText()
@@ -44,9 +44,10 @@ class ActionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        initialSafeAreaBottom = view.safeAreaInsets.bottom
+        
         setupMargins()
         setupListeners()
-        setupDefaultProcessor()
         setupTextEditor()
         
         // Get the item[s] we're handling from the extension context.
@@ -86,36 +87,49 @@ class ActionViewController: UIViewController {
         // This template doesn't do anything, so we just echo the passed in items.
         self.extensionContext!.completeRequest(returningItems: self.extensionContext!.inputItems, completionHandler: nil)
     }
-
+    
+    // MARK: - Segues
+ 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        guard settings.selectedProcessor != processor else { return }
+        setupProcessor(using: settings.selectedProcessor)
+        runProcessor()
+    }
+    
     // MARK: - Listener Setup
     
     func setupListeners() {
+        textEditor.delegate = self
+    }
+ 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(adjustTextEditorHeight(notification:)),
             name: UIResponder.keyboardWillChangeFrameNotification,
             object: nil)
-        
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(adjustTextEditorHeight(notification:)),
             name: UIResponder.keyboardWillHideNotification,
             object: nil)
-        
-        textEditor.delegate = self
+
+        textEditor.becomeFirstResponder()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     // MARK: - Processor Setup
-
-    func setupDefaultProcessor() {
-        setupProcessor(using: settings.selectedProcessor)
-    }
     
     func setupProcessor(using processor: Processor) {
         self.processorTitle.title = processor.name
@@ -146,7 +160,6 @@ class ActionViewController: UIViewController {
     
     func setupTextEditor() {
         enteredText.editor = textEditor as? TextViewWithPlaceholder
-        textEditor.becomeFirstResponder()
     }
     
     // MARK: - Processor Execution
@@ -176,14 +189,15 @@ class ActionViewController: UIViewController {
     @objc func adjustTextEditorHeight(notification: Notification) {
         guard let userInfo = notification.userInfo else { return }
         guard let keyboardValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-            
+        
         let keyboardScreenEndFrame = keyboardValue.cgRectValue
         let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
 
-        if notification.name == UIResponder.keyboardWillHideNotification {
-            appContainerBottomConstraint.constant = .zero
-        } else {
-            appContainerBottomConstraint.constant = keyboardViewEndFrame.height - view.safeAreaInsets.bottom
+        additionalSafeAreaInsets.bottom = 0
+        let inherentSafeBottom = view.safeAreaInsets.bottom
+        
+        if notification.name != UIResponder.keyboardWillHideNotification {
+            additionalSafeAreaInsets.bottom = keyboardViewEndFrame.height - inherentSafeBottom
         }
         
         guard let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else { return }
