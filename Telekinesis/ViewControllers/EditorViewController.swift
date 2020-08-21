@@ -192,7 +192,7 @@ class EditorViewController: UIViewController {
             guard let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
             let keyboardHeight = keyboardRect.cgRectValue.size.height
 
-            if traitCollection.verticalSizeClass != .compact {
+            if traitCollection.verticalSizeClass != .compact && traitCollection.horizontalSizeClass != .regular {
                 appContainerBottomConstraint.constant = keyboardHeight * 0.6
                 textEditor.contentInset.bottom = keyboardHeight * 0.4
             } else {

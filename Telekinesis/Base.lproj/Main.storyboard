@@ -130,6 +130,11 @@
                                                 <exclude reference="cme-7b-UFL"/>
                                             </mask>
                                         </variation>
+                                        <variation key="widthClass=regular">
+                                            <mask key="constraints">
+                                                <exclude reference="cme-7b-UFL"/>
+                                            </mask>
+                                        </variation>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -142,6 +147,11 @@
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=compact" axis="horizontal">
+                                    <mask key="constraints">
+                                        <include reference="yTh-Zb-E7N"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=regular" axis="horizontal">
                                     <mask key="constraints">
                                         <include reference="yTh-Zb-E7N"/>
                                     </mask>
