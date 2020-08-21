@@ -93,19 +93,32 @@ class EditorViewController: UIViewController {
     // MARK: - Listener Setup
     
     func setupListeners() {
+        textEditor.delegate = self
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(EditorViewController.adjustTextEditorHeight(notification:)),
-            name: UIResponder.keyboardWillShowNotification,
+            selector: #selector(adjustTextEditorHeight(notification:)),
+            name: UIResponder.keyboardWillChangeFrameNotification,
             object: nil)
-        
+
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(EditorViewController.adjustTextEditorHeight(notification:)),
+            selector: #selector(adjustTextEditorHeight(notification:)),
             name: UIResponder.keyboardWillHideNotification,
             object: nil)
-        
-        textEditor.delegate = self
+
+        textEditor.becomeFirstResponder()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     // MARK: - Processor Setup
@@ -148,8 +161,6 @@ class EditorViewController: UIViewController {
         if enteredText.hasPreviousValue {
             enteredText.editor?.replaceText(with: enteredText.previousValue)
         }
-        
-        textEditor.becomeFirstResponder()
     }
     
     // MARK: - Processor Execution
@@ -177,40 +188,27 @@ class EditorViewController: UIViewController {
     }
     
     @objc func adjustTextEditorHeight(notification: Notification) {
-        if notification.name == UIResponder.keyboardWillShowNotification && appContainerBottomConstraint.constant == .zero {
-            guard let keyboardRect = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-            let thirdKeyboardHeight = keyboardRect.cgRectValue.size.height / 3
+        if notification.name == UIResponder.keyboardWillChangeFrameNotification {
+            guard let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+            let keyboardHeight = keyboardRect.cgRectValue.size.height
 
-            textEditor.contentInset.bottom = thirdKeyboardHeight
-            appContainerBottomConstraint.constant = -(thirdKeyboardHeight * 2)
-
-            if enteredText.hasBeenRestored {
-                view.setNeedsLayout()
-                UIView.animate(withDuration: 0.5) { self.view.layoutIfNeeded() }
+            if traitCollection.verticalSizeClass != .compact {
+                appContainerBottomConstraint.constant = keyboardHeight * 0.6
+                textEditor.contentInset.bottom = keyboardHeight * 0.4
+            } else {
+                appContainerBottomConstraint.constant = keyboardHeight
             }
-        } else if notification.name == UIResponder.keyboardWillHideNotification && appContainerBottomConstraint.constant != .zero {
-            textEditor.contentInset.bottom = textPreview.contentInset.bottom
+        } else if notification.name == UIResponder.keyboardWillHideNotification {
             appContainerBottomConstraint.constant = .zero
-            
-            view.setNeedsLayout()
-            UIView.animate(withDuration: 0.5) { self.view.layoutIfNeeded() }
+            textEditor.contentInset.bottom = .zero
         }
-        
-        enteredText.hasBeenRestored = true
+
+        guard let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else { return }
+        view.setNeedsLayout()
+        UIView.animate(withDuration: duration) { self.view.layoutIfNeeded() }
     }
     
     // MARK: - Copying, Pasting and Resetting
-  
-    @IBAction func copyText(_ sender: UIButton) {
-//        guard editorHasText() else { return }
-//        UIPasteboard.general.string = textPreview.text
-    }
-    
-    @IBAction func resetText(_ sender: UIButton) {
-//        guard editorHasText() else { return }
-//        textEditor.text = ""
-//        textViewDidChange(textEditor)
-    }
     
     @IBAction func interactWithText(_ sender: UISegmentedControl) {
         guard enteredText.hasValue else { return }
