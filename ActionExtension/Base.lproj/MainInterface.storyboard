@@ -117,13 +117,11 @@
                     <navigationItem key="navigationItem" title="Processor" id="EUN-Yi-7FV">
                         <barButtonItem key="backBarButtonItem" title="Back" id="RXc-J9-z07"/>
                         <barButtonItem key="leftBarButtonItem" title="Insert" image="arrow.up.circle" catalog="system" id="wqL-w1-UvD">
-                            <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                             <connections>
                                 <action selector="insert" destination="ObA-dk-sSI" id="avT-Ha-dfc"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Settings" image="gear" catalog="system" id="adF-IU-ufU">
-                            <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                             <connections>
                                 <segue destination="8gb-Yw-bBd" kind="show" id="nun-mp-gUO"/>
                             </connections>
@@ -218,11 +216,6 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="0jx-gW-G9z">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <color key="barTintColor" red="0.20332548019999999" green="0.87063586709999996" blue="0.8038175702" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <textAttributes key="titleTextAttributes">
-                            <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                        </textAttributes>
                     </navigationBar>
                     <connections>
                         <segue destination="ObA-dk-sSI" kind="relationship" relationship="rootViewController" id="Y2x-YV-mh1"/>
