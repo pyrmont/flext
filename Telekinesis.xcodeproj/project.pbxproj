@@ -40,6 +40,7 @@
 		70B2311F24D65A60004760B1 /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 70B2311E24D65A60004760B1 /* Down */; };
 		70B2312524D660AF004760B1 /* DownHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2312424D660AF004760B1 /* DownHelper.swift */; };
 		70B2312824D68113004760B1 /* SettingsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2312724D68113004760B1 /* SettingsData.swift */; };
+		70D403D824EE7D12007D9A39 /* Action.js in Resources */ = {isa = PBXBuildFile; fileRef = 70D403D724EE7D12007D9A39 /* Action.js */; };
 		70D9C71824D8F66F002A74AD /* LineReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D9C71724D8F66F002A74AD /* LineReader.swift */; };
 		70D9C71A24D967EA002A74AD /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D9C71924D967EA002A74AD /* OptionsViewController.swift */; };
 /* End PBXBuildFile section */
@@ -97,6 +98,7 @@
 		70B2311824D53C33004760B1 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		70B2312424D660AF004760B1 /* DownHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownHelper.swift; sourceTree = "<group>"; };
 		70B2312724D68113004760B1 /* SettingsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsData.swift; sourceTree = "<group>"; };
+		70D403D724EE7D12007D9A39 /* Action.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Action.js; sourceTree = "<group>"; };
 		70D9C71724D8F66F002A74AD /* LineReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineReader.swift; sourceTree = "<group>"; };
 		70D9C71924D967EA002A74AD /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -129,6 +131,7 @@
 				7053B58B24EC53AB007D9408 /* ActionViewController.swift */,
 				7053B58924EC53AB007D9408 /* Media.xcassets */,
 				7053B58D24EC53AB007D9408 /* MainInterface.storyboard */,
+				70D403D724EE7D12007D9A39 /* Action.js */,
 			);
 			path = ActionExtension;
 			sourceTree = "<group>";
@@ -310,6 +313,7 @@
 				7053B58A24EC53AB007D9408 /* Media.xcassets in Resources */,
 				7053B5A124ECFC24007D9408 /* Processors in Resources */,
 				7053B59A24ECEA31007D9408 /* Assets.xcassets in Resources */,
+				70D403D824EE7D12007D9A39 /* Action.js in Resources */,
 				7053B58F24EC53AB007D9408 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

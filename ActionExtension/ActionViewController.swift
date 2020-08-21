@@ -17,6 +17,10 @@ class ActionViewController: UIViewController {
         case reset, copy, paste
     }
     
+    enum DataType {
+        case text, webpage
+    }
+    
     struct EnteredText {
         var editor: TextViewWithPlaceholder?
 
@@ -56,28 +60,45 @@ class ActionViewController: UIViewController {
         guard let items = self.extensionContext?.inputItems as? [NSExtensionItem] else { return }
         guard let item = items.first else { return }
         guard let provider = item.attachments?.first else { return }
-        guard provider.hasItemConformingToTypeIdentifier(kUTTypeText as String) else { return }
         
-        weak var weakTextEditor = enteredText.editor
-        
-        provider.loadItem(forTypeIdentifier: kUTTypeText as String, options: nil, completionHandler: { (text, error) in
-            OperationQueue.main.addOperation {
-                guard let textEditor = weakTextEditor else { return }
-                guard let text = text as? String else { return }
-                textEditor.replaceText(with: text)
+        if provider.hasItemConformingToTypeIdentifier(kUTTypePropertyList as String) {
+            process(provider, as: .webpage)
+        } else if provider.hasItemConformingToTypeIdentifier(kUTTypeText as String) {
+            process(provider, as: .text)
+        }
+    }
+    
+    func process(_ provider: NSItemProvider, as dataType: DataType) {
+        switch dataType {
+        case .text:
+            provider.loadItem(forTypeIdentifier: kUTTypeText as String) { [weak self] (providedText, error) in
+                OperationQueue.main.addOperation {
+                    self?.enteredText.editor?.replaceText(with: providedText as? String)
+                }
             }
-        })
+        case .webpage:
+            provider.loadItem(forTypeIdentifier: kUTTypePropertyList as String) { [weak self] (providedDictionary, error) in
+                guard let itemDictionary = providedDictionary as? NSDictionary else { return }
+                guard let values = itemDictionary[NSExtensionJavaScriptPreprocessingResultsKey] as? NSDictionary else { return }
+                OperationQueue.main.addOperation {
+                    self?.enteredText.editor?.replaceText(with: values["text"] as? String)
+                }
+            }
+        }
     }
     
     // MARK: - Returning
 
     @IBAction func insert() {
-        guard let processedText = textPreview.text else { return }
-        guard let data = processedText.data(using: .utf8) else { return }
-        let provider = NSItemProvider(item: data as NSData, typeIdentifier: kUTTypeText as String)
-        let item = NSExtensionItem()
-        item.attachments?.append(provider)
-        self.extensionContext!.completeRequest(returningItems: [item], completionHandler: nil)
+        guard let processedText = textPreview.text else {
+            self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
+            return
+        }
+        
+        let extensionItem = NSExtensionItem()
+        let processedDictionary = [NSExtensionJavaScriptFinalizeArgumentKey : ["text": processedText]]
+        extensionItem.attachments = [NSItemProvider(item: processedDictionary as NSSecureCoding, typeIdentifier: String(kUTTypePropertyList))]
+        self.extensionContext?.completeRequest(returningItems: [extensionItem], completionHandler: nil)
     }
     
     // MARK: - Segues
