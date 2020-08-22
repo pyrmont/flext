@@ -2,10 +2,10 @@ var Action = function() {};
 
 Action.prototype = {
 
-run: function(parameters) {
-    let text = document.activeElement.value;
+getElementToModify: function() {
+    let element = document.activeElement;
     
-    if (!text) {
+    if (!element.value) {
         let longest = null;
         const textareas = document.getElementsByTagName('textarea');
         
@@ -24,41 +24,26 @@ run: function(parameters) {
             }
         }
         
-        text = longest.value;
+        element = longest;
     }
     
-    parameters.completionFunction({"text": text});
+    return element;
+},
+    
+run: function(parameters) {
+    let element = this.getElementToModify();
+    if (element.value) {
+        parameters.completionFunction({"text": element.value});
+    }
 },
 
 finalize: function(parameters) {
     if (parameters["text"]) {
-        let el = document.activeElement;
-        if (!el.value) {
-            let longest = null;
-            const textareas = document.getElementsByTagName('textarea');
-            
-            for (const textarea of textareas) {
-                if (longest == null) {
-                    longest = textarea;
-                    continue;
-                }
-                
-                if (textarea.value) {
-                    if (!longest.value) {
-                        longest = textarea;
-                    } else if (longest.value.length < textarea.value.length) {
-                        longest = textarea;
-                    }
-                }
-            }
-            
-            el = longest;
-        }
-        
-        el.value = parameters["text"];
+        let element = this.getElementToModify();
+        element.value = parameters["text"];
     }
 }
 
 };
 
-var ExtensionPreprocessingJS = new Action
+var ExtensionPreprocessingJS = new Action;
