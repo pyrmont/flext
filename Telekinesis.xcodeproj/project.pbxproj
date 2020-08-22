@@ -126,12 +126,12 @@
 			isa = PBXGroup;
 			children = (
 				7053B59824ECE997007D9408 /* ActionExtension.entitlements */,
+				70D403D724EE7D12007D9A39 /* Action.js */,
 				7053B59024EC53AB007D9408 /* Info.plist */,
 				7053B5A324ED199B007D9408 /* ActionSettingsViewController.swift */,
 				7053B58B24EC53AB007D9408 /* ActionViewController.swift */,
 				7053B58924EC53AB007D9408 /* Media.xcassets */,
 				7053B58D24EC53AB007D9408 /* MainInterface.storyboard */,
-				70D403D724EE7D12007D9A39 /* Action.js */,
 			);
 			path = ActionExtension;
 			sourceTree = "<group>";
