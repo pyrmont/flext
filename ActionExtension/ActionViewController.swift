@@ -42,6 +42,7 @@ class ActionViewController: UIViewController {
     var settings: Settings = SettingsManager.settings
     var enteredText = EnteredText()
     
+    var selectedIndex: Int!
     var processor: Processor!
     var arguments: [Any]!
 
@@ -54,7 +55,7 @@ class ActionViewController: UIViewController {
         
         setupMargins()
         setupListeners()
-        setupDefaultProcessor()
+        setupSelectedProcessor()
         setupTextEditor()
         
         guard let items = self.extensionContext?.inputItems as? [NSExtensionItem] else { return }
@@ -106,8 +107,8 @@ class ActionViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        guard settings.selectedProcessor != processor else { return }
-        setupProcessor(using: settings.selectedProcessor)
+        guard UserDefaults.standard.integer(forKey: "selectedIndex") != selectedIndex else { return }
+        setupSelectedProcessor()
         runProcessor()
     }
     
@@ -144,8 +145,17 @@ class ActionViewController: UIViewController {
     
     // MARK: - Processor Setup
     
-    func setupDefaultProcessor() {
-        setupProcessor(using: settings.selectedProcessor)
+    func setupSelectedProcessor() {
+        let selectedIndex = UserDefaults.standard.integer(forKey: "selectedIndex")
+        
+        if selectedIndex < settings.enabledProcessors.count {
+            self.selectedIndex = selectedIndex
+        } else {
+            self.selectedIndex = 0
+            UserDefaults.standard.set(0, forKey: "selectedIndex")
+        }
+        
+        setupProcessor(using: settings.enabledProcessors.at(self.selectedIndex)!)
     }
     
     func setupProcessor(using processor: Processor) {

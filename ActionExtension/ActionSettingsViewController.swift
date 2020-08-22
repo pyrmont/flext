@@ -36,7 +36,7 @@ class ActionSettingsViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        selectProcessor(at: settings.selectedProcessorPath)
+        selectProcessor(at: IndexPath(row: UserDefaults.standard.integer(forKey: "selectedIndex"), section: 0))
     }
     
     // MARK: - Processor Selection
@@ -44,7 +44,7 @@ class ActionSettingsViewController: UIViewController {
     func selectProcessor(at indexPath: IndexPath?) {
         guard let indexPath = indexPath else { return }
         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-        settings.selectedProcessorPath = indexPath
+        UserDefaults.standard.set(indexPath.row, forKey: "selectedIndex")
     }
     
     func deselectProcessor(at indexPath: IndexPath?) {
