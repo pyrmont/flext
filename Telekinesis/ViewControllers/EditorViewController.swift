@@ -213,12 +213,12 @@ class EditorViewController: UIViewController {
     @IBAction func interactWithText(_ sender: UISegmentedControl) {
         guard enteredText.hasValue else { return }
         
-        switch sender.selectedSegmentIndex {
-        case Button.reset.rawValue:
+        switch Button(rawValue: sender.selectedSegmentIndex) {
+        case .reset:
             enteredText.editor?.replaceText(with: "", allowEmpty: true)
-        case Button.copy.rawValue:
-            UIPasteboard.general.string = enteredText.value
-        case Button.paste.rawValue:
+        case .copy:
+            UIPasteboard.general.string = textPreview.text
+        case .paste:
             guard let paste = UIPasteboard.general.string else { return }
             enteredText.editor?.appendText(with: paste)
         default:
