@@ -9,8 +9,10 @@
 import Foundation
 
 protocol SettingValue { }
+
 extension Array: SettingValue where Element == Setting {}
 extension String: SettingValue {}
+extension Webpage: SettingValue {}
 
 protocol SettingItem {
     var name: String { get }
@@ -23,10 +25,11 @@ extension Processor: SettingItem {
 
 class Setting: SettingItem {
     enum SettingType {
+        case about
         case manager
-        case page
         case processor
         case section
+        case webpage
     }
     
     var name: String

@@ -1,0 +1,68 @@
+body { background-color: #ffffff; color: #666666; font: 16px/1.4 -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: 300; -webkit-text-size-adjust: none; }
+
+.wrapper { margin: 0 auto; max-width: 860px; padding: 0 16px }
+
+article { margin-top: 20px; margin-bottom: 40px; }
+article > *:first-child { margin-top: 0; }
+
+footer { -webkit-font-smoothing: subpixel-antialiased; }
+
+footer p { font-size: 12px; line-height: 1.0em; margin: 0; }
+
+/* Others */
+
+a { color: #FF44AB; text-decoration: none; }
+
+img { max-width: 100%; }
+
+strong { font-weight: 600; }
+
+hr { border: 0; background: #e5e5e5; height: 1px; margin: 0 0 20px; }
+
+/* Headings */
+
+h1, h2 { font-family: "Gill Sans"; font-weight: 200; margin-bottom: 10px; }
+h1 { color: #0EB1DC; font-size: 28px; }
+h2 { color: #43C78B; font-size: 22px; }
+
+/* Paragraphs */
+
+p, dl, blockquote { margin: 0 0 20px; }
+p a { text-decoration: underline; }
+
+blockquote { background-color: #e5e5e5; border-left: 5px solid #43C78B; padding: 10px; }
+blockquote p:last-child { margin-bottom: 0; }
+
+dt { color: #444; font-weight: 700; }
+
+/* Lists */
+
+ul { list-style-type: square; padding-left: 1.0em; }
+
+li { margin-bottom: 20px }
+li p:last-child { margin-bottom: 0; }
+
+/* Code */
+
+code, pre { background: #f8f8f8; border: 1px solid #e5e5e5; border-radius: 5px; color: #333; font-family: monospace; }
+code { display: inline-block; font-size: 16px; padding: 0 5px; vertical-align: middle; }
+
+/*pre { font-size: 14px; margin: 0 0 20px; overflow-x: auto; padding: 8px 15px; white-space: nowrap; }*/
+/*pre > code { background: inherit; border: none; border-radius: 0; color: inherit; display: block; padding: 0; }*/
+/*pre > code > span { display: block; white-space: pre; }*/
+
+/*table { border-collapse: collapse; margin: 0 0 20px; width: 100%; }*/
+/**/
+/*th, td { border-bottom: 1px solid #e5e5e5; padding: 5px 10px; text-align: left; }*/
+/**/
+/*th { color: #444; }*/
+/**/
+/**/
+
+@media (prefers-color-scheme: dark) {
+    body { background-color: #000000; color: #aaaaaa; }
+    
+    hr { border: 0; background: #4b4b4b; height: 1px; margin: 0 0 20px; }
+    
+    code, pre { background: #333; border: 1px solid #3b3b3b; border-radius: 5px; color: #ddd; font-family: monospace; }
+}

@@ -65,12 +65,12 @@ class SettingsViewController: UIViewController {
                 needsRefresh = true
             } else if let options = segue.destination as? OptionsViewController {
                 options.processor = item as? Processor
-            } else if let page = segue.destination as? PageViewController {
-                page.textKey = (item as! Setting).value as! String
             } else if let section = segue.destination as? SettingsViewController {
                 section.settings = settings
                 section.trail = trail + [indexPath.section, indexPath.row]
                 section.title = item.name
+            } else if let viewer = segue.destination as? WebpageViewController {
+                viewer.webpage = (item as! Setting).value as? Webpage
             }
         } else if let editor = segue.destination as? EditorViewController {
             editor.returnToEditor()
@@ -116,15 +116,17 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func typeOfCell(for item: SettingItem) -> String {
         switch item.settingType {
+        case .about:
+            return "About Cell"
         case .manager:
             return "Manager Cell"
-        case .page:
-            return "Page Cell"
         case .processor:
             let processor = item as! Processor
             return processor.hasOptions ? "Processor Cell (Options)" : "Processor Cell"
         case .section:
             return "Section Cell"
+        case .webpage:
+            return "Webpage Cell"
         }
     }
     
