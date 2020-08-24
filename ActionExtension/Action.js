@@ -15,6 +15,10 @@ getElementToModify: function() {
                 continue;
             }
             
+            if (!this.inViewport(textarea)) {
+                continue;
+            }
+            
             if (textarea.value) {
                 if (!longest.value) {
                     longest = textarea;
@@ -28,6 +32,19 @@ getElementToModify: function() {
     }
     
     return element;
+},
+
+inViewport: function(element) {
+    const rect = element.getBoundingClientRect();
+    const height = window.innerHeight;
+    const width = window.innerWidth;
+    
+    const topInside = (rect.top >= 0 && rect.top <= height);
+    const bottomInside = (rect.bottom >= 0 && rect.bottom <= height);
+    const leftInside = (rect.left >= 0 && rect.left <= width);
+    const rightInside = (rect.right >= 0 && rect.right <= width);
+    
+    return (topInside && (leftInside || rightInside)) || (bottomInside && (leftInside || rightInside));
 },
     
 run: function(parameters) {
