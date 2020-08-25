@@ -15,15 +15,17 @@ a { color: #FF44AB; text-decoration: none; }
 
 img { max-width: 100%; }
 
-strong { font-weight: 600; }
+strong { font-weight: 500; }
 
 hr { border: 0; background: #e5e5e5; height: 1px; margin: 0 0 20px; }
 
 /* Headings */
 
-h1, h2 { font-family: "Gill Sans"; font-weight: 200; margin-bottom: 10px; }
+h1, h2, h3, h4 { font-family: "Gill Sans"; font-weight: 200; margin-bottom: 10px; margin-top: 18px; }
 h1 { color: #0EB1DC; font-size: 28px; }
 h2 { color: #43C78B; font-size: 22px; }
+h3 { color: #11CCFF; font-size: 19px; }
+h4 { color: #11CCFF; font-size: 18px; }
 
 /* Paragraphs */
 

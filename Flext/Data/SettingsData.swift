@@ -35,6 +35,7 @@ struct SettingsData {
         return Setting(name: "General", type: .section, value: [
             Setting(name: "About", type: .about, value: ""),
             Setting(name: "Contact", type: .webpage, value: Webpage(title: "Contact", sourceFile: "general_contact.md")),
+            Setting(name: "Privacy", type: .webpage, value: Webpage(title: "Privacy", sourceFile: "general_privacy.md")),
             licences()])
     }
     
