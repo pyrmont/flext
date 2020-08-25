@@ -33,6 +33,8 @@ class AboutRoundedButton: UIButton {
 }
 
 class AboutViewController: UIViewController {
+    @IBOutlet var versionLabel: UILabel!
+    
     @IBAction func openLink(_ sender: UIButton) {
         var destination: URL?
         
@@ -51,5 +53,11 @@ class AboutViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String,
+            let buildVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+            versionLabel.text = "v\(appVersion).\(buildVersion)"
+        }
+
     }
 }

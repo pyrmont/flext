@@ -24,7 +24,6 @@
 		7053B5A124ECFC24007D9408 /* Processors in Resources */ = {isa = PBXBuildFile; fileRef = 7096B74224D1050900B2C132 /* Processors */; };
 		7053B5A224ED10B7007D9408 /* TextViewWithPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708BF86324CFDA3C0004A404 /* TextViewWithPlaceholder.swift */; };
 		7053B5A424ED199B007D9408 /* ActionSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7053B5A324ED199B007D9408 /* ActionSettingsViewController.swift */; };
-		705C49C424F4B16F00370441 /* ActionExtension.appex in Resources */ = {isa = PBXBuildFile; fileRef = 7053B58724EC53AB007D9408 /* ActionExtension.appex */; };
 		708BF85024CFB0E30004A404 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708BF84F24CFB0E30004A404 /* AppDelegate.swift */; };
 		708BF85224CFB0E30004A404 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708BF85124CFB0E30004A404 /* SceneDelegate.swift */; };
 		708BF85424CFB0E30004A404 /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708BF85324CFB0E30004A404 /* EditorViewController.swift */; };
@@ -254,6 +253,7 @@
 				7053B58324EC53AB007D9408 /* Sources */,
 				7053B58424EC53AB007D9408 /* Frameworks */,
 				7053B58524EC53AB007D9408 /* Resources */,
+				70C09BC824F4C6B400990036 /* Set Build Number */,
 			);
 			buildRules = (
 			);
@@ -275,6 +275,7 @@
 				708BF84924CFB0E30004A404 /* Frameworks */,
 				708BF84A24CFB0E30004A404 /* Resources */,
 				7053B59424EC53AB007D9408 /* Embed App Extensions */,
+				70C09BC724F4BF1700990036 /* Set Build Number */,
 			);
 			buildRules = (
 			);
@@ -338,7 +339,6 @@
 				7053B5A124ECFC24007D9408 /* Processors in Resources */,
 				7053B59A24ECEA31007D9408 /* Assets.xcassets in Resources */,
 				70D403D824EE7D12007D9A39 /* Action.js in Resources */,
-				705C49C424F4B16F00370441 /* ActionExtension.appex in Resources */,
 				7053B58F24EC53AB007D9408 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -357,6 +357,45 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		70C09BC724F4BF1700990036 /* Set Build Number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Set Build Number";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "git=`sh /etc/profile; which git`\nbundleVersion=`\"$git\" log -1 --format=%h`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $bundleVersion\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n";
+		};
+		70C09BC824F4C6B400990036 /* Set Build Number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Set Build Number";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "git=`sh /etc/profile; which git`\nbundleVersion=`\"$git\" log -1 --format=%h`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $bundleVersion\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		7053B58324EC53AB007D9408 /* Sources */ = {
@@ -609,6 +648,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Flext/Flext.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = 7TD7PZBNXP;
 				INFOPLIST_FILE = "$(SRCROOT)/Flext/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -630,6 +670,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Flext/Flext.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = 7TD7PZBNXP;
 				INFOPLIST_FILE = "$(SRCROOT)/Flext/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (

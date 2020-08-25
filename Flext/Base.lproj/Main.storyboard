@@ -630,8 +630,8 @@
                                                                 <color key="textColor" red="0.065279495169999993" green="0.80177139720000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="v1.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5WY-rD-X2H">
-                                                                <rect key="frame" x="20.5" y="46" width="29" height="19.5"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="v0.0.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5WY-rD-X2H">
+                                                                <rect key="frame" x="13" y="46" width="44" height="19.5"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                 <color key="textColor" red="0.065279495169999993" green="0.80177139720000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
@@ -727,6 +727,9 @@
                         <viewLayoutGuide key="safeArea" id="JdV-c1-eys"/>
                     </view>
                     <navigationItem key="navigationItem" title="About" id="NvK-VE-Kt2"/>
+                    <connections>
+                        <outlet property="versionLabel" destination="5WY-rD-X2H" id="vmx-nQ-DU4"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ViS-Ia-aG9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
