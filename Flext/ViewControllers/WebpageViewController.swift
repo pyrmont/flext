@@ -31,7 +31,7 @@ extension WebpageViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard let url = navigationAction.request.url else {
             decisionHandler(.cancel)
-            print("Navigation failed")
+            NSLog("Navigation failed")
             return
         }
         
@@ -50,7 +50,6 @@ extension WebpageViewController: WKNavigationDelegate {
 
 extension WebpageViewController: MFMailComposeViewControllerDelegate {
     func composeEmail(to address: String) {
-        print(address)
         guard MFMailComposeViewController.canSendMail() else { return }
 
         let subject = "[Flext]"
