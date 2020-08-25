@@ -56,7 +56,7 @@ class AboutViewController: UIViewController {
         
         if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String,
             let buildVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
-            versionLabel.text = "v\(appVersion).\(buildVersion)"
+            versionLabel.text = "v\(appVersion) (\(buildVersion))"
         }
 
     }

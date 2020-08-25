@@ -375,7 +375,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "git=`sh /etc/profile; which git`\nbundleVersion=`\"$git\" log -1 --format=%h`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $bundleVersion\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n";
+			shellScript = "git=`sh /etc/profile; which git`\nbuildYear=`\"$git\" log -1 --format=%cd --date=format:%Y`\nbuildVersion=`\"$git\" rev-list HEAD | wc -l | tr -d ' '`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildYear.$buildVersion\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n";
 		};
 		70C09BC824F4C6B400990036 /* Set Build Number */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -393,7 +393,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "git=`sh /etc/profile; which git`\nbundleVersion=`\"$git\" log -1 --format=%h`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $bundleVersion\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n";
+			shellScript = "git=`sh /etc/profile; which git`\nbuildYear=`\"$git\" log -1 --format=%cd --date=format:%Y`\nbuildVersion=`\"$git\" rev-list HEAD | wc -l | tr -d ' '`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildYear.$buildVersion\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
