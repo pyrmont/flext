@@ -34,12 +34,12 @@
 		7092A59524F2269F00E0B320 /* Webpages in Resources */ = {isa = PBXBuildFile; fileRef = 7092A59424F2269E00E0B320 /* Webpages */; };
 		7092A59724F286E600E0B320 /* Webpage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7092A59624F286E600E0B320 /* Webpage.swift */; };
 		7092A59824F28CD700E0B320 /* Webpage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7092A59624F286E600E0B320 /* Webpage.swift */; };
-		7092A59D24F2A8AB00E0B320 /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 7092A59C24F2A8AB00E0B320 /* Down */; };
 		7096B74324D1050900B2C132 /* Processors in Resources */ = {isa = PBXBuildFile; fileRef = 7096B74224D1050900B2C132 /* Processors */; };
 		7096B74924D107D100B2C132 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7096B74824D107D100B2C132 /* SettingsViewController.swift */; };
 		7096B74F24D109CA00B2C132 /* Processor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7096B74E24D109CA00B2C132 /* Processor.swift */; };
 		709899F624DBF642005F2C44 /* PreferencesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709899F524DBF642005F2C44 /* PreferencesManager.swift */; };
 		709899FA24DF8AAB005F2C44 /* ManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709899F924DF8AAB005F2C44 /* ManagerViewController.swift */; };
+		70A075DD24F4E55800415B61 /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 70A075DC24F4E55800415B61 /* Down */; };
 		70B2311324D52AB6004760B1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 70B2311524D52AB6004760B1 /* Localizable.strings */; };
 		70B2311924D53C33004760B1 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2311824D53C33004760B1 /* AboutViewController.swift */; };
 		70B2311F24D65A60004760B1 /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 70B2311E24D65A60004760B1 /* Down */; };
@@ -116,7 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7092A59D24F2A8AB00E0B320 /* Down in Frameworks */,
+				70A075DD24F4E55800415B61 /* Down in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,7 +261,7 @@
 			);
 			name = ActionExtension;
 			packageProductDependencies = (
-				7092A59C24F2A8AB00E0B320 /* Down */,
+				70A075DC24F4E55800415B61 /* Down */,
 			);
 			productName = ActionExtension;
 			productReference = 7053B58724EC53AB007D9408 /* ActionExtension.appex */;
@@ -729,7 +729,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		7092A59C24F2A8AB00E0B320 /* Down */ = {
+		70A075DC24F4E55800415B61 /* Down */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 70B2311D24D65A60004760B1 /* XCRemoteSwiftPackageReference "Down" */;
 			productName = Down;
