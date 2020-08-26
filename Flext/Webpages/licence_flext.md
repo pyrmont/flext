@@ -21,8 +21,10 @@ met:
    may be used to endorse or promote products derived from this software
    without specific prior written permission.
 
-For the avoidance of doubt, this licence does not grant any rights in the name
-'FLEXT' or in the 'FLEXT LOGO'.
+For the avoidance of doubt, all rights in the 'FLEXT' mark and the 'FLEXT LOGO'
+mark are reserved. Files that incorporate the 'FLEXT' mark and the 'FLEXT LOGO'
+mark may be included in any copy of the source code but cannot be displayed for
+any marketing or commercial purpose without express authorisation.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS' AND
 ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED

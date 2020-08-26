@@ -4,15 +4,6 @@ Flext is an iOS app for transforming text. It provides a set of built-in
 'processors' for performing common transformations and allows the user to add
 their own processors.
 
-## Usage Rights
-
-Flext will be offered for sale in the App Store but the code is made available
-as open source.
-
-Please note that the rights in the name 'FLEXT' and the 'FLEXT LOGO' are
-reserved. This means that while you're free to use the source, **you cannot
-distribute an app with the same name and logo**.
-
 ## Requirements
 
 Flext is a Swift app written for the iOS platform. It includes binaries for
@@ -28,7 +19,7 @@ compiling the project.
 
 ```console
 $ git clone git@github.com:pyrmont/flext.git
-$ cd pondent
+$ cd flext
 $ open Flext.xcodeproj
 ```
 
@@ -51,3 +42,13 @@ The source code for Flext is released under a modified form of the 3-clause BSD
 licence. See [LICENSE][lc] for more details.
 
 [lc]: https://github.com/pyrmont/flext/blob/master/LICENSE
+
+### Trade Marks
+
+Flext takes a bit of an unusual approach to its licencing.
+
+The rights in the 'FLEXT' mark and the 'FLEXT LOGO' mark are reserved and are
+not covered by the licence. This means that while you're free to use the source
+code to create your own version of the app (which you can even sell on the App
+Store), you **cannot** do so using the 'FLEXT' mark and/or the 'FLEXT LOGO'
+mark.
