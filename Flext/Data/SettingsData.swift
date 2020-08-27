@@ -20,8 +20,8 @@ struct SettingsData {
     
     private static func legal() -> Setting {
         return Setting(name: "Legal", type: .section, value: [
-            Setting(name: "Privacy Policy", type: .webpage, value: Webpage(title: "Privacy", sourceFile: "general_privacy.md")),
-            licences()])
+            licences(),
+            Setting(name: "Privacy Policy", type: .webpage, value: Webpage(title: "Privacy Policy", sourceFile: "legal_privacy.md"))])
     }
     
     private static func licences() -> Setting {
