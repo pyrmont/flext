@@ -341,6 +341,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="navigationBar" destination="Bqn-NS-zdg" id="CzJ-Oe-SFi"/>
                         <outlet property="tableView" destination="1Qe-pg-otr" id="I0C-zF-NgR"/>
                     </connections>
                 </viewController>

@@ -28,6 +28,7 @@ class SettingsProcessorTableViewCell: UITableViewCell {
 // MARK: - Settings View Controller Definition
 
 class SettingsViewController: UIViewController {
+    @IBOutlet var navigationBar: UINavigationItem!
     @IBOutlet var tableView: UITableView!
     
     var settings: Settings = SettingsManager.settings
@@ -40,13 +41,15 @@ class SettingsViewController: UIViewController {
         super.viewDidLoad()
         
         trail = trail ?? []
-
+        
         tableView.delegate = self
         tableView.dataSource = self
         
         if trail.isEmpty {
 //            tableView.allowsMultipleSelection = true
             selectProcessor(at: settings.selectedProcessorPath)
+        } else {
+            navigationBar.rightBarButtonItem = nil
         }
     }
 
