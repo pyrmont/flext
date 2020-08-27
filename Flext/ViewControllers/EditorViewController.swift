@@ -30,16 +30,24 @@ class EditorViewController: UIViewController {
         var hasPreviousValue: Bool { previousValue != nil }
     }
     
-    @IBOutlet var appContainerBottomConstraint: NSLayoutConstraint!
+    @IBOutlet var appContainer: UIStackView!
     @IBOutlet var textPreview: UITextView!
     @IBOutlet var textEditor: UITextView!
+    @IBOutlet var previewHeading: UIButton!
     @IBOutlet var processorButton: UIButton!
 
+    @IBOutlet var appContainerBottomConstraint: NSLayoutConstraint!
+    @IBOutlet var textPreviewHeightConstraint: NSLayoutConstraint!
+    
     var settings: Settings = SettingsManager.settings
     var enteredText = EnteredText()
     
     var processor: Processor!
     var arguments: [Any]!
+    
+    var previewIsHidden: Bool {
+        textPreviewHeightConstraint.isActive
+    }
     
     // MARK: - Controller Loading
     
@@ -50,6 +58,7 @@ class EditorViewController: UIViewController {
         setupMargins()
         setupListeners()
         setupDefaultProcessor()
+        setupPreviewHiding()
         setupTextEditor()
     }
 
@@ -155,6 +164,12 @@ class EditorViewController: UIViewController {
     
     // MARK: - Text Editor Setup
     
+    func setupPreviewHiding() {
+        if traitCollection.verticalSizeClass == .compact || traitCollection.horizontalSizeClass == .regular {
+            previewHeading.isEnabled = false
+        }
+    }
+    
     func setupTextEditor() {
         enteredText.editor = textEditor as? TextViewWithPlaceholder
         
@@ -206,6 +221,33 @@ class EditorViewController: UIViewController {
         guard let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else { return }
         view.setNeedsLayout()
         UIView.animate(withDuration: duration) { self.view.layoutIfNeeded() }
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if traitCollection.verticalSizeClass == .compact || traitCollection.horizontalSizeClass == .regular {
+            previewHeading.isEnabled = false
+            if previewIsHidden {
+                togglePreview()
+            }
+        } else {
+            previewHeading.isEnabled = true
+        }
+    }
+    
+    @IBAction func togglePreview(_ sender: UIButton? = nil) {
+        if previewIsHidden {
+            UIView.animate(withDuration: 0.5) {
+                self.textPreview.removeConstraint(self.textPreviewHeightConstraint)
+                self.appContainer.distribution = .fillEqually
+                self.appContainer.layoutIfNeeded()
+            }
+        } else {
+            UIView.animate(withDuration: 0.5) {
+                self.appContainer.distribution = .fill
+                self.textPreview.addConstraint(self.textPreviewHeightConstraint)
+                self.appContainer.layoutIfNeeded()
+            }
+        }
     }
     
     // MARK: - Copying, Pasting and Resetting
