@@ -37,8 +37,6 @@ class ActionViewController: UIViewController {
     @IBOutlet var textPreview: UITextView!
     @IBOutlet var textEditor: UITextView!
     
-    var initialSafeAreaBottom: CGFloat!
-    
     var settings: Settings = SettingsManager.settings
     var enteredText = EnteredText()
     
@@ -50,8 +48,6 @@ class ActionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        initialSafeAreaBottom = view.safeAreaInsets.bottom
         
         setupMargins()
         setupListeners()
@@ -224,7 +220,20 @@ class ActionViewController: UIViewController {
         let inherentSafeBottom = view.safeAreaInsets.bottom
         
         if notification.name != UIResponder.keyboardWillHideNotification {
-            additionalSafeAreaInsets.bottom = keyboardViewEndFrame.height - inherentSafeBottom
+            // This is a hacky resolution to getting this to work on the iPad.
+            // Why is the magic number 50? Your guess is as good as mine.
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                guard let viewBottomY = view.window?.frame.maxY, keyboardViewEndFrame.minY < viewBottomY else { return }
+                additionalSafeAreaInsets.bottom = (viewBottomY - keyboardViewEndFrame.minY) - inherentSafeBottom + 50
+            } else {
+                // This doesn't work properly when the phone is in landscape.
+                // The preview view is sized correctly but content in the editor
+                // view will disappear behind the keyboard _until_ you get to a
+                // certian height, at which point it will scroll correctly into
+                // view. Why is the scroll view not working properly? Again,
+                // your guess is as good as mine.
+                additionalSafeAreaInsets.bottom = keyboardViewEndFrame.height - inherentSafeBottom
+            }
         }
         
         guard let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else { return }
