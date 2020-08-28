@@ -137,8 +137,7 @@ class EditorViewController: UIViewController {
     }
     
     func setupProcessor(using processor: Processor) {
-        processorButton.setTitle(processor.name, for: .normal)
-        UIView.animate(withDuration: 0) { self.view.layoutIfNeeded() }
+        setupProcessorTitle(processor.name)
         
         self.processor = processor
         self.arguments = [""]
@@ -160,6 +159,11 @@ class EditorViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    func setupProcessorTitle(_ title: String) {
+        processorButton.setTitle(title, for: .normal)
+        UIView.animate(withDuration: 0) { self.view.layoutIfNeeded() }
     }
     
     // MARK: - Text Editor Setup
@@ -202,10 +206,14 @@ class EditorViewController: UIViewController {
         textEditor.textContainerInset.right = marginReduction
     }
     
+    func visibleKeyboardHeight(of keyboardValue: NSValue) -> CGFloat? {
+        return keyboardValue.cgRectValue.size.height
+    }
+    
     @objc func adjustTextEditorHeight(notification: Notification) {
         if notification.name == UIResponder.keyboardWillChangeFrameNotification {
             guard let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-            let keyboardHeight = keyboardRect.cgRectValue.size.height
+            guard let keyboardHeight = visibleKeyboardHeight(of: keyboardRect) else { return }
 
             if traitCollection.verticalSizeClass != .compact && traitCollection.horizontalSizeClass != .regular {
                 appContainerBottomConstraint.constant = keyboardHeight * 0.6

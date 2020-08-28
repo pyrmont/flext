@@ -31,6 +31,7 @@
 		708BF85924CFB0E40004A404 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 708BF85824CFB0E40004A404 /* Assets.xcassets */; };
 		708BF85C24CFB0E40004A404 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 708BF85A24CFB0E40004A404 /* LaunchScreen.storyboard */; };
 		708BF86424CFDA3C0004A404 /* TextViewWithPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708BF86324CFDA3C0004A404 /* TextViewWithPlaceholder.swift */; };
+		708E672424F9848900306A81 /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708BF85324CFB0E30004A404 /* EditorViewController.swift */; };
 		7092A59524F2269F00E0B320 /* Webpages in Resources */ = {isa = PBXBuildFile; fileRef = 7092A59424F2269E00E0B320 /* Webpages */; };
 		7092A59724F286E600E0B320 /* Webpage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7092A59624F286E600E0B320 /* Webpage.swift */; };
 		7092A59824F28CD700E0B320 /* Webpage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7092A59624F286E600E0B320 /* Webpage.swift */; };
@@ -406,6 +407,7 @@
 				7053B59B24ECF025007D9408 /* SettingsData.swift in Sources */,
 				7053B59E24ECF065007D9408 /* Errors.swift in Sources */,
 				7092A59824F28CD700E0B320 /* Webpage.swift in Sources */,
+				708E672424F9848900306A81 /* EditorViewController.swift in Sources */,
 				7053B58C24EC53AB007D9408 /* ActionViewController.swift in Sources */,
 				7053B59D24ECF057007D9408 /* Processor.swift in Sources */,
 				7053B59C24ECF02A007D9408 /* SettingsManager.swift in Sources */,
