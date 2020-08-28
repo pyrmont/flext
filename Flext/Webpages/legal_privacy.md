@@ -1,7 +1,7 @@
-This policy (the **Policy**) sets out various procedures that will be followed by
-Michael Camilleri (the **Developer**) in connection with the iOS application,
-Flext (the **App**). The Policy applies to all information collected or submitted
-in, or as a result of your use of, the App.
+This policy (the **Policy**) sets out various procedures that will be followed
+by Michael Camilleri (the **Developer**) in connection with the iOS application,
+Flext (the **App**). The Policy applies to all information collected or
+submitted in, or as a result of your use of, the App.
 
 ## The Information
 

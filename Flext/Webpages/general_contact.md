@@ -3,7 +3,8 @@ If you'd like to get in touch, I'd love to hear from you.
 ## Bug Reports
 
 Please report bugs by filing an issue in
-[Flext's repository](https://github.com/pyrmont/flext/issues) on GitHub. This helps other users.
+[Flext's repository](https://github.com/pyrmont/flext/issues) on GitHub. This
+helps other users.
 
 ## E-mail
 
