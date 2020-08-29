@@ -130,6 +130,19 @@ class EditorViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        scrollPreview()
+        
+        if traitCollection.verticalSizeClass == .compact || traitCollection.horizontalSizeClass == .regular {
+            previewHeading.isEnabled = false
+            if previewIsHidden {
+                togglePreview()
+            }
+        } else {
+            previewHeading.isEnabled = true
+        }
+    }
+
     // MARK: - Processor Setup
 
     func setupDefaultProcessor() {
@@ -166,8 +179,16 @@ class EditorViewController: UIViewController {
         UIView.animate(withDuration: 0) { self.view.layoutIfNeeded() }
     }
     
-    // MARK: - Text Editor Setup
+    // MARK: - Text Views Setup
     
+    func setupMargins() {
+        let marginReduction = -(textPreview.textContainer.lineFragmentPadding)
+        textPreview.textContainerInset.left = marginReduction
+        textPreview.textContainerInset.right = marginReduction
+        textEditor.textContainerInset.left = marginReduction
+        textEditor.textContainerInset.right = marginReduction
+    }
+
     func setupPreviewHiding() {
         if traitCollection.verticalSizeClass == .compact || traitCollection.horizontalSizeClass == .regular {
             previewHeading.isEnabled = false
@@ -181,7 +202,7 @@ class EditorViewController: UIViewController {
             enteredText.editor?.replaceText(with: enteredText.previousValue)
         }
     }
-    
+
     // MARK: - Processor Execution
     
     func runProcessor() {
@@ -197,15 +218,7 @@ class EditorViewController: UIViewController {
     }
     
     // MARK: - UI Adjustments
-    
-    func setupMargins() {
-        let marginReduction = -(textPreview.textContainer.lineFragmentPadding)
-        textPreview.textContainerInset.left = marginReduction
-        textPreview.textContainerInset.right = marginReduction
-        textEditor.textContainerInset.left = marginReduction
-        textEditor.textContainerInset.right = marginReduction
-    }
-    
+
     func visibleKeyboardHeight(of keyboardValue: NSValue) -> CGFloat? {
         return keyboardValue.cgRectValue.size.height
     }
@@ -231,15 +244,28 @@ class EditorViewController: UIViewController {
         UIView.animate(withDuration: duration) { self.view.layoutIfNeeded() }
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        if traitCollection.verticalSizeClass == .compact || traitCollection.horizontalSizeClass == .regular {
-            previewHeading.isEnabled = false
-            if previewIsHidden {
-                togglePreview()
-            }
-        } else {
-            previewHeading.isEnabled = true
+    func scrollPreview() {
+        guard let value = enteredText.value else { return }
+        guard let textView = enteredText.editor else { return }
+        guard let selection = textView.selectedTextRange else { return }
+        guard value.count > 0 else { return }
+        
+        var caret: CGRect
+        
+        switch selection.end {
+        case textView.beginningOfDocument:
+            caret = textPreview.caretRect(for: textPreview.beginningOfDocument)
+        case textView.endOfDocument:
+            caret = textPreview.caretRect(for: textPreview.endOfDocument)
+        default:
+            let positionRatio = Double(textView.offset(from: textView.beginningOfDocument, to: selection.end)) / Double(value.utf16.count)
+            let equivalentIndex = Int((Double(textPreview.text.utf16.count) * positionRatio).rounded(.up))
+            let equivalentPosition = textPreview.position(from: textPreview.beginningOfDocument, offset: equivalentIndex)
+            
+            caret = textPreview.caretRect(for: equivalentPosition ?? textPreview.endOfDocument)
         }
+        
+        textPreview.scrollRectToVisible(caret, animated: false)
     }
     
     @IBAction func togglePreview(_ sender: UIButton? = nil) {
@@ -257,7 +283,7 @@ class EditorViewController: UIViewController {
             }
         }
     }
-    
+
     // MARK: - Copying, Pasting and Resetting
     
     @IBAction func interactWithText(_ sender: UISegmentedControl) {
@@ -282,6 +308,10 @@ class EditorViewController: UIViewController {
 extension EditorViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         runProcessor()
+    }
+    
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        scrollPreview()
     }
 }
 
