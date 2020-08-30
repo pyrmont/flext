@@ -9,14 +9,43 @@
 import Foundation
 import JavaScriptCore
 
-// MARK: - ProcessorOption Definition
+// MARK: - ProcessorOption Class
 
+/**
+ Represents a processor option.
+ */
 class ProcessorOption {
+    
+    // MARK: - Properties
+    
+    /// The name of the processor option.
     var name: String
+    
+    /// The user-defined value of the processor option.
+    ///
+    /// The value is saved as a string but will be evaluated in the JavaScript
+    /// context of the processor to return the appropriate JavaScript value.
     var value: String?
+    
+    /// The default value of the processor option.
+    ///
+    /// The value is saved as a string but will be evaluated in the JavaScript
+    /// context of the processor to return the appropriate JavaScript value.
     var defaultValue: String?
+    
+    /// A comment associated with the processor option.
     var comment: String?
     
+    // MARK: - Initialisers
+    
+    /**
+     Creates a processor option.
+     
+     - Parameters:
+        - name: The name of the option.
+        - defaultValue: The default value for the option.
+        - comment: The comment for the option.
+     */
     init(name: String, defaultValue: String?, comment: String?) {
         self.name = name.trimmingCharacters(in: .whitespacesAndNewlines)
         
@@ -37,6 +66,17 @@ class ProcessorOption {
 }
 
 extension Array where Element == ProcessorOption {
+    
+    // MARK: - Option Addition
+    
+    /**
+     Appends an option to an array of processor options.
+     
+     - Parameters:
+        - name: The name of the option.
+        - defaultValue: The default value for the option.
+        - comment: The comment for the option.
+     */
     mutating func appendOption(name: String, defaultValue: String, comment: String) {
         guard name != "text" else { return }
         append(ProcessorOption(name: name, defaultValue: defaultValue, comment: comment))
@@ -45,25 +85,45 @@ extension Array where Element == ProcessorOption {
 
 // MARK: - Processor Definition
 
+/**
+ Represents a processor.
+ 
+ For performance reasons, the `Processor` class makes use of lazy properties for
+ the `function` and `options` properties.
+ */
 class Processor {
+    
+    // MARK: - ProcessorType Enum
+    
+    /**
+     Represents the type of processor.
+     */
     enum ProcessorType: Int {
         case builtIn
         case userAdded
     }
     
-    // MARK: - Public Properties
+    // MARK: - Properties
     
+    /// The URL for the file associated with the processor.
     var path: URL
+    
+    /// The state of whether the processor has options.
     var hasOptions: Bool = false
+    
+    /// The state of whether the process is enabled.
     var isEnabled: Bool = true
+    
+    /// The type of processor.
     var type: ProcessorType = .builtIn
     
-    // MARK: - Private Properties
-    
+    /// The external name of the processor.
+    ///
+    /// The external name of the processor is the name set by the user for a
+    /// user-added processor.
     private var externalName: String?
     
-    // MARK: - Lazy Properties
-    
+    /// The lazily evaluated JavaScript function.
     lazy var function: JSValue? = {
         guard let jsContext = JSContext() else { return nil }
         
@@ -78,6 +138,7 @@ class Processor {
         return nil
     }()
     
+    /// The lazily evaluated options.
     lazy var options: [ProcessorOption] = {
         guard hasOptions else { return [] }
         
@@ -91,11 +152,13 @@ class Processor {
         return result
     }()
     
-    // MARK: - Computed Properties
-    
+    /// The filename of the file associated with the processor.
     var filename: String { get { path.lastPathComponent } }
+    
+    /// The basename of the file associated with the processor.
     var basename: String { get { filename.replacingOccurrences(of: ".js", with: "") } }
     
+    /// The name of the processor.
     var name: String {
         get {
             guard externalName == nil else { return externalName! }
@@ -113,19 +176,46 @@ class Processor {
         }
     }
 
-    // MARK: - Initialiser
+    // MARK: - Initialisers
     
+    /**
+     Creates a processor.
+     
+     - Parameters:
+        - path: The URL to the file associated with the processor.
+     
+     - Throws: The file cannot be checked for the existence of options.
+     */
     init(path: URL) throws {
         self.path = path
         self.isEnabled = PreferencesManager.processors[filename]?.isEnabled ?? true
         self.hasOptions = try checkForOptions()
     }
     
+    /**
+     Creates a processor of a particular type.
+     
+     - Parameters:
+        - path: The URL to the file associated with the processor.
+        - type: The type of the processor.
+     
+     - Throws: The file cannot be checked for the existence of options.
+     */
     convenience init(path: URL, type: ProcessorType) throws {
         try self.init(path: path)
         self.type = type
     }
     
+    /**
+     Creates a processor of a particular type with a name.
+     
+     - Parameters:
+        - path: The URL to the file associated with the processor.
+        - type: The type of the processor.
+        - name: The name of the processor.
+     
+     - Throws: The file cannot be checked for the existence of options.
+     */
     convenience init(path: URL, type: ProcessorType, name: String) throws {
         try self.init(path: path, type: type)
         self.externalName = name
@@ -133,6 +223,23 @@ class Processor {
     
     // MARK: - Option Parsing
 
+    // TODO: This looks like it could cause unexpected behaviour. Update the
+    // heuristic so that it specifically checks for
+    // `var process = function(text,`.
+    
+    /**
+     Checks whether the processor has options.
+     
+     This method checks whether the `process()` function takes any additional
+     parameters. For performance reasons, this check does not actually evaluate
+     the function. Instead it looks at each line of the JavaScript file and if
+     the file contains a line that suggests the function contains additional
+     arguments, it returns `true`.
+     
+     - Throws: The line reader is unable to load the JavaScript file.
+     
+     - Returns: Whether the processor has options.
+     */
     private func checkForOptions() throws -> Bool {
         guard let reader = LineReader(at: path) else { throw FlextError(type: .failedToLoadPath, location: (#file, #line)) }
         
@@ -144,6 +251,20 @@ class Processor {
         return false
     }
     
+    /**
+     Parses the options in the `process()` function definition.
+     
+     Flext supports processors with options. Options are additional arguments
+     in the `process()` function definition. This method extracts those
+     additional arguments.
+     
+     Unfortunately, JavaScript does not provide sophisticated reflection
+     functions so we have to convert the function definition to a string and
+     then manually parse out the arguments. This method supports parsing
+     argument names, default values and comments immediately following argument.
+     
+     - Returns: An array of processor options.
+     */
     private func parseOptions() -> [ProcessorOption] {
         let functionDefinition = function?.toString()
 
@@ -309,6 +430,12 @@ class Processor {
 // MARK: - Processor Factory
 
 extension Processor {
+    /**
+     Returns all the processors in Flext.
+     
+     - Returns: An array of all the processors in the app. This comprises both
+                built-in and user-added processors.
+     */
     static var all: [Processor] {
         guard let builtInProcessorURLs = Bundle.main.urls(forResourcesWithExtension: "js", subdirectory: "Processors") else { return [] }
 
@@ -335,19 +462,65 @@ extension Processor {
     }
 }
 
-// MARK: - Extensions
-
 extension Processor: Equatable {
+    
+    // MARK: - Processor Equivalence
+
+    /**
+     Returns whether the processors are equal.
+     
+     Two processors are considered to be equal if the files associated with the
+     processors are located in the same place.
+     
+     This means that two processors might represent identical JavaScript
+     functions but if they are stored in different locations, they are treated
+     as different processors. This is intentional as it permits a user to add
+     multiple copies of the same processor.
+     
+     - Parameters:
+        - lhs: The first processor to compare.
+        - rhs: The second processor to compare.
+     
+     - Returns: Whether the two processors are equal.
+     */
     static func == (lhs: Processor, rhs: Processor) -> Bool {
         lhs.path == rhs.path
     }
 }
 
 extension Array where Element == Processor {
+    
+    // MARK: - Processor Retrieval
+    
+    /**
+     Returns the processor (if one exists) for a URL
+     
+     This method returns the first processor in the array that matches the
+     `path`. There is no guarantee that there is only one such processor in the
+     array.
+     
+     - Parameters:
+        - path: The URL of the file associated with a processor.
+     
+     - Returns: The processor associated with the file.
+     */
+    
     func find(path: URL) -> Processor? {
         first(where: { $0.path == path })
     }
     
+    /**
+     Returns safely the processor for an index
+     
+     Swift does no bounds checking when looking up an index in an array. This
+     method returns `nil` if `index` is less than or greater than the indices
+     accessible in the array.
+     
+     - Parameters:
+        - index: The index to check.
+     
+     - Returns: The processor if one exists at the `index`.
+     */
     func at(_ index: Index) -> Processor? {
         guard index >= 0, index < count else { return nil }
         return self[index]

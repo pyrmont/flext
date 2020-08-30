@@ -10,50 +10,108 @@ import UIKit
 import JavaScriptCore
 import MobileCoreServices
 
-// MARK: - Manager Text Field Definition
+// MARK: - ManagerTextField Class
 
+/**
+ Represents a text field within a `ManagerTableViewCell` element.
+ 
+ The Manager section of Flext lists the user-added processors with titles that
+ the user can tap to rename. As processors are tightly integrated with cells,
+ the logic is greatly simplified by having a reference to the containing
+ `ManagerTableViewCell` object.
+ */
 class ManagerTextField: UITextField {
+    
+    /// The containing `ManagerTableViewCell` object
     weak var containingCell: ManagerTableViewCell!
 }
 
-// MARK: - Manager Table View Cell Definition
+// MARK: - ManagerTableViewCell Class
 
+/**
+ Represents a table view's cell in the Manager section.
+ 
+ As is the case with the `ManagerTextField` class, it simplifies the logic of
+ updating processor data to have a table's cell contain various pieces of
+ information.
+ */
 class ManagerTableViewCell: UITableViewCell {
+    
+    // MARK: - IB Outlet Values
+    
     @IBOutlet var titleLabel: UILabel?
     @IBOutlet var enabledToggle: UISwitch?
     @IBOutlet var textField: UITextField?
     
+    // MARK: - Properties
+    
+    /// The associated processor.
     weak var processor: Processor!
     
+    /**
+     Sets the text to display.
+     
+     The `ManagerTableViewCell` displays a `ManagerTextField` object in place
+     of the typical `UILabel`. However, since `ManagerTableViewCell` is a
+     subclass of `UITableViewCell`, a `UILabel` is nevertheless included as
+     part of the class structure. For accessibility reasons, this method sets
+     the value of both the objects to 'display' the same text.`
+     
+     - Parameters:
+        - text: The text to display (this should be the name of the relevant
+                processor).
+     */
     func set(text: String) {
         titleLabel?.text = text
         textField?.text = text
     }
 }
 
-// MARK: - Manager View Controller Definition
+// MARK: - ManagerViewController Class
 
+/**
+ Displays the Manager section.
+ 
+ Flext allows the user to add, remove, enable, disable and reorder its
+ processors. This is achieved through the Manager section of the app. This view
+ controller is responsible for displaying that section and handling the logic
+ associated with the user's changes.
+
+ While UITableView provides native reordering functionality of the rows in the
+ table, Flext uses UIKit's drag and drop functions to implement reordering. This
+ is because only one section of the processors (the array of enabled processors)
+ can be reordered.
+ */
 class ManagerViewController: UIViewController {
+    
+    // MARK: - Type Aliases
+    
+    /// A category of processor.
     typealias Section = Settings.Section
     
-    // MARK: Public Properties
+    // MARK: - IB Outlet Values
     
     @IBOutlet var tableView: UITableView!
     @IBOutlet var removeButton: UIBarButtonItem!
 
+    // MARK: - Properties
+    
+    /// The settings for Flext.
     var settings: Settings = SettingsManager.settings
     
+    /// The built-in processors.
     var builtInProcessors: [Processor] = []
+    
+    /// The user-added processors.
     var userAddedProcessors: [Processor] = []
     
+    /// The document picker.
     var documentPicker: UIDocumentPickerViewController!
     
     // MARK: - Controller Loading
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setupListeners()
         
         for processor in settings.processors {
             switch processor.type {
@@ -71,6 +129,8 @@ class ManagerViewController: UIViewController {
         tableView.dragDelegate = self
         tableView.dropDelegate = self
         
+        // This is a means of adjusting the duration the user has to wait before
+        // drag and drop becomes active.
         if let recognizers = tableView.gestureRecognizers {
             for case let recognizer as UILongPressGestureRecognizer in recognizers {
                 recognizer.minimumPressDuration = 0.2
@@ -85,22 +145,41 @@ class ManagerViewController: UIViewController {
     
     // MARK: - Listener Setup
     
-    func setupListeners() {
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(ManagerViewController.adjustTableViewHeight(notification:)),
-            name: UIResponder.keyboardDidShowNotification,
+            selector: #selector(adjustTableViewHeight(notification:)),
+            name: UIResponder.keyboardWillChangeFrameNotification,
             object: nil)
         
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(ManagerViewController.adjustTableViewHeight(notification:)),
+            selector: #selector(adjustTableViewHeight(notification:)),
             name: UIResponder.keyboardWillHideNotification,
             object: nil)
     }
     
-    // MARK: Editing Mode
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
     
+    // MARK: Editing Mode
+
+    /**
+     Toggles whether the table is in editing mode.
+     
+     This method toggles whether the table is in editing mode or not. If so, it
+     scrolls the view to the user-added section (as this is the only section
+     from which processors can be added or removed).
+     
+     - parameters:
+        - sender: The button that triggered the toggling.
+     */
     @IBAction func toggleEditing(_ sender: UIBarButtonItem) {
         if tableView.isEditing {
             removeButton.title = "Remove"
@@ -114,6 +193,21 @@ class ManagerViewController: UIViewController {
     
     // MARK: - Enabling Processors
     
+    /**
+     Enables a processor.
+     
+     Flext does not permit a user to remove the built-in processors. A user may
+     nevertheless have no interest in a particular processor and not want to use
+     it. Flext's solution is to allow the user to disable processors.
+     
+     This method ensures that at least one active processor is enabled. It does
+     this by looping through the cells that are visible and toggling their
+     enabled status. This loop will also _reenable_ disabling if the second
+     of final two processors is _enabled_.
+     
+     - Parameters:
+        - sender: The switch that triggered the toggle.
+     */
     @IBAction func enableProcessor(_ sender: UISwitch) {
         guard let cell = sender.superview?.superview as? ManagerTableViewCell else { return }
         
@@ -131,7 +225,9 @@ class ManagerViewController: UIViewController {
                 settings.resetSelectedProcessor()
             }
         }
-            
+        
+        // TODO: Why is this limited to visible cells? Shouldn't this be done
+        // for all of the cells in the table?
         for cell in tableView.visibleCells {
             guard let toggle = (cell as! ManagerTableViewCell).enabledToggle else { continue }
             toggle.isEnabled = settings.enabledProcessors.count == 1 ? !toggle.isOn : true
@@ -140,6 +236,12 @@ class ManagerViewController: UIViewController {
     
     // MARK: Renaming Processors
     
+    /**
+     Finishes renaming the processor.
+     
+     - Parameters:
+        - sender: The text field for the processor being renamed.
+     */
     @IBAction func finishedRenaming(_ sender: ManagerTextField) {
         guard let text = sender.text else { return }
         guard !text.isEmpty else { return }
@@ -154,10 +256,33 @@ class ManagerViewController: UIViewController {
     
     // MARK: Adding Files
     
+    /**
+     Opens the document picker.
+     
+     - Parameters:
+        - sender: The button that will trigger the document picker to be opened.
+     */
     @IBAction func openDocumentPicker(_ sender: UIBarButtonItem) {
         present(documentPicker, animated: true, completion: nil)
     }
 
+    // TODO: Consider whether this method should also check that the `process()`
+    // function takes at least one argument.
+    /**
+     Copies the file to the group directory.
+     
+     This method attempts to copy the file chosen by the user to the group
+     directory for the `group.net.inqk.Flext` group (this is so the file will be
+     available to the action extension). Before adding the file, this method
+     evaluates the script to check that the `process()` function is defined.
+     
+     - Parameters:
+        - url: The URL of the file to be copied.
+     
+     - Throws: The file could not be copied to the group directory.
+     
+     - Returns: The URL of the copy of the file.
+     */
     func addFile(at url: URL) throws -> URL? {
         var importURL: URL? = nil
         var importError: FlextError? = nil
@@ -190,6 +315,17 @@ class ManagerViewController: UIViewController {
     
     // MARK: - Removing Files
     
+    /**
+     Deletes the file from the group directory.
+
+     This method attempts to delete the file chosen by the user from the group
+     directory for the `group.net.inqk.Flext` group.
+     
+     - Parameters:
+        - url: The URL of the file to be deleted.
+     
+     - Throws: The file could not be deleted from the group directory.
+     */
     func removeFile(at url: URL) throws {
         var deleteError: FlextError? = nil
 
@@ -208,9 +344,20 @@ class ManagerViewController: UIViewController {
     }
 
     // MARK: - UI Adjustments
+
+    // TODO: - Consider whether this is necessary. UIKit should handle all of
+    // this for you with a table. It seemed to work just fine when I took it
+    // out.
     
+    /**
+     Adjusts the table view's height.
+
+     - Parameters:
+        - notification: The notification of the event that triggered the
+                        adjustment.
+     */
     @objc func adjustTableViewHeight(notification: Notification) {
-        if notification.name == UIResponder.keyboardDidShowNotification {
+        if notification.name == UIResponder.keyboardWillChangeFrameNotification {
             guard let keyboardRect = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
             tableView.contentInset.bottom = keyboardRect.cgRectValue.size.height
         } else if notification.name == UIResponder.keyboardWillHideNotification {
@@ -329,6 +476,20 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
     
     // MARK: - Inserting
     
+    /**
+     Inserts the processor.
+     
+     This method attempts to insert a processor into the collection of
+     processors managed by Flext. If that fails, the method displays an alert to
+     the user giving an explanation of what went wrong.
+     
+     Assuming that it is successful, the method then inserts the newly
+     added processor into the correct sections of the table, refreshes the table
+     view and then scrolls the table to the row that has been added.
+     
+     - Parameters:
+        - url: The URL of the file to be inserted.
+     */
     func insertProcessor(with url: URL) {
         var processor: Processor
         

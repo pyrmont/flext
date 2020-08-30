@@ -8,7 +8,20 @@
 
 import Foundation
 
+/**
+ Represents an error in Flext.
+ 
+ Swift does not provide a default error type. Instead, a type that implements
+ the `Error` protocol needs to be specified. This struct defines a series of
+ error states that are used throughout the app.
+ */
 struct FlextError: Error {
+    
+    // MARK: - ErrorType Enum
+    
+    /**
+     Represents the error states used in Flext.
+     */
     enum ErrorType {
         case unknown
         case failedToLoadPath
@@ -20,25 +33,67 @@ struct FlextError: Error {
         case failedToFindProcessFunction
     }
 
+    // MARK: - Properties
+    
+    /// The type of the error.
     var type: ErrorType
+    
+    /// The location where the error occurred.
+    ///
+    /// The location is a tuple that consists of a `String` representing the
+    /// file and an `Int` representing the line number.
     var location: (String, Int)?
+    
+    // TODO: Consider whether this property is needed any more.
+    
+    /// A message to display.
     var message: String?
     
+    // A log message to display.
     var logMessage: String {
         "Error type: \(self.type)" + format(location: self.location)
     }
     
+    // MARK: - Initialisers
+    
+    /**
+     Creates an error of the specified type and at the optional location.
+     
+     - Parameters:
+        - type: The type of the error.
+        - location: The location (source file and line number) of the error.
+     */
     init(type: ErrorType, location: (String, Int)? = nil) {
         self.type = type
         self.location = location
     }
     
+    // MARK: - Location Adding
+    
+    /**
+     Returns a copy of the error with the location set.
+     
+     - Parameters:
+        - location: The location (source file and line number) of the error.
+     
+     - Returns: A copy of the `FlextError` instance.
+     */
     func with(location: (String, Int)) -> FlextError {
         var result = self
         result.location = location
         return result
     }
     
+    // MARK: - Location Formatting
+    
+    /**
+     Returns the formatted location.
+     
+     - Parameters:
+        - location: The location (source file and line number) of the error.
+    
+     - Returns: The formatted string.
+     */
     private func format(location: (String, Int)?) -> String {
         return location == nil ? "" : " in \(location!.0) at \(location!.1)"
     }

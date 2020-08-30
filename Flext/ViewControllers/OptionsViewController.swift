@@ -8,23 +8,42 @@
 
 import UIKit
 
-// MARK: - Option Table View Cell Definition
+// MARK: - OptionTableViewCell Class
 
+/**
+ Represents a table view's cell in the Options section.
+ 
+ The options table view cell contains no additional functionality but is able
+ to model the individual elements added in Interface Builder.
+ */
 class OptionTableViewCell: UITableViewCell {
+    
+    // MARK: - IB Outlet Values
+    
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var valueTextField: UITextField!
     @IBOutlet var commentLabel: UILabel!
 }
 
-// MARK: - Option View Controller Definition
+// MARK: - OptionsViewController Class
 
+/**
+ Displays the Options section.
+ 
+ It is possible for processors in Flext to offer options to a user. This is done
+ by the user specifying additional arguments to the `process()` function in the
+ underlying JavaScript file.
+ */
 class OptionsViewController: UIViewController {
     
-    // MARK: - Public Properties
+    // MARK: - IB Outlet Values
     
     @IBOutlet var processorTitle: UINavigationItem!
     @IBOutlet var tableView: UITableView!
     
+    // MARK: - Properties
+    
+    /// The relevant processor.
     var processor: Processor!
 
     // MARK: - Controller Loading
@@ -34,38 +53,56 @@ class OptionsViewController: UIViewController {
         
         processorTitle.title = processor.name
         
-        setupListener()
-        
         tableView.delegate = self
         tableView.dataSource = self
     }
     
     // MARK: - Listener Setup
-    
-    func setupListener() {
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(OptionsViewController.updateOption(notification:)),
+            selector: #selector(updateOption(notification:)),
             name: UITextField.textDidChangeNotification,
             object: nil)
+
+        // TODO: Consider whether these listeners can be removed. I don't think they
+        // are necessary.
         
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(ManagerViewController.adjustTableViewHeight(notification:)),
-            name: UIResponder.keyboardDidShowNotification,
+            selector: #selector(adjustTableViewHeight(notification:)),
+            name: UIResponder.keyboardWillChangeFrameNotification,
             object: nil)
         
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(ManagerViewController.adjustTableViewHeight(notification:)),
+            selector: #selector(adjustTableViewHeight(notification:)),
             name: UIResponder.keyboardWillHideNotification,
             object: nil)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        NotificationCenter.default.removeObserver(self, name: UITextField.textDidChangeNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
     // MARK: - UI Adjustments
-    
+
+    /**
+     Adjusts the table view's height.
+     
+     - Parameters:
+        - notification: The notification of the event that triggered the
+                        adjustment.
+     */
     @objc func adjustTableViewHeight(notification: Notification) {
-        if notification.name == UIResponder.keyboardDidShowNotification {
+        if notification.name == UIResponder.keyboardWillChangeFrameNotification {
             guard let keyboardRect = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
             tableView.contentInset.bottom = keyboardRect.cgRectValue.size.height
         } else if notification.name == UIResponder.keyboardWillHideNotification {
@@ -75,8 +112,20 @@ class OptionsViewController: UIViewController {
     
     // MARK: - Updating
     
+    /**
+     Updates the value of the option associated with the relevant processor.
+     
+     Flext takes advantage of classes being reference types to add the updated
+     option to `processor`. This object is part of Flext's settings construct.
+     By updating the `options` property of `processor`, this will allow a save
+     of Flext's settings (implemented separately) to include this new value.
+     
+     - Parameters:
+        - notification: The notification of the event that triggered the update.
+     */
     @objc func updateOption(notification: Notification) {
         guard let textField = notification.object as? UITextField else { return }
+        // FIXME: - This needs to be a chain of 3 superviews.
         guard let cell = textField.superview?.superview as? UITableViewCell else { return }
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         
@@ -87,7 +136,15 @@ class OptionsViewController: UIViewController {
         }
     }
 
-    // This is necessary to allow the keyboard to be dismissed when editing the text field
+    /**
+     Finishes updating the text field.
+     
+     This method needs to exist so that it is possible to dismiss the modal
+     Options section.
+     
+     - Parameters:
+        - sender: The text field that triggered the update.
+     */
     @IBAction func finishUpdating(_ sender: UITextField) { }
 }
 

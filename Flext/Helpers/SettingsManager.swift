@@ -8,14 +8,33 @@
 
 import Foundation
 
+// MARK: - SettingValue Protocol
+
+/**
+ Represents a setting value.
+ 
+ Swift does not provide a union type. This protocol essentially functions as a
+ way to achieve a similar effect.
+ */
 protocol SettingValue { }
 
 extension Array: SettingValue where Element == Setting {}
 extension String: SettingValue {}
 extension Webpage: SettingValue {}
 
+// MARK: - SettingItem Protocol
+
+/**
+ Represents a setting item.
+ */
 protocol SettingItem {
+
+    // MARK: - Properties
+    
+    /// The name of the item.
     var name: String { get }
+    
+    /// The type of the setting.
     var settingType: Setting.SettingType { get }
 }
 
@@ -23,7 +42,24 @@ extension Processor: SettingItem {
     var settingType: Setting.SettingType { .processor }
 }
 
-class Setting: SettingItem {
+extension Setting: SettingItem {
+    var settingType: Setting.SettingType { self.type }
+}
+
+// MARK: - Setting Class
+
+/**
+ Represents a setting.
+ 
+ A reference type
+ */
+class Setting {
+    
+    // MARK: - SettingType Enum
+    
+    /**
+     Represents the type of a setting.
+     */
     enum SettingType {
         case about
         case manager
@@ -32,12 +68,27 @@ class Setting: SettingItem {
         case webpage
     }
     
+    // MARK: - Properties
+    
+    /// The name of the setting.
     var name: String
+    
+    /// The type of the setting.
     var type: SettingType
+    
+    /// The value of the setting.
     var value: SettingValue
     
-    var settingType: SettingType { type }
+    // MARK: - Initialisers
     
+    /**
+     Creates a setting.
+     
+     - Parameters:
+        - name: The name of the setting.
+        - type: The type of the setting.
+        - value: The value of the setting.
+     */
     init(name: String, type: SettingType, value: SettingValue) {
         self.name = name
         self.type = type
@@ -45,23 +96,58 @@ class Setting: SettingItem {
     }
 }
 
+// MARK: - Settings Class
+
+/**
+ Represents a collection of settings.
+ 
+ A reference type is intentionally chosen as a simple way to keep settings data
+ consistent across the app. This could cause problems in the future if actions
+ occurred which could the settings to be updated concurrently.
+ 
+ As settings can be nested, many of the public methods provided by this class
+ support a `trail` parameter. This is a 'trail' of indices that drill down from
+ the root.
+ */
 class Settings {
+    
+    // MARK: - SettingsError Enum
+    
+    /**
+     Represents the error states in settings.
+     */
     enum SettingsError: Error {
         case emptySection
         case noProcessor
         case notSection
     }
     
+    // MARK: - Section Enum
+    
+    /**
+     Represents the types of processors.
+     */
     enum Section: Int {
         case enabled
         case builtIn
         case userAdded
     }
     
+    // MARK: - Properties
+    
+    /// The collection of processors.
     var processors: [Processor]
+    
+    /// The collection of enabled processors.
     var enabledProcessors: [Processor]
+    
+    /// The path to the active processor.
     var selectedProcessorPath: IndexPath?
     
+    /// The active processor.
+    ///
+    /// If a processor is not active, a processor will be selected to be the
+    /// active processor.
     var selectedProcessor: Processor {
         if let processorPath = selectedProcessorPath, let selection = enabledProcessors.at(processorPath.row), selection.isEnabled {
             return selection
@@ -78,11 +164,20 @@ class Settings {
         return processors.first!
     }
     
+    /// The settings.
     private var settings: [Setting]
+    
+    /// The raw value of the enabled section.
     private let enabledSection = Section.enabled.rawValue
     
     // MARK: - Initialisers
     
+    /**
+     Creates a collection of settings.
+     
+     - Parameters:
+        - processors: All of the processors in the app.
+     */
     init(processors: [Processor]) {
         self.processors = processors
         self.enabledProcessors = processors
@@ -97,6 +192,15 @@ class Settings {
         self.settings = SettingsData.settings()
     }
     
+    /**
+     Creates a collection of settings and sets an active processor.
+     
+     - Parameters:
+        - processors: All of the processors in the app.
+        - processor: The active processor.
+     
+     - Throws: `processor` is not in the `procesors`
+     */
     convenience init(processors: [Processor], selected processor: Processor) throws {
         self.init(processors: processors)
         
@@ -106,6 +210,14 @@ class Settings {
     
     // MARK: - Processor Inserters and Removers
     
+    /**
+     Adds the processor.
+     
+     This method is used when the user adds a processor through the app.
+     
+     - Parameters:
+        - processor: The processor to add.
+     */
     func add(_ processor: Processor) {
         self.processors.append(processor)
         
@@ -113,6 +225,14 @@ class Settings {
         self.enabledProcessors.append(processor)
     }
     
+    /**
+     Removes the processor.
+     
+     This method is used when the user removes a process through the app.
+     
+     - Parameters:
+        - processor: The processor to remove.
+     */
     func remove(_ processor: Processor) {
         self.processors.remove(at: self.processors.firstIndex(of: processor)!)
         
@@ -122,6 +242,13 @@ class Settings {
 
     // MARK: - Selection Updaters
     
+    /**
+     Resets the active processor.
+     
+     This method tries to reset the active processor to the first processor in
+     the `enabledProcessors` collection. If that is not possible, it sets the
+     active processor to `nil` and logs an error.
+     */
     func resetSelectedProcessor() {
         if enabledProcessors.first != nil {
             selectedProcessorPath = IndexPath(row: 0, section: enabledSection)
@@ -131,6 +258,16 @@ class Settings {
         }
     }
     
+    /**
+     Updates the active processor.
+     
+     This method tries to update the active processor to be the processor
+     provided. If the processor does not exist in `enabledProcessors`, it sets
+     the active processor to `nil` and logs an error.
+     
+     - Parameters:
+        - processor: The processor to set as the active processor.
+     */
     func updateSelectedProcessor(with processor: Processor) {
         if let row = enabledProcessors.firstIndex(of: processor) {
             selectedProcessorPath = IndexPath(row: row, section: enabledSection)
@@ -142,16 +279,46 @@ class Settings {
     
     // MARK: - Processor Checkers
 
+    /**
+     Checks whether the item at an index is a processor.
+     
+     - Parameters:
+        - indexPath: The index of the item to check.
+        - trail: The trail of nested index path (this might be empty).
+     
+     - Returns: Whether the item at an index is a processor.
+     */
     func isProcessor(at indexPath: IndexPath, using trail: [Int]) -> Bool {
         return areProcessors(at: indexPath.section, using: trail)
     }
     
-    func areProcessors(at section: Int, using trail: [Int]) -> Bool {
+    /**
+     Returns whether the section contains processors.
+     
+     - Parameters:
+        - section: The section within the relevant table.
+        - trail: The trail of nested index paths (this might be empty).
+     
+     - Returns: Whether the section is one that contains processors.
+     */
+    private func areProcessors(at section: Int, using trail: [Int]) -> Bool {
         return trail.isEmpty && section == 0
     }
     
     // MARK: - Row and Section Calculators
     
+    /**
+     Returns the number of rows in a section.
+     
+     - Parameters:
+        - section: The section to analyse.
+        - trail: The trail of nested index paths (this might be empty).
+     
+     - Throws: `section` does not exist within the nested structure defined by
+               `trail`
+     
+     - Returns: The number of rows.
+     */
     func numberOfRows(for section: Int, using trail: [Int] = []) throws -> Int {
         guard !areProcessors(at: section, using: trail) else { return enabledProcessors.count }
         
@@ -159,6 +326,16 @@ class Settings {
         return sectionSettings.count
     }
     
+    /**
+     Returns the number of sections.
+     
+     - Parameters:
+        - trail: The trail of nested index paths (this might be empty).
+     
+     - Throws: The settings for this trail could not be extracted.
+     
+     - Returns: The number of sections.
+     */
     func numberOfSections(using trail: [Int] = []) throws -> Int {
         let settings = try extractSettings(using: trail)
         return hasExtractableSettings(for: settings) ? settings.count : 1
@@ -166,16 +343,57 @@ class Settings {
     
     // MARK: - Accessors
     
+    /**
+     Returns the header to display for the section.
+     
+     - Parameters:
+        - section: The section to which the header relates.
+        - trail: The trail of nested index paths (this might be empty).
+     
+     - Throws: The settings for this trail could not be extracted.
+     
+     - Returns: The header to display.
+     */
     func header(for section: Int, using trail: [Int]) throws -> String? {
         let settings = try extractSettings(using: trail)
         return hasExtractableSettings(for: settings) ? settings[section].name : nil
     }
     
+    /**
+     Returns the setting for an index path.
+
+     The difference between this and `item(at:using:)` is that this will not
+     retrieve the processor if the index is within the list of enabled
+     processors.
+
+     - Parameters:
+        - indexPath: The index path to check.
+        - trail: The trail of nested index paths (this might be empty).
+     
+     - Throws: The settings for this trail could not be extracted.
+     
+     - Returns: The setting.
+     */
     func setting(at indexPath: IndexPath, using trail: [Int]) throws -> Setting {
         let settings = try extractSettings(for: indexPath.section, using: trail)
         return settings[indexPath.row]
     }
     
+    /**
+     Returns the item for an index path.
+     
+     The difference between this and `setting(at:using:)` is that this will
+     retrieve the processor if the index is within the list of enabled
+     processors.
+     
+     - Parameters:
+        - indexPath: The index path to check.
+        - trail: The trail of nested index paths (this might be empty).
+     
+     - Throws: The settings for this trail could not be extracted.
+     
+     - Returns: The item.
+     */
     func item(at indexPath: IndexPath, using trail: [Int]) throws -> SettingItem {
         if isProcessor(at: indexPath, using: trail) {
             return enabledProcessors[indexPath.row]
@@ -186,6 +404,21 @@ class Settings {
     
     // MARK: - Setting Extractors
 
+    /**
+     Extracts the settings for a trail
+     
+     This is a foundational method used by many other public methods. Because
+     the `SettingsViewController` class can display various setting sections at
+     arbitrary levels of nesting, it's necessary to be able to know where in the
+     'stack' of settings we are located. This is the purpose of `trail`.
+     
+     - Parameters:
+        - trail: The trail of nested index paths (this might be empty).
+     
+     - Throws: One of the 'sections' in `trail` was not a section.
+     
+     - Returns: An array of `Setting` objects.
+     */
     private func extractSettings(using trail: [Int]) throws -> [Setting] {
         var result = settings
         
@@ -197,6 +430,17 @@ class Settings {
         return result
     }
 
+    /**
+     Extract the settings for a section in a trail.
+     
+     - Parameters:
+        - section: The section to check.
+        - trail: The trail of nested index paths (this might be empty).
+     
+     - Throws: The settings for `section` or `trail` could not be extracted.
+     
+     - Returns: An array of `Setting` objects.
+     */
     private func extractSettings(for section: Int, using trail: [Int]) throws -> [Setting] {
         let parentSettings = try extractSettings(using: trail)
         
@@ -211,6 +455,18 @@ class Settings {
         }
     }
     
+    /**
+     Checks whether there are extractable settings.
+     
+     If the first item in a collection of settings is not of type
+     `Setting.SettingType.section` then we assume that there are no nested
+     settings.
+     
+     - Parameters:
+        - parent: The collection of `Setting` objects to check.
+     
+     - Returns: Whether there are nested settings or not.
+     */
     private func hasExtractableSettings(for parent: [Setting]) -> Bool {
         guard let firstType = parent.first?.type else { return false }
         
@@ -218,7 +474,18 @@ class Settings {
     }
 }
 
+// MARK: - SettingsManager Struct
+
+/**
+ Represents a manager of settings.
+ 
+ Some people might call this a factory.
+ */
 struct SettingsManager {
+    
+    // MARK: - Properties
+    
+    /// The settings for the app.
     static var settings: Settings {
         if let settings = sharedSettings {
             return settings
@@ -228,5 +495,6 @@ struct SettingsManager {
         }
     }
     
+    /// The cache for the settings computed by `settings`.
     private static var sharedSettings: Settings?
 }

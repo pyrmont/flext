@@ -8,11 +8,28 @@
 
 import UIKit
 
-// MARK: - Action Settings Table View Cell Definition
+// MARK: - ActionSettingsTableViewCell Class
 
+/**
+ Represents a table view's cell for processors in the extension's Settings
+ section.
+ 
+ As with `SettingsProcessorTableViewCell`, Flext allows the user to select the
+ active processor from the Setting section of the action extension. UIKit does
+ not offer a table view cell with a radio button control so this class aims to
+ provide equivalent functionality.
+ */
 class ActionSettingsTableViewCell: UITableViewCell {
+    
+    // MARK: - Properties
+    
+    /// The symbol used for the selected state.
     let selectedCellImage = UIImage(systemName: "smallcircle.fill.circle.fill")
+    
+    /// The symbol used for the deselected state.
     var originalCellImage: UIImage!
+
+    // MARK: - Selection Toggling
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -25,11 +42,29 @@ class ActionSettingsTableViewCell: UITableViewCell {
     }
 }
 
+// MARK: - ActionSettingsViewController Class
+
+/**
+ Displays the settings for the action extension.
+ 
+ Most of the settings that are available through the Flext app are not
+ accessible using the action extension. The exception is the active processor.
+ This view controller is responsible for displaying the list of enabled
+ processors and allowing the user to change which processor is active.
+ */
 class ActionSettingsViewController: UIViewController {
+    
+    // MARK: - IB Outlet Values
+    
     @IBOutlet var tableView: UITableView!
     
+    // MARK: - Properties
+    
+    /// The settings for Flext.
     var settings: Settings = SettingsManager.settings
 
+    // MARK: - Controller Loading
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -41,12 +76,29 @@ class ActionSettingsViewController: UIViewController {
     
     // MARK: - Processor Selection
     
+    /**
+     Selects the active processor.
+
+     The active processor is the processor used by the view controller to
+     process the text.
+     
+     - Parameters:
+        - indexPath: The index of the processor that is being selected. This is
+                     the index within the list of enabled processors.
+     */
     func selectProcessor(at indexPath: IndexPath?) {
         guard let indexPath = indexPath else { return }
         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         UserDefaults.standard.set(indexPath.row, forKey: "selectedIndex")
     }
     
+    /**
+     Deselects the formerly active processor.
+
+     - Parameters:
+        - indexPath: The index of the processor that is being selected. This is
+                     the index within the list of enabled processors.
+     */
     func deselectProcessor(at indexPath: IndexPath?) {
         guard let indexPath = indexPath else { return }
         tableView.deselectRow(at: indexPath, animated: false)
@@ -69,6 +121,17 @@ extension ActionSettingsViewController: UITableViewDataSource, UITableViewDelega
 
     // MARK: - Rows
 
+    /**
+     Returns the type of cell to use.
+     
+     The table view's prototype cells are each assigned identified in Interface
+     Builder. At present, there is only one type of cell to use.
+     
+     - Parameters:
+        - item: The setting item that will be represented by the table cell.
+
+     - Returns: The name of the prototype cell.
+     */
     func typeOfCell(for item: SettingItem) -> String {
         return "Cell"
     }
