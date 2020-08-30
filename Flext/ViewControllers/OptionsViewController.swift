@@ -125,8 +125,8 @@ class OptionsViewController: UIViewController {
      */
     @objc func updateOption(notification: Notification) {
         guard let textField = notification.object as? UITextField else { return }
-        // FIXME: - This needs to be a chain of 3 superviews.
-        guard let cell = textField.superview?.superview as? UITableViewCell else { return }
+        // TODO: Find a less brittle solution than relying on knowing the number of superviews.
+        guard let cell = textField.superview?.superview?.superview as? UITableViewCell else { return }
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         
         if let text = textField.text, !text.isEmpty {
