@@ -50,6 +50,8 @@
 		70D9C71A24D967EA002A74AD /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D9C71924D967EA002A74AD /* OptionsViewController.swift */; };
 		70E7CB2424FC962700241646 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E7CB2324FC962700241646 /* Settings.swift */; };
 		70E7CB2524FC962700241646 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E7CB2324FC962700241646 /* Settings.swift */; };
+		70E7CB2724FC98B400241646 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E7CB2624FC98B400241646 /* Preferences.swift */; };
+		70E7CB2824FC98B400241646 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E7CB2624FC98B400241646 /* Preferences.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,6 +113,7 @@
 		70D9C71724D8F66F002A74AD /* LineReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineReader.swift; sourceTree = "<group>"; };
 		70D9C71924D967EA002A74AD /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
 		70E7CB2324FC962700241646 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		70E7CB2624FC98B400241646 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -214,6 +217,7 @@
 				7096B74E24D109CA00B2C132 /* Processor.swift */,
 				7092A59624F286E600E0B320 /* Webpage.swift */,
 				70E7CB2324FC962700241646 /* Settings.swift */,
+				70E7CB2624FC98B400241646 /* Preferences.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -405,6 +409,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7053B59F24ECF070007D9408 /* PreferencesManager.swift in Sources */,
+				70E7CB2824FC98B400241646 /* Preferences.swift in Sources */,
 				7053B59B24ECF025007D9408 /* SettingsData.swift in Sources */,
 				7053B59E24ECF065007D9408 /* Errors.swift in Sources */,
 				7092A59824F28CD700E0B320 /* Webpage.swift in Sources */,
@@ -439,6 +444,7 @@
 				7092A59724F286E600E0B320 /* Webpage.swift in Sources */,
 				70514C0124E7AD7B004303A9 /* SettingsManager.swift in Sources */,
 				7096B74924D107D100B2C132 /* SettingsViewController.swift in Sources */,
+				70E7CB2724FC98B400241646 /* Preferences.swift in Sources */,
 				708BF86424CFDA3C0004A404 /* TextViewWithPlaceholder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
