@@ -49,17 +49,10 @@ li p:last-child { margin-bottom: 0; }
 code, pre { background: #f8f8f8; border: 1px solid #e5e5e5; border-radius: 5px; color: #333; font-family: monospace; }
 code { display: inline-block; font-size: 16px; padding: 0 5px; vertical-align: middle; }
 
-/*pre { font-size: 14px; margin: 0 0 20px; overflow-x: auto; padding: 8px 15px; white-space: nowrap; }*/
-/*pre > code { background: inherit; border: none; border-radius: 0; color: inherit; display: block; padding: 0; }*/
-/*pre > code > span { display: block; white-space: pre; }*/
+/* Warnings */
 
-/*table { border-collapse: collapse; margin: 0 0 20px; width: 100%; }*/
-/**/
-/*th, td { border-bottom: 1px solid #e5e5e5; padding: 5px 10px; text-align: left; }*/
-/**/
-/*th { color: #444; }*/
-/**/
-/**/
+strong:first-child > em { background-color: #fff3cd; border: 1px solid #ffeeba; color: #856404; display: block; font-style: normal; font-weight: 400; padding: 10px 15px 10px 35px; }
+strong:first-child > em:before { content: '\26A0'; font-size: 20px; font-weight: 400; margin-left: -25px; padding-right: 5px; }
 
 @media (prefers-color-scheme: dark) {
     body { background-color: #000000; color: #aaaaaa; }

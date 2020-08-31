@@ -17,7 +17,7 @@ There are three requirements for a valid processor:
      ...
    }
    ```
-
+   
 2. **Minimum arity of one.** Your function needs to take at least one argument.
    That argument will be the text to be processed and is guaranteed to be a
    non-empty string.
@@ -30,6 +30,10 @@ There are three requirements for a valid processor:
 Your function can include additional arguments. Flext will detect additional
 arguments in your function definition and expose an options screen that is
 accessible from Flext's Settings screen.
+
+**_Your function **must** use the `var process = function...` format if
+you want to specify arguments. If you don't, Flext will not detect that your
+processor has additional arguments and the options screen will not display._**
 
 On the options screen, each argument will be listed with a user-editable text
 field. The argument's name will be used for the name of the option and, if you
