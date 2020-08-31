@@ -377,7 +377,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="nRI-HJ-D7G">
                                 <rect key="frame" x="0.0" y="56" width="414" height="703"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="sW4-qB-wYi" userLabel="Table Footer">
-                                    <rect key="frame" x="0.0" y="161.5" width="414" height="69"/>
+                                    <rect key="frame" x="0.0" y="161" width="414" height="69"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For more information on how to add your own processors, see 'Adding Processors' in Settings." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rqM-eU-VnL" userLabel="Instructions">
@@ -396,20 +396,20 @@
                                 </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Reordering Cell" id="RZz-h6-Eb6" customClass="ManagerTableViewCell" customModule="Flext" customModuleProvider="target">
-                                        <rect key="frame" x="20" y="55.5" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="55.5" width="374" height="43"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="right" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RZz-h6-Eb6" id="haS-AN-WGn">
-                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vTL-jj-LXD">
-                                                    <rect key="frame" x="15" y="11" width="300" height="21.5"/>
+                                                    <rect key="frame" x="15" y="11" width="300" height="21"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="line.horizontal.3" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="bLP-gv-lI6" userLabel="Reorder Widget">
-                                                    <rect key="frame" x="330" y="15" width="28" height="14.5"/>
+                                                    <rect key="frame" x="330" y="14.5" width="28" height="14.5"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
@@ -432,7 +432,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Enabling Cell" id="hdk-zS-ESQ" customClass="ManagerTableViewCell" customModule="Flext" customModuleProvider="target">
-                                        <rect key="frame" x="20" y="99" width="374" height="44.5"/>
+                                        <rect key="frame" x="20" y="98.5" width="374" height="44.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="right" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hdk-zS-ESQ" id="6Vj-C6-8TG">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="44.5"/>
@@ -626,10 +626,10 @@
                                 <rect key="frame" x="0.0" y="56" width="414" height="752"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="H8u-oF-Th7" userLabel="Elements">
-                                        <rect key="frame" x="0.0" y="40" width="414" height="479"/>
+                                        <rect key="frame" x="0.0" y="40" width="414" height="499"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="FI9-Fg-9Ml" userLabel="Logo">
-                                                <rect key="frame" x="64" y="0.0" width="286" height="245.5"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="FI9-Fg-9Ml" userLabel="Logo">
+                                                <rect key="frame" x="64" y="0.0" width="286" height="265.5"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="ApU-ds-CRp">
                                                         <rect key="frame" x="93" y="0.0" width="100" height="100"/>
@@ -639,7 +639,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Dso-PD-MH3" userLabel="Name &amp; Version">
-                                                        <rect key="frame" x="108" y="120" width="70.5" height="65.5"/>
+                                                        <rect key="frame" x="108" y="130" width="70.5" height="65.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Flext" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sPx-UR-uwN">
                                                                 <rect key="frame" x="0.0" y="0.0" width="70.5" height="41"/>
@@ -656,7 +656,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="X79-pV-hYw" userLabel="Links">
-                                                        <rect key="frame" x="0.0" y="205.5" width="286" height="40"/>
+                                                        <rect key="frame" x="0.0" y="225.5" width="286" height="40"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a37-Wd-BpV" customClass="AboutRoundedButton" customModule="Flext" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="0.0" width="118" height="40"/>
@@ -681,9 +681,10 @@
                                                         </subviews>
                                                     </stackView>
                                                 </subviews>
+                                                <variation key="heightClass=compact" spacing="30"/>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="Zs6-jh-fV9" userLabel="Text">
-                                                <rect key="frame" x="57" y="295.5" width="300" height="183.5"/>
+                                                <rect key="frame" x="57" y="315.5" width="300" height="183.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Flext is made in Tokyo by Michael Camilleri." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PAS-mZ-Kjq" userLabel="Made in Tokyo">
                                                         <rect key="frame" x="0.0" y="0.0" width="300" height="42.5"/>
@@ -718,9 +719,10 @@
                                                         </subviews>
                                                     </stackView>
                                                 </subviews>
+                                                <variation key="heightClass=compact" alignment="top"/>
                                             </stackView>
                                         </subviews>
-                                        <variation key="heightClass=compact" alignment="top" axis="horizontal" distribution="fillEqually" spacing="50"/>
+                                        <variation key="heightClass=compact" alignment="top" axis="horizontal" distribution="fillEqually" spacing="30"/>
                                     </stackView>
                                 </subviews>
                                 <constraints>
