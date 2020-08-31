@@ -51,7 +51,7 @@ struct SettingsData {
     private static func legal() -> Setting {
         return Setting(name: "Legal", type: .section, value: [
             licences(),
-            Setting(name: "Privacy Policy", type: .webpage, value: Webpage(title: "Privacy Policy", sourceFile: "legal_privacy.md"))])
+            Setting(name: "Privacy Policy", type: .webpage, value: Webpage(title: "Legal", sourceFile: "legal_privacy.md"))])
     }
     
     /**
