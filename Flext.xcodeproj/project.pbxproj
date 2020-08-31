@@ -48,6 +48,8 @@
 		70D403D824EE7D12007D9A39 /* Action.js in Resources */ = {isa = PBXBuildFile; fileRef = 70D403D724EE7D12007D9A39 /* Action.js */; };
 		70D9C71824D8F66F002A74AD /* LineReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D9C71724D8F66F002A74AD /* LineReader.swift */; };
 		70D9C71A24D967EA002A74AD /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D9C71924D967EA002A74AD /* OptionsViewController.swift */; };
+		70E7CB2424FC962700241646 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E7CB2324FC962700241646 /* Settings.swift */; };
+		70E7CB2524FC962700241646 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E7CB2324FC962700241646 /* Settings.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,6 +110,7 @@
 		70D403D724EE7D12007D9A39 /* Action.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Action.js; sourceTree = "<group>"; };
 		70D9C71724D8F66F002A74AD /* LineReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineReader.swift; sourceTree = "<group>"; };
 		70D9C71924D967EA002A74AD /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
+		70E7CB2324FC962700241646 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,6 +213,7 @@
 			children = (
 				7096B74E24D109CA00B2C132 /* Processor.swift */,
 				7092A59624F286E600E0B320 /* Webpage.swift */,
+				70E7CB2324FC962700241646 /* Settings.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -406,6 +410,7 @@
 				7092A59824F28CD700E0B320 /* Webpage.swift in Sources */,
 				708E672424F9848900306A81 /* EditorViewController.swift in Sources */,
 				7053B58C24EC53AB007D9408 /* ActionViewController.swift in Sources */,
+				70E7CB2524FC962700241646 /* Settings.swift in Sources */,
 				7053B59D24ECF057007D9408 /* Processor.swift in Sources */,
 				7053B59C24ECF02A007D9408 /* SettingsManager.swift in Sources */,
 				7053B5A024ECF0BB007D9408 /* LineReader.swift in Sources */,
@@ -421,6 +426,7 @@
 				700B657424F0FDBD0045E4A8 /* WebpageViewController.swift in Sources */,
 				709899F624DBF642005F2C44 /* PreferencesManager.swift in Sources */,
 				702D0DCC24E3919600C86782 /* Errors.swift in Sources */,
+				70E7CB2424FC962700241646 /* Settings.swift in Sources */,
 				70D9C71824D8F66F002A74AD /* LineReader.swift in Sources */,
 				708BF85424CFB0E30004A404 /* EditorViewController.swift in Sources */,
 				70B2311924D53C33004760B1 /* AboutViewController.swift in Sources */,
