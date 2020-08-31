@@ -199,7 +199,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="1Qe-pg-otr">
                                 <rect key="frame" x="0.0" y="56" width="414" height="786"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Processor Cell" textLabel="QJH-tm-5u2" imageView="K1y-Mm-Jbf" style="IBUITableViewCellStyleDefault" id="vBe-nt-rFd" customClass="SettingsProcessorTableViewCell" customModule="Flext" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Processor Cell" textLabel="QJH-tm-5u2" imageView="K1y-Mm-Jbf" style="IBUITableViewCellStyleDefault" id="vBe-nt-rFd" customClass="TableViewCellWithSelection" customModule="Flext" customModuleProvider="target">
                                         <rect key="frame" x="20" y="55.5" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vBe-nt-rFd" id="jLJ-SP-KSm">
@@ -220,7 +220,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" accessoryType="detailButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Processor Cell (Options)" textLabel="XaR-7A-OI4" imageView="gg4-C3-Dun" style="IBUITableViewCellStyleDefault" id="i2y-BG-dbg" customClass="SettingsProcessorTableViewCell" customModule="Flext" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" accessoryType="detailButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Processor Cell (Options)" textLabel="XaR-7A-OI4" imageView="gg4-C3-Dun" style="IBUITableViewCellStyleDefault" id="i2y-BG-dbg" customClass="TableViewCellWithSelection" customModule="Flext" customModuleProvider="target">
                                         <rect key="frame" x="20" y="99" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="i2y-BG-dbg" id="hAk-eD-2ex">
@@ -438,7 +438,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="44.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Title" placeholder="Enter processor name" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Zel-sM-y2W" userLabel="Text Field" customClass="ManagerTextField" customModule="Flext" customModuleProvider="target">
+                                                <textField opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Title" placeholder="Enter processor name" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Zel-sM-y2W" userLabel="Text Field">
                                                     <rect key="frame" x="15" y="11" width="275" height="22.5"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
@@ -658,7 +658,7 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="X79-pV-hYw" userLabel="Links">
                                                         <rect key="frame" x="0.0" y="225.5" width="286" height="40"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a37-Wd-BpV" customClass="AboutRoundedButton" customModule="Flext" customModuleProvider="target">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a37-Wd-BpV" customClass="ButtonWithRoundedCorners" customModule="Flext" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="0.0" width="118" height="40"/>
                                                                 <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
@@ -668,7 +668,7 @@
                                                                     <action selector="openLink:" destination="4cC-Ko-Dhb" eventType="touchUpInside" id="p0k-nW-Fjx"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C0z-Ls-zuJ" customClass="AboutRoundedButton" customModule="Flext" customModuleProvider="target">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C0z-Ls-zuJ" customClass="ButtonWithRoundedCorners" customModule="Flext" customModuleProvider="target">
                                                                 <rect key="frame" x="168" y="0.0" width="118" height="40"/>
                                                                 <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>

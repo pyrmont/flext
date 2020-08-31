@@ -10,30 +10,14 @@ import UIKit
 import JavaScriptCore
 import MobileCoreServices
 
-// MARK: - ManagerTextField Class
-
-/**
- Represents a text field within a `ManagerTableViewCell` element.
- 
- The Manager section of Flext lists the user-added processors with titles that
- the user can tap to rename. As processors are tightly integrated with cells,
- the logic is greatly simplified by having a reference to the containing
- `ManagerTableViewCell` object.
- */
-class ManagerTextField: UITextField {
-    
-    /// The containing `ManagerTableViewCell` object
-    weak var containingCell: ManagerTableViewCell!
-}
-
 // MARK: - ManagerTableViewCell Class
 
 /**
  Represents a table view's cell in the Manager section.
  
- As is the case with the `ManagerTextField` class, it simplifies the logic of
- updating processor data to have a table's cell contain various pieces of
- information.
+ Elements of a cell in the Manager's `UITableView` need to be capable of being
+ updated in response to the user interacting with other table cells. This class
+ provides references to these elements that the controller can easily access.
  */
 class ManagerTableViewCell: UITableViewCell {
     
@@ -47,6 +31,8 @@ class ManagerTableViewCell: UITableViewCell {
     
     /// The associated processor.
     weak var processor: Processor!
+    
+    // MARK: - Text Setting
     
     /**
      Sets the text to display.
@@ -242,11 +228,12 @@ class ManagerViewController: UIViewController {
      - Parameters:
         - sender: The text field for the processor being renamed.
      */
-    @IBAction func finishedRenaming(_ sender: ManagerTextField) {
+    @IBAction func finishedRenaming(_ sender: UITextField) {
         guard let text = sender.text else { return }
         guard !text.isEmpty else { return }
 
-        guard let cell = sender.containingCell else { return }
+        guard let indexPath = tableView.indexPathForRow(at: sender.convert(sender.bounds.origin, to: tableView)) else { return }
+        guard let cell = tableView.cellForRow(at: indexPath) as? ManagerTableViewCell else { return }
         cell.processor.name = text
         
         guard let enabledRow = settings.enabledProcessors.firstIndex(of: cell.processor) else { return }
@@ -423,7 +410,6 @@ extension ManagerViewController: UITableViewDataSource, UITableViewDelegate {
             cell = tableView.dequeueReusableCell(withIdentifier: "Enabling Cell", for: indexPath) as! ManagerTableViewCell
             cell.textField!.text = processor.name
             cell.textField!.delegate = self
-            (cell.textField! as! ManagerTextField).containingCell = cell
             cell.enabledToggle!.isOn = processor.isEnabled
             cell.enabledToggle!.isEnabled = settings.enabledProcessors.count == 1 ? !cell.enabledToggle!.isOn : true
         default:

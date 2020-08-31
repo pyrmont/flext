@@ -52,6 +52,9 @@
 		70E7CB2524FC962700241646 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E7CB2324FC962700241646 /* Settings.swift */; };
 		70E7CB2724FC98B400241646 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E7CB2624FC98B400241646 /* Preferences.swift */; };
 		70E7CB2824FC98B400241646 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E7CB2624FC98B400241646 /* Preferences.swift */; };
+		70E7CB2A24FCAD5B00241646 /* TableViewCellWithSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E7CB2924FCAD5B00241646 /* TableViewCellWithSelection.swift */; };
+		70E7CB2B24FCAF1A00241646 /* TableViewCellWithSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E7CB2924FCAD5B00241646 /* TableViewCellWithSelection.swift */; };
+		70E7CB2D24FCB11600241646 /* ButtonWithRoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E7CB2C24FCB11600241646 /* ButtonWithRoundedCorners.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +117,8 @@
 		70D9C71924D967EA002A74AD /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
 		70E7CB2324FC962700241646 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		70E7CB2624FC98B400241646 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		70E7CB2924FCAD5B00241646 /* TableViewCellWithSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCellWithSelection.swift; sourceTree = "<group>"; };
+		70E7CB2C24FCB11600241646 /* ButtonWithRoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonWithRoundedCorners.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,6 +230,8 @@
 		7096B75224D10A7C00B2C132 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				70E7CB2C24FCB11600241646 /* ButtonWithRoundedCorners.swift */,
+				70E7CB2924FCAD5B00241646 /* TableViewCellWithSelection.swift */,
 				708BF86324CFDA3C0004A404 /* TextViewWithPlaceholder.swift */,
 			);
 			path = Views;
@@ -410,6 +417,7 @@
 			files = (
 				7053B59F24ECF070007D9408 /* PreferencesManager.swift in Sources */,
 				70E7CB2824FC98B400241646 /* Preferences.swift in Sources */,
+				70E7CB2B24FCAF1A00241646 /* TableViewCellWithSelection.swift in Sources */,
 				7053B59B24ECF025007D9408 /* SettingsData.swift in Sources */,
 				7053B59E24ECF065007D9408 /* Errors.swift in Sources */,
 				7092A59824F28CD700E0B320 /* Webpage.swift in Sources */,
@@ -438,6 +446,8 @@
 				708BF85024CFB0E30004A404 /* AppDelegate.swift in Sources */,
 				709899FA24DF8AAB005F2C44 /* ManagerViewController.swift in Sources */,
 				7096B74F24D109CA00B2C132 /* Processor.swift in Sources */,
+				70E7CB2D24FCB11600241646 /* ButtonWithRoundedCorners.swift in Sources */,
+				70E7CB2A24FCAD5B00241646 /* TableViewCellWithSelection.swift in Sources */,
 				70B2312824D68113004760B1 /* SettingsData.swift in Sources */,
 				708BF85224CFB0E30004A404 /* SceneDelegate.swift in Sources */,
 				70D9C71A24D967EA002A74AD /* OptionsViewController.swift in Sources */,

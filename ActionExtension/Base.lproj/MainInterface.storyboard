@@ -190,7 +190,7 @@ To configure which processors are enabled, go to the Settings section of the Fle
                                     </constraints>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" textLabel="VI7-eo-FpA" imageView="Sqd-zw-eN8" style="IBUITableViewCellStyleDefault" id="hN4-Md-5B0" customClass="ActionSettingsTableViewCell" customModule="ActionExtension" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" textLabel="VI7-eo-FpA" imageView="Sqd-zw-eN8" style="IBUITableViewCellStyleDefault" id="hN4-Md-5B0" customClass="TableViewCellWithSelection" customModule="ActionExtension" customModuleProvider="target">
                                         <rect key="frame" x="20" y="55.5" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hN4-Md-5B0" id="Qlv-tq-KhZ">

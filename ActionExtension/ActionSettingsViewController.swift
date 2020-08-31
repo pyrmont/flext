@@ -8,42 +8,6 @@
 
 import UIKit
 
-// MARK: - ActionSettingsTableViewCell Class
-
-/**
- Represents a table view's cell for processors in the extension's Settings
- section.
- 
- As with `SettingsProcessorTableViewCell`, Flext allows the user to select the
- active processor from the Setting section of the action extension. UIKit does
- not offer a table view cell with a radio button control so this class aims to
- provide equivalent functionality.
- */
-class ActionSettingsTableViewCell: UITableViewCell {
-    
-    // MARK: - Properties
-    
-    /// The symbol used for the selected state.
-    let selectedCellImage = UIImage(systemName: "smallcircle.fill.circle.fill")
-    
-    /// The symbol used for the deselected state.
-    var originalCellImage: UIImage!
-
-    // MARK: - Selection Toggling
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        if selected {
-            originalCellImage = originalCellImage ?? imageView?.image
-            imageView?.image = selectedCellImage
-        } else {
-            imageView?.image = originalCellImage ?? imageView?.image
-        }
-    }
-}
-
-// MARK: - ActionSettingsViewController Class
-
 /**
  Displays the settings for the action extension.
  
