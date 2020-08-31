@@ -25,7 +25,7 @@ $ open Flext.xcodeproj
 
 ## Dependencies
 
-Flext includes [Down][], a CommonMark renderer built atop cmark.
+Flext depends on [Down][], a CommonMark renderer built atop cmark.
 
 [Down]: https://github.com/iwasrobbed/Down
 
