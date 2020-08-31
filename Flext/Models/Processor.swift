@@ -223,10 +223,6 @@ class Processor {
     
     // MARK: - Option Parsing
 
-    // TODO: This looks like it could cause unexpected behaviour. Update the
-    // heuristic so that it specifically checks for
-    // `var process = function(text,`.
-    
     /**
      Checks whether the processor has options.
      
@@ -234,7 +230,7 @@ class Processor {
      parameters. For performance reasons, this check does not actually evaluate
      the function. Instead it looks at each line of the JavaScript file and if
      the file contains a line that suggests the function contains additional
-     arguments, it returns `true`.
+     arguments, it returns `true`. Otherwise, it returns `false`.
      
      - Throws: The line reader is unable to load the JavaScript file.
      
@@ -244,8 +240,11 @@ class Processor {
         guard let reader = LineReader(at: path) else { throw FlextError(type: .failedToLoadPath, location: (#file, #line)) }
         
         while let line = reader.nextLine {
-            if !line.starts(with: "var process = function") { continue }
-            return !line.starts(with: "var process = function(text)")
+            if line.starts(with: "var process = function(text,") {
+                return true
+            } else if line.starts(with: "var process = function(text)") {
+                return false
+            }
         }
         
         return false
