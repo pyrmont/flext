@@ -209,7 +209,9 @@ class ManagerViewController: UIViewController {
         - sender: The switch that triggered the toggle.
      */
     @IBAction func enableProcessor(_ sender: UISwitch) {
-        guard let cell = sender.superview?.superview as? ManagerTableViewCell else { return }
+        let pointInTable = sender.convert(sender.bounds.origin, to: tableView)
+        guard let indexPath = tableView.indexPathForRow(at: pointInTable) else { return }
+        guard let cell = tableView.cellForRow(at: indexPath) as? ManagerTableViewCell else { return }
         
         cell.processor.isEnabled = sender.isOn
         

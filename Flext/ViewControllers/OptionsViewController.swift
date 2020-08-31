@@ -125,9 +125,7 @@ class OptionsViewController: UIViewController {
      */
     @objc func updateOption(notification: Notification) {
         guard let textField = notification.object as? UITextField else { return }
-        // TODO: Find a less brittle solution than relying on knowing the number of superviews.
-        guard let cell = textField.superview?.superview?.superview as? UITableViewCell else { return }
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        guard let indexPath = tableView.indexPathForRow(at: textField.convert(textField.bounds.origin, to: tableView)) else { return }
         
         if let text = textField.text, !text.isEmpty {
             processor.options[indexPath.row].value = text
