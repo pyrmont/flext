@@ -44,11 +44,6 @@ struct FlextError: Error {
     /// file and an `Int` representing the line number.
     var location: (String, Int)?
     
-    // TODO: Consider whether this property is needed any more.
-    
-    /// A message to display.
-    var message: String?
-    
     // A log message to display.
     var logMessage: String {
         "Error type: \(self.type)" + format(location: self.location)
