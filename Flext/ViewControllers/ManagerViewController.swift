@@ -228,8 +228,6 @@ class ManagerViewController: UIViewController {
             }
         }
         
-        // TODO: Why is this limited to visible cells? Shouldn't this be done
-        // for all of the cells in the table?
         for cell in tableView.visibleCells {
             guard let toggle = (cell as! ManagerTableViewCell).enabledToggle else { continue }
             toggle.isEnabled = settings.enabledProcessors.count == 1 ? !toggle.isOn : true
@@ -268,15 +266,14 @@ class ManagerViewController: UIViewController {
         present(documentPicker, animated: true, completion: nil)
     }
 
-    // TODO: Consider whether this method should also check that the `process()`
-    // function takes at least one argument.
     /**
      Copies the file to the group directory.
      
      This method attempts to copy the file chosen by the user to the group
      directory for the `group.net.inqk.Flext` group (this is so the file will be
      available to the action extension). Before adding the file, this method
-     evaluates the script to check that the `process()` function is defined.
+     evaluates the script to check that the `process()` function is defined and
+     that it takes at least one argument.
      
      - Parameters:
         - url: The URL of the file to be copied.
@@ -295,8 +292,8 @@ class ManagerViewController: UIViewController {
                 guard let jsContext = JSContext() else { throw FlextError(type: .failedToLoadJSContext) }
                 guard let jsSource = try? String(contentsOf: url) else { throw FlextError(type: .failedToReadFile) }
                 jsContext.evaluateScript(jsSource)
-                guard let jsValue = jsContext.objectForKeyedSubscript("process") else { throw FlextError(type: .failedToEvaluateJavaScript) }
-                guard !jsValue.isUndefined else { throw FlextError(type: .failedToFindProcessFunction) }
+                guard let parameterNumber = jsContext.evaluateScript("process.length") else { throw FlextError(type: .failedToEvaluateJavaScript) }
+                guard parameterNumber.isNumber && parameterNumber.toInt32() > 0 else { throw FlextError(type: .failedToFindProcessFunction) }
                 guard let appDirectory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.net.inqk.Flext") else { throw FlextError(type: .failedToLoadPath) }
 
                 importURL = URL(fileURLWithPath: UUID().uuidString + "." + url.pathExtension, isDirectory: false, relativeTo: appDirectory)
