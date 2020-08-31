@@ -272,7 +272,7 @@ class ManagerViewController: UIViewController {
     func addFile(at url: URL) throws -> URL? {
         var importURL: URL? = nil
         var importError: FlextError? = nil
-
+        
         var error: NSError? = nil
         NSFileCoordinator().coordinate(readingItemAt: url, options: [.withoutChanges], error: &error) { (url) in
             do {
@@ -586,7 +586,9 @@ extension ManagerViewController: UITextFieldDelegate {
 // MARK: - Document Picker
     
 extension ManagerViewController: UIDocumentPickerDelegate {
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
-        insertProcessor(with: url)
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        for url in urls {
+            insertProcessor(with: url)
+        }
     }
 }

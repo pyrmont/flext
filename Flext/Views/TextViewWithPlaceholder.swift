@@ -75,15 +75,6 @@ class TextViewWithPlaceholder: UITextView {
         setupPlaceholder()
     }
 
-    // MARK: - Deinitialisers
-    
-    /**
-     Destroys the text view.
-     */
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     // MARK: - Placeholder Setup
     
     /**
@@ -92,45 +83,29 @@ class TextViewWithPlaceholder: UITextView {
     private func setupPlaceholder() {
         placeholderText = self.text
         placeholderColor = self.textColor
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(textDidBeginEditing(notification:)), name: UITextView.textDidBeginEditingNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(textDidEndEditing(notification:)), name: UITextView.textDidEndEditingNotification, object: nil)
     }
     
     // MARK: - Placeholder Updating
-    
-    /**
-     Updates the text view when editing begins.
-     
-     This 'turns off' the placeholder text once editing begins.
-     
-     - Parameters:
-        - notification: The notification that triggered the response.
-     */
-    @objc private func textDidBeginEditing(notification: Notification) {
-        guard placeholderIsEnabled else { return }
 
-        self.text = nil
-        self.textColor = self.activeTextColor
-        self.placeholderIsEnabled = false
+    override func becomeFirstResponder() -> Bool {
+        if placeholderIsEnabled {
+            self.text = nil
+            self.textColor = activeTextColor
+            placeholderIsEnabled = false
+        }
+        return super.becomeFirstResponder()
     }
     
-    /**
-     Updates the text view when editing ends.
-     
-     This 'turns on' the placeholder text if appropraite when editing ends.
-     
-     - Parameters:
-        - notification: The notification that triggered the response.
-     */
-    @objc private func textDidEndEditing(notification: Notification) {
-        guard self.text.isEmpty else { return }
-
-        self.text = self.placeholderText
-        self.textColor = self.placeholderColor
-        self.placeholderIsEnabled = true
+    override func resignFirstResponder() -> Bool {
+        if self.text == nil || self.text.isEmpty {
+            self.text = placeholderText
+            self.textColor = placeholderColor
+            placeholderIsEnabled = true
+        }
+        return super.resignFirstResponder()
     }
     
+
     // MARK: - Text Changes
 
     /**

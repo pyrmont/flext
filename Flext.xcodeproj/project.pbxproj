@@ -55,6 +55,7 @@
 		70E7CB2A24FCAD5B00241646 /* TableViewCellWithSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E7CB2924FCAD5B00241646 /* TableViewCellWithSelection.swift */; };
 		70E7CB2B24FCAF1A00241646 /* TableViewCellWithSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E7CB2924FCAD5B00241646 /* TableViewCellWithSelection.swift */; };
 		70E7CB2D24FCB11600241646 /* ButtonWithRoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E7CB2C24FCB11600241646 /* ButtonWithRoundedCorners.swift */; };
+		70E7CB3224FCD99800241646 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E7CB3124FCD99800241646 /* UIViewExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -119,6 +120,7 @@
 		70E7CB2624FC98B400241646 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		70E7CB2924FCAD5B00241646 /* TableViewCellWithSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCellWithSelection.swift; sourceTree = "<group>"; };
 		70E7CB2C24FCB11600241646 /* ButtonWithRoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonWithRoundedCorners.swift; sourceTree = "<group>"; };
+		70E7CB3124FCD99800241646 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,6 +187,7 @@
 				708BF85124CFB0E30004A404 /* SceneDelegate.swift */,
 				708BF85824CFB0E40004A404 /* Assets.xcassets */,
 				70B2312624D680F9004760B1 /* Data */,
+				70E7CB3024FCD95600241646 /* Extensions */,
 				70B2312324D6607B004760B1 /* Helpers */,
 				708BF85A24CFB0E40004A404 /* LaunchScreen.storyboard */,
 				70B2311524D52AB6004760B1 /* Localizable.strings */,
@@ -219,10 +222,10 @@
 		7096B75124D10A5F00B2C132 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				7096B74E24D109CA00B2C132 /* Processor.swift */,
-				7092A59624F286E600E0B320 /* Webpage.swift */,
-				70E7CB2324FC962700241646 /* Settings.swift */,
 				70E7CB2624FC98B400241646 /* Preferences.swift */,
+				7096B74E24D109CA00B2C132 /* Processor.swift */,
+				70E7CB2324FC962700241646 /* Settings.swift */,
+				7092A59624F286E600E0B320 /* Webpage.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -254,6 +257,14 @@
 				70B2312724D68113004760B1 /* SettingsData.swift */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		70E7CB3024FCD95600241646 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				70E7CB3124FCD99800241646 /* UIViewExtension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -446,6 +457,7 @@
 				708BF85024CFB0E30004A404 /* AppDelegate.swift in Sources */,
 				709899FA24DF8AAB005F2C44 /* ManagerViewController.swift in Sources */,
 				7096B74F24D109CA00B2C132 /* Processor.swift in Sources */,
+				70E7CB3224FCD99800241646 /* UIViewExtension.swift in Sources */,
 				70E7CB2D24FCB11600241646 /* ButtonWithRoundedCorners.swift in Sources */,
 				70E7CB2A24FCAD5B00241646 /* TableViewCellWithSelection.swift in Sources */,
 				70B2312824D68113004760B1 /* SettingsData.swift in Sources */,
@@ -521,6 +533,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.inqk.Flext.ActionExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -542,6 +555,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.inqk.Flext.ActionExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -672,6 +686,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = 7TD7PZBNXP;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Flext/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -680,6 +695,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.inqk.Flext;
 				PRODUCT_NAME = Flext;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -694,6 +710,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = 7TD7PZBNXP;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Flext/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -702,6 +719,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.inqk.Flext;
 				PRODUCT_NAME = Flext;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

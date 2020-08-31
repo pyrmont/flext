@@ -46,7 +46,7 @@ struct Webpage {
     ///
     /// This is used as the base directory when rendering HTML in case that HTML
     /// contains references to local files (such as CSS or JavaScript).
-    let baseURL: URL = Bundle.main.bundleURL.appendingPathComponent(Webpage.dataDirectory)
+    let baseURL: URL = Bundle.main.resourceURL!.appendingPathComponent(Webpage.dataDirectory)
     
     /// The HTML at the top of the page.
     private var topHTML: String {
