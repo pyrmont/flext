@@ -223,8 +223,6 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         for selectedPath in selectedPaths {
             if settings.isProcessor(at: indexPath, using: trail) && settings.isProcessor(at: selectedPath, using: trail) {
                 deselectProcessor(at: selectedPath)
-            } else if !settings.isProcessor(at: indexPath, using: trail) && !settings.isProcessor(at: selectedPath, using: trail) {
-                tableView.deselectRow(at: selectedPath, animated: false)
             }
         }
         
