@@ -68,9 +68,6 @@ class OptionsViewController: UIViewController {
             name: UITextField.textDidChangeNotification,
             object: nil)
 
-        // TODO: Consider whether these listeners can be removed. I don't think they
-        // are necessary.
-        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(adjustTableViewHeight(notification:)),
@@ -96,6 +93,9 @@ class OptionsViewController: UIViewController {
 
     /**
      Adjusts the table view's height.
+     
+     This method is necessary to ensure that the table view is not hidden behind
+     the keyboard when a value is being edited.
      
      - Parameters:
         - notification: The notification of the event that triggered the

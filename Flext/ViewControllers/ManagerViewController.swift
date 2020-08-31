@@ -346,13 +346,12 @@ class ManagerViewController: UIViewController {
     }
 
     // MARK: - UI Adjustments
-
-    // TODO: - Consider whether this is necessary. UIKit should handle all of
-    // this for you with a table. It seemed to work just fine when I took it
-    // out.
     
     /**
      Adjusts the table view's height.
+     
+     This method is necessary to ensure that the table view is not hidden behind
+     the keyboard when a value is being edited.
 
      - Parameters:
         - notification: The notification of the event that triggered the
