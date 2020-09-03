@@ -272,6 +272,21 @@ class ManagerViewController: UIViewController {
             tableView.contentInset.bottom = .zero
         }
     }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        guard let footerView = tableView.tableFooterView else {
+            return
+        }
+
+        let width = tableView.bounds.size.width
+        let size = footerView.systemLayoutSizeFitting(CGSize(width: width, height: UIView.layoutFittingCompressedSize.height))
+
+        if footerView.frame.size.height != size.height {
+            footerView.frame.size.height = size.height
+            tableView.tableFooterView = footerView
+        }
+    }
 }
 
 // MARK: - Data Source and Delegate
