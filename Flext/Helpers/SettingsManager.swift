@@ -12,7 +12,7 @@ import Foundation
 
 /**
  Represents a setting value.
- 
+
  Swift does not provide a union type. This protocol essentially functions as a
  way to achieve a similar effect.
  */
@@ -30,10 +30,10 @@ extension Webpage: SettingValue {}
 protocol SettingItem {
 
     // MARK: - Properties
-    
+
     /// The name of the item.
     var name: String { get }
-    
+
     /// The type of the setting.
     var settingType: Setting.SettingType { get }
 }
@@ -50,13 +50,13 @@ extension Setting: SettingItem {
 
 /**
  Represents a manager of settings.
- 
+
  Some people might call this a factory.
  */
 struct SettingsManager {
-    
+
     // MARK: - Properties
-    
+
     /// The settings for the app.
     static var settings: Settings {
         if let settings = sharedSettings {
@@ -66,7 +66,7 @@ struct SettingsManager {
             return sharedSettings!
         }
     }
-    
+
     /// The cache for the settings computed by `settings`.
     private static var sharedSettings: Settings?
 }

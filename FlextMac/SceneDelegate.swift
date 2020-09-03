@@ -1,8 +1,8 @@
 //
 //  SceneDelegate.swift
-//  Flext
+//  FlextMac
 //
-//  Created by Michael Camilleri on 28/7/20.
+//  Created by Michael Camilleri on 1/9/20.
 //  Copyright © 2020 Michael Camilleri. All rights reserved.
 //
 
@@ -11,18 +11,20 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    var settings = SettingsManager.settings
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+        guard let windowScene = (scene as? UIWindowScene) else { return }
 
-        guard let editor = window?.rootViewController as? EditorViewController else { return }
-        guard let userActivity = connectionOptions.userActivities.first ?? session.stateRestorationActivity else { return }
-        editor.restoreActivity(using: userActivity)
+        #if targetEnvironment(macCatalyst)
+        if let titlebar = windowScene.titlebar {
+            titlebar.titleVisibility = .hidden
+            titlebar.toolbar = nil
+        }
+        #endif
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -35,17 +37,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidBecomeActive(_ scene: UIScene) {
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
-        if let userActivity = window?.windowScene?.userActivity {
-            userActivity.becomeCurrent()
-        }
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
         // Called when the scene will move from an active state to an inactive state.
         // This may occur due to temporary interruptions (ex. an incoming phone call).
-        if let userActivity = window?.windowScene?.userActivity {
-            userActivity.resignCurrent()
-        }
     }
 
     func sceneWillEnterForeground(_ scene: UIScene) {
@@ -57,15 +53,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
-        PreferencesManager.save(settings.processors, ordering: settings.enabledProcessors, selectedPath: settings.selectedProcessorPath)
-    }
-
-    func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
-        guard let editor = window?.rootViewController as? EditorViewController, editor.hasActivity() else { return scene.userActivity }
-
-        editor.persistActivity()
-        editor.userActivity?.becomeCurrent()
-        return editor.userActivity
     }
 
 

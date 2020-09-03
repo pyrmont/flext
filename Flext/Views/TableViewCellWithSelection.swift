@@ -10,7 +10,7 @@ import UIKit
 
 /**
  Represents a table view's cell with a selection.
- 
+
  Flext allows the user to select the active processor. When listing processors
  in rows in a `UITableView`, we may wish to permit the user to tap the row to
  change the selection. Since UIKit does not offer a table view cell with a radio
@@ -19,22 +19,22 @@ import UIKit
 class TableViewCellWithSelection: UITableViewCell {
 
     // MARK: - Properties
-    
+
     /// The symbol used for the selected state.
     let selectedCellImage = UIImage(systemName: "smallcircle.fill.circle.fill")
-    
+
     /// The symbol used for the deselected state.
     var originalCellImage: UIImage!
 
     // MARK: - Nib Restoration
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-    
+
     // MARK: - Selection Toggling
-    
+
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         if selected {

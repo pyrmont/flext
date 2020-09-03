@@ -12,15 +12,15 @@ import MobileCoreServices
 
 /**
  Displays the action extension.
- 
+
  Flext offers an action extension for plain text and webpages. Because of the
  similarities, this class draws most of its functionality from its superclass,
  `EditorViewController`.
  */
 class ActionViewController: EditorViewController {
-    
+
     // MARK: - DataType Enum
-    
+
     /**
      Represents the datatypes that are supported by the extension.
      */
@@ -29,38 +29,38 @@ class ActionViewController: EditorViewController {
     }
 
     // MARK: - IB Outlet Values
-    
+
     @IBOutlet var processorTitle: UINavigationItem!
-    
+
     // MARK: - Properties
-    
+
     var selectedIndex: Int!
 
     // MARK: - Controller Loading
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         guard let items = self.extensionContext?.inputItems as? [NSExtensionItem] else { return }
         guard let item = items.first else { return }
         guard let provider = item.attachments?.first else { return }
-        
+
         if provider.hasItemConformingToTypeIdentifier(kUTTypePropertyList as String) {
             process(provider, as: .webpage)
         } else if provider.hasItemConformingToTypeIdentifier(kUTTypeText as String) {
             process(provider, as: .text)
         }
     }
-    
+
     // MARK: - Data Processing
 
     /**
      Processes the data sent to the extension.
-     
+
      The mechanism for exposing data to extensions is to wrap the data in a
      `NSItemProvider` object. Depending on the data type, this method extracts
      the data from that object.
-     
+
      - Parameters:
         - provider: The object wrapping the data.
         - dataType: The type of data.
@@ -83,24 +83,24 @@ class ActionViewController: EditorViewController {
             }
         }
     }
-    
+
     // MARK: - State Restoration
-    
+
     /**
      Skips setting up state restoration.
-     
+
      While the editor in the main app supports state restoration, the action
      extension does not. This override prevents the activity from being set up.
      */
     override func setupUserActivity() {
         return
     }
-    
+
     // MARK: - Listener Setup
-    
+
     /**
      Skips responding to changes to the app's traits.
-     
+
      While the editor in the main app uses changes in the app's traits to handle
      the preview hiding, this is not relevant in the action extension. This
      override prevents these responses.
@@ -108,34 +108,33 @@ class ActionViewController: EditorViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         return
     }
-    
+
     // MARK: - Processor Setup
-    
-    /**
-     Sets the default active processor.
-     
-     The editor in the main app saves the active processor to disk (together
-     with other preferences). As it may be the case that a user would want a
-     different active processor saved for use with the extension, this method
-     sets the default active processor using the value in the `UserDefaults`
-     object.
-     */
-    override func setupDefaultProcessor() {
-         let selectedIndex = UserDefaults.standard.integer(forKey: "selectedIndex")
-         
-         if selectedIndex < settings.enabledProcessors.count {
-             self.selectedIndex = selectedIndex
-         } else {
-             self.selectedIndex = 0
-             UserDefaults.standard.set(0, forKey: "selectedIndex")
-         }
-         
-         setupProcessor(using: settings.enabledProcessors.at(self.selectedIndex)!)
+
+    override func selectedProcessor() -> Processor {
+        guard selectedIndex == nil else {
+            if selectedIndex >= settings.enabledProcessors.count {
+                selectedIndex = 0
+                UserDefaults.standard.set(selectedIndex, forKey: "selectedIndex")
+            }
+            return settings.enabledProcessors[selectedIndex]
+        }
+
+        let savedIndex = UserDefaults.standard.integer(forKey: "selectedIndex")
+
+        if savedIndex < settings.enabledProcessors.count {
+            selectedIndex = savedIndex
+        } else {
+            selectedIndex = 0
+            UserDefaults.standard.set(selectedIndex, forKey: "selectedIndex")
+        }
+
+        return settings.enabledProcessors[selectedIndex]
     }
-    
+
     /**
      Sets the active processor title.
-     
+
      The processor title in the action extension is displayed in a navigation
      bar at the top of the extension rather than in a button in the main
      interface. This sets the title in the correct element.
@@ -143,12 +142,12 @@ class ActionViewController: EditorViewController {
     override func setupProcessorTitle(_ title: String) {
         self.processorTitle.title = title
     }
-    
+
     // MARK: - Text Editor Setup
-    
+
     /**
      Skips setting preview hidding.
-     
+
      While the editor in the main app supports hiding of the preview, the
      action extension does not. This override prevents the preview hiding from
      being set up.
@@ -156,7 +155,7 @@ class ActionViewController: EditorViewController {
     override func setupPreviewHiding() {
         return
     }
-    
+
     // MARK: - Returning
 
     /**
@@ -167,33 +166,33 @@ class ActionViewController: EditorViewController {
             self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
             return
         }
-        
+
         let extensionItem = NSExtensionItem()
         let processedDictionary = [NSExtensionJavaScriptFinalizeArgumentKey : ["text": processedText]]
         extensionItem.attachments = [NSItemProvider(item: processedDictionary as NSSecureCoding, typeIdentifier: String(kUTTypePropertyList))]
         self.extensionContext?.completeRequest(returningItems: [extensionItem], completionHandler: nil)
     }
-    
+
     // MARK: - Segues
- 
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         guard UserDefaults.standard.integer(forKey: "selectedIndex") != selectedIndex else { return }
-        setupDefaultProcessor()
+        setupProcessor()
         runProcessor()
     }
-    
+
     // MARK: - UI Adjustments
-    
+
     /**
      Gets the height of the keyboard that covers the app's frame.
-     
+
      For the app proper, this value is merely the height of the keyboard.
      However, in the action extension subclass of this view controller, it is
      possible that the keyboard covers only a portion of the extension UI (this
      is the case when the extension is running on an iPad).
-     
+
      - Parameters:
         - keyboardValue: a value representing the 'keyboard' extracted when
                          processing the `keyboardWillChangeFrameNotification`.
@@ -201,7 +200,7 @@ class ActionViewController: EditorViewController {
     override func visibleKeyboardHeight(of keyboardValue: NSValue) -> CGFloat? {
         let keyboardScreenEndFrame = keyboardValue.cgRectValue
         let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
-        
+
         // This is a hacky resolution to getting this to work on the iPad. Why
         // is the magic number 50? Your guess is as good as mine.
         if UIDevice.current.userInterfaceIdiom == .pad {

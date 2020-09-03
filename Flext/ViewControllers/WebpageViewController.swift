@@ -12,31 +12,31 @@ import WebKit
 
 /**
  Displays an internal webpage.
- 
+
  With the exception of the About screen, pages of information in Flext are
  rendered as webpages that are viewed through a `WKWebView` instance.
  */
 class WebpageViewController: UIViewController {
-    
+
     // MARK: - IB Outlet Values
-    
+
     @IBOutlet var pageTitle: UINavigationItem!
     @IBOutlet var webView: WKWebView!
-    
+
     // MARK: - Properties
-    
+
     /// The `Webpage` object to render.
     var webpage: Webpage!
-    
+
     // MARK: - Controller Loading
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         pageTitle.title = webpage.title
-        
+
         webView.navigationDelegate = self
-        
+
         webView.loadHTMLString(webpage.output(to: .html), baseURL: webpage.baseURL)
     }
 }
@@ -48,7 +48,7 @@ extension WebpageViewController: WKNavigationDelegate {
             NSLog("Navigation failed")
             return
         }
-        
+
         switch url.scheme?.lowercased() {
         case "file":
             decisionHandler(.allow)
@@ -68,11 +68,11 @@ extension WebpageViewController: MFMailComposeViewControllerDelegate {
 
     /**
      Presents an e-mail composing screen to the user.
-     
+
      If a user taps on a `mailto` link in a webpage, this method presents an
      e-mail composition screen. The given `address` is inserted, the subject
      `[Flext]` is inserted and the body is set to be blank.
-     
+
      - Parameters:
         - address: The address to which this e-mail will be sent.
      */
@@ -90,7 +90,7 @@ extension WebpageViewController: MFMailComposeViewControllerDelegate {
 
         present(mail, animated: true)
     }
-    
+
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true)
     }

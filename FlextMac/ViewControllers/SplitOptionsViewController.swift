@@ -1,14 +1,14 @@
 //
-//  OptionsViewController.swift
-//  Flext
+//  SplitOptionsViewController.swift
+//  FlextMac
 //
-//  Created by Michael Camilleri on 4/8/20.
+//  Created by Michael Camilleri on 1/9/20.
 //  Copyright © 2020 Michael Camilleri. All rights reserved.
 //
 
 import UIKit
 
-// MARK: - OptionTableViewCell Class
+// MARK: - SplitOptionTableViewCell Class
 
 /**
  Represents a table view's cell in the Options section.
@@ -16,7 +16,7 @@ import UIKit
  The options table view cell contains no additional functionality but is able
  to model the individual elements added in Interface Builder.
  */
-class OptionTableViewCell: UITableViewCell {
+class SplitOptionTableViewCell: UITableViewCell {
 
     // MARK: - IB Outlet Values
 
@@ -25,7 +25,7 @@ class OptionTableViewCell: UITableViewCell {
     @IBOutlet var commentLabel: UILabel!
 }
 
-// MARK: - OptionsViewController Class
+// MARK: - SplitOptionsViewController Class
 
 /**
  Displays the Options section.
@@ -34,11 +34,10 @@ class OptionTableViewCell: UITableViewCell {
  by the user specifying additional arguments to the `process()` function in the
  underlying JavaScript file.
  */
-class OptionsViewController: UIViewController {
+class SplitOptionsViewController: UIViewController {
 
     // MARK: - IB Outlet Values
 
-    @IBOutlet var processorTitle: UINavigationItem!
     @IBOutlet var tableView: UITableView!
 
     // MARK: - Properties
@@ -46,12 +45,13 @@ class OptionsViewController: UIViewController {
     /// The relevant processor.
     var processor: Processor!
 
+    /// The editor.
+    var editor: SplitEditorViewController!
+
     // MARK: - Controller Loading
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        processorTitle.title = processor.name
 
         tableView.delegate = self
         tableView.dataSource = self
@@ -67,47 +67,12 @@ class OptionsViewController: UIViewController {
             selector: #selector(updateOption(notification:)),
             name: UITextField.textDidChangeNotification,
             object: nil)
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(adjustTableViewHeight(notification:)),
-            name: UIResponder.keyboardWillChangeFrameNotification,
-            object: nil)
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(adjustTableViewHeight(notification:)),
-            name: UIResponder.keyboardWillHideNotification,
-            object: nil)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         NotificationCenter.default.removeObserver(self, name: UITextField.textDidChangeNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-
-    // MARK: - UI Adjustments
-
-    /**
-     Adjusts the table view's height.
-
-     This method is necessary to ensure that the table view is not hidden behind
-     the keyboard when a value is being edited.
-
-     - Parameters:
-        - notification: The notification of the event that triggered the
-                        adjustment.
-     */
-    @objc func adjustTableViewHeight(notification: Notification) {
-        if notification.name == UIResponder.keyboardWillChangeFrameNotification {
-            guard let keyboardRect = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-            tableView.contentInset.bottom = keyboardRect.cgRectValue.size.height
-        } else if notification.name == UIResponder.keyboardWillHideNotification {
-            tableView.contentInset.bottom = .zero
-        }
     }
 
     // MARK: - Updating
@@ -132,6 +97,8 @@ class OptionsViewController: UIViewController {
         } else {
             processor.options[indexPath.row].value = nil
         }
+
+        editor.returnToEditor()
     }
 
     /**
@@ -148,7 +115,7 @@ class OptionsViewController: UIViewController {
 
 // MARK: - Data Source and Delegate
 
-extension OptionsViewController: UITableViewDataSource, UITableViewDelegate {
+extension SplitOptionsViewController: UITableViewDataSource, UITableViewDelegate {
 
     // MARK: - Sections
 
@@ -163,7 +130,7 @@ extension OptionsViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Option Cell", for: indexPath) as! OptionTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Option Cell", for: indexPath) as! SplitOptionTableViewCell
 
         cell.nameLabel.text = processor.options[indexPath.row].name.replacingOccurrences(of: "_", with: " ").capitalized
 
