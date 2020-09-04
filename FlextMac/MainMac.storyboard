@@ -98,28 +98,63 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <gestureRecognizers/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Processor" id="Rz4-Jg-IWW">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Processor" id="Rz4-Jg-IWW" customClass="SplitProcessorListViewCell" customModule="Flext" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="55.5" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Rz4-Jg-IWW" id="06l-gb-o5L">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VmO-EC-sUr" customClass="SplitProcessorListViewEditableLabel" customModule="Flext" customModuleProvider="target">
+                                            <rect key="frame" x="20" y="11" width="374" height="22"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
+                                    </subviews>
+                                    <gestureRecognizers/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="VmO-EC-sUr" secondAttribute="trailing" constant="20" id="Clm-ne-KQF"/>
+                                        <constraint firstItem="VmO-EC-sUr" firstAttribute="leading" secondItem="06l-gb-o5L" secondAttribute="leading" constant="20" id="Gd2-i5-h7e"/>
+                                        <constraint firstItem="VmO-EC-sUr" firstAttribute="centerY" secondItem="06l-gb-o5L" secondAttribute="centerY" id="zsa-Yh-8pc"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outlet property="titleLabel" destination="VmO-EC-sUr" id="3J2-dj-Mvv"/>
+                                </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="Processor (Options)" id="c0R-qt-sR8">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="Processor (Options)" id="c0R-qt-sR8" customClass="SplitProcessorListViewCell" customModule="Flext" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="99" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="c0R-qt-sR8" id="xuY-W1-uRe">
                                     <rect key="frame" x="0.0" y="0.0" width="370" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QdE-E9-GQq" customClass="SplitProcessorListViewEditableLabel" customModule="Flext" customModuleProvider="target">
+                                            <rect key="frame" x="20" y="11" width="330" height="22"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="QdE-E9-GQq" firstAttribute="centerY" secondItem="xuY-W1-uRe" secondAttribute="centerY" id="dHC-AC-7th"/>
+                                        <constraint firstAttribute="trailing" secondItem="QdE-E9-GQq" secondAttribute="trailing" constant="20" id="h3d-u1-SBn"/>
+                                        <constraint firstItem="QdE-E9-GQq" firstAttribute="leading" secondItem="xuY-W1-uRe" secondAttribute="leading" constant="20" id="qHe-fh-4aK"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outlet property="titleLabel" destination="QdE-E9-GQq" id="2o7-jv-MOR"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="Jxz-SG-Asu" id="Lmb-v5-4IK"/>
                             <outlet property="delegate" destination="Jxz-SG-Asu" id="yLm-MD-tja"/>
+                            <outletCollection property="gestureRecognizers" destination="XME-8T-U8f" appends="YES" id="vav-T1-w3h"/>
                         </connections>
                     </tableView>
                     <toolbarItems>
@@ -147,9 +182,15 @@
                         <outlet property="addButton" destination="m3X-6e-PNb" id="nPh-qJ-csv"/>
                         <outlet property="favouriteButton" destination="6sp-jX-hfH" id="pQq-LI-0sk"/>
                         <outlet property="removeButton" destination="zxq-Yd-3dj" id="Y1V-Du-FmW"/>
+                        <outlet property="tapRecogniser" destination="XME-8T-U8f" id="TRf-La-VO2"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HDf-AX-Xpx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer delaysTouchesEnded="NO" id="XME-8T-U8f">
+                    <connections>
+                        <action selector="handleTaps:" destination="Jxz-SG-Asu" id="oFW-iJ-7XJ"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1160" y="-1929"/>
         </scene>

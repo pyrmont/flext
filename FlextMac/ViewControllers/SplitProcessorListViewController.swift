@@ -13,6 +13,28 @@ extension Processor {
     var isUserAdded: Bool { type == .userAdded }
 }
 
+class SplitProcessorListViewEditableLabel: UITextField {
+    override func becomeFirstResponder() -> Bool {
+        guard isUserInteractionEnabled else { return false }
+        textColor = .label
+        backgroundColor = .white
+        return super.becomeFirstResponder()
+    }
+
+    override func endEditing(_ force: Bool) -> Bool {
+        isUserInteractionEnabled = false
+        textColor = .white
+        backgroundColor = .none
+        return super.endEditing(force)
+    }
+}
+
+class SplitProcessorListViewCell: UITableViewCell {
+    // MARK: - IB Outlet Values
+
+    @IBOutlet var titleLabel: SplitProcessorListViewEditableLabel?
+}
+
 class SplitProcessorListViewController: UITableViewController {
 
     // MARK: - Section Enum
@@ -41,6 +63,9 @@ class SplitProcessorListViewController: UITableViewController {
     /// Whether the table has focus.
     var hasFocus = false
 
+    /// Whether a label is being renamed.
+    var isRenaming = false
+
     /// The document picker.
     var documentPicker: UIDocumentPickerViewController!
 
@@ -49,6 +74,7 @@ class SplitProcessorListViewController: UITableViewController {
     @IBOutlet var addButton: UIBarButtonItem!
     @IBOutlet var removeButton: UIBarButtonItem!
     @IBOutlet var favouriteButton: UIBarButtonItem!
+    @IBOutlet var tapRecogniser: UITapGestureRecognizer!
 
     // MARK: - Controller Loading
 
@@ -69,18 +95,6 @@ class SplitProcessorListViewController: UITableViewController {
         let selectedPath = settings.selectedProcessorPath ?? defaultSelectedPath()
         updateSelectedPath(to: selectedPath)
 
-        tableView.dragInteractionEnabled = true
-        tableView.dragDelegate = self
-        tableView.dropDelegate = self
-
-        // This is a means of adjusting the duration the user has to wait before
-        // drag and drop becomes active.
-        if let recognizers = tableView.gestureRecognizers {
-            for case let recognizer as UILongPressGestureRecognizer in recognizers {
-                recognizer.minimumPressDuration = 0.2
-            }
-        }
-
         documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeJavaScript as String], in: .import)
         documentPicker.delegate = self
 
@@ -89,6 +103,35 @@ class SplitProcessorListViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+
+    @IBAction func handleTaps(_ sender: UITapGestureRecognizer) {
+        let existingPath = settings.selectedProcessorPath ?? IndexPath(row: 0, section: 0)
+
+        guard let tappedPath = tableView.indexPathForRow(at: sender.location(in: tableView)) else {
+            tableView(tableView, didSelectRowAt: existingPath)
+            tableView.becomeFirstResponder()
+            return
+        }
+
+        guard hasFocus else {
+            tableView(tableView, didSelectRowAt: tappedPath)
+            tableView.becomeFirstResponder()
+            return
+        }
+
+        guard tappedPath != existingPath else {
+            let cell = tableView.cellForRow(at: tappedPath) as! SplitProcessorListViewCell
+            cell.titleLabel?.isUserInteractionEnabled = true
+            let _ = cell.titleLabel?.becomeFirstResponder()
+            return
+        }
+
+        guard let checkedPath = tableView(tableView, willSelectRowAt: tappedPath) else { return }
+        guard let deselectingPath = tableView(tableView, willDeselectRowAt: existingPath) else { return }
+        tableView(tableView, didDeselectRowAt: deselectingPath)
+        tableView(tableView, didSelectRowAt: checkedPath)
+        tableView.becomeFirstResponder()
     }
 
     // MARK: - Selected Path Updating
@@ -386,56 +429,74 @@ class SplitProcessorListViewController: UITableViewController {
 
         let identifier = processor.hasOptions ? "Processor (Options)" : "Processor"
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
-        cell.textLabel?.text = processor.name
+        if let customCell = cell as? SplitProcessorListViewCell {
+            customCell.titleLabel?.text = processor.name
+        }
+//        cell.textLabel?.text = processor.name
 
         return cell
     }
 
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        guard let _ = processor(at: indexPath) else { return nil }
+        guard processor(at: indexPath) != nil else { return nil }
+
         return indexPath
     }
 
     override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
         guard hasFocus else { return }
-        let cell = tableView.cellForRow(at: indexPath)
+        let cell = tableView.cellForRow(at: indexPath) as? SplitProcessorListViewCell
+        cell?.titleLabel?.textColor = .white
         cell?.tintColor = .white
     }
 
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        guard let selectedPath = tableView.indexPathForSelectedRow else { return true }
-        guard indexPath != selectedPath else { return true }
-        let cell = tableView.cellForRow(at: selectedPath)
+        guard let existingPath = settings.selectedProcessorPath else { return true }
+        guard indexPath != existingPath else { return true }
+        let cell = tableView.cellForRow(at: existingPath) as? SplitProcessorListViewCell
+        cell?.titleLabel?.textColor = .label
         cell?.tintColor = .label
         return true
     }
 
-    override func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath)
-        cell?.tintColor = .label
-    }
+//    override func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+//        let cell = tableView.cellForRow(at: indexPath) as? SplitProcessorListViewCell
+//        cell?.titleLabel?.textColor = .label
+//        cell?.tintColor = .label
+//    }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath)
+        let cell = tableView.cellForRow(at: indexPath) as? SplitProcessorListViewCell
+        cell?.titleLabel?.textColor = .white
         cell?.tintColor = .white
 
         updateSelectedPath(to: indexPath)
     }
 
+    override func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
+        return indexPath
+    }
+
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath)
+        let cell = tableView.cellForRow(at: indexPath) as? SplitProcessorListViewCell
+        cell?.titleLabel?.textColor = .label
         cell?.tintColor = .label
     }
 
     override func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        guard let selectedPath = tableView.indexPathForSelectedRow else { return }
-        guard let cell = tableView.cellForRow(at: selectedPath) else { return }
-        if context.nextFocusedIndexPath == nil {
-            cell.tintColor = .label
-            hasFocus = false
-        } else {
+        guard let tableHasFocus = context.nextFocusedView?.isDescendant(of: tableView) else { return }
+        guard let existingPath = settings.selectedProcessorPath else { return }
+        guard let cell = tableView.cellForRow(at: existingPath) as? SplitProcessorListViewCell else { return }
+
+        if tableHasFocus {
+            cell.titleLabel?.textColor = .white
             cell.tintColor = .white
             hasFocus = true
+        } else {
+            let _ = cell.titleLabel?.endEditing(true)
+            cell.titleLabel?.textColor = .label
+            cell.tintColor = .label
+            hasFocus = false
         }
     }
 
@@ -461,28 +522,6 @@ class SplitProcessorListViewController: UITableViewController {
 
         // Present the view controller (in a popover).
         self.present(optionsVC, animated: true, completion: nil)
-    }
-}
-
-// MARK: - Dragging and Dropping
-
-extension SplitProcessorListViewController: UITableViewDragDelegate, UITableViewDropDelegate {
-    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-        guard indexPath.section == Section.favourited.rawValue else { return [] }
-        return [UIDragItem(itemProvider: NSItemProvider(object: "Move" as NSItemProviderWriting))]
-    }
-
-    func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
-        guard session.localDragSession != nil else { return UITableViewDropProposal(operation: .cancel, intent: .unspecified) }
-
-        return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
-    }
-
-    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
-    }
-
-    func tableView(_ tableView: UITableView, dragSessionIsRestrictedToDraggingApplication session: UIDragSession) -> Bool {
-        return true
     }
 }
 
