@@ -193,7 +193,8 @@ class EditorViewController: UIViewController {
     func savePreferences() {
         DispatchQueue.global(qos: .background).async { [weak self] in
             guard let settings = self?.settings else { return }
-            PreferencesManager.save(settings.processors, ordering: settings.enabledProcessors, selectedPath: settings.selectedProcessorPath)
+            let ordering = ProcessorOrdering(enabled: settings.enabledProcessors, favourited: settings.favouritedProcessors)
+            PreferencesManager.save(settings.processors, ordering: ordering, selectedPath: settings.selectedProcessorPath)
         }
     }
 

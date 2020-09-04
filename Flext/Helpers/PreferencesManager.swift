@@ -78,7 +78,7 @@ struct PreferencesManager {
         - ordering: An ordering of the processors.
         - selected: The active processor.
      */
-    static func save(_ processorModels: [Processor], ordering: [Processor], selectedPath: IndexPath?) {
+    static func save(_ processorModels: [Processor], ordering: ProcessorOrdering, selectedPath: IndexPath?) {
         var newPreferences = Preferences()
         newPreferences.save(processorModels, ordering: ordering, selectedPath: selectedPath)
 

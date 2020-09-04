@@ -57,7 +57,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
-        PreferencesManager.save(settings.processors, ordering: settings.enabledProcessors, selectedPath: settings.selectedProcessorPath)
+        let ordering = ProcessorOrdering(enabled: settings.enabledProcessors, favourited: settings.favouritedProcessors)
+        PreferencesManager.save(settings.processors, ordering: ordering, selectedPath: settings.selectedProcessorPath)
     }
 
     func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {

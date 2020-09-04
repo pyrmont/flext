@@ -69,6 +69,10 @@ class SplitProcessorListViewController: UITableViewController {
         let selectedPath = settings.selectedProcessorPath ?? defaultSelectedPath()
         updateSelectedPath(to: selectedPath)
 
+        tableView.dragInteractionEnabled = true
+        tableView.dragDelegate = self
+        tableView.dropDelegate = self
+
         documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeJavaScript as String], in: .import)
         documentPicker.delegate = self
 
@@ -180,6 +184,44 @@ class SplitProcessorListViewController: UITableViewController {
         }
     }
 
+    // MARK: - Moving
+
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return indexPath.section == Section.favourited.rawValue ? true : false
+    }
+
+    // There is a bug (I think here) where sometimes the move doesn't happen. I don't know why.
+    override func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
+        guard sourceIndexPath.section == Section.favourited.rawValue else { return sourceIndexPath }
+
+        if proposedDestinationIndexPath.section != Section.favourited.rawValue {
+            let lastRowIndex = self.tableView(tableView, numberOfRowsInSection: sourceIndexPath.section) - 1
+            return IndexPath(row: lastRowIndex, section: sourceIndexPath.section)
+        } else {
+            return proposedDestinationIndexPath
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let processor = settings.favouritedProcessors.remove(at: sourceIndexPath.row)
+        settings.favouritedProcessors.insert(processor, at: destinationIndexPath.row)
+
+        editor.savePreferences()
+
+        print(destinationIndexPath)
+
+        guard let selectedPath = settings.selectedProcessorPath else { return }
+        guard selectedPath.section == Section.favourited.rawValue else { return }
+        if selectedPath.row == sourceIndexPath.row {
+            settings.selectedProcessorPath?.row = destinationIndexPath.row
+        } else if selectedPath.row > sourceIndexPath.row && selectedPath.row <= destinationIndexPath.row {
+            settings.selectedProcessorPath?.row -= 1
+        } else if selectedPath.row < sourceIndexPath.row && selectedPath.row >= destinationIndexPath.row {
+            settings.selectedProcessorPath?.row += 1
+        }
+    }
+
+
     // MARK: - Inserting
 
     @IBAction func insertProcessor(_ sender: UIBarButtonItem) {
@@ -243,7 +285,6 @@ class SplitProcessorListViewController: UITableViewController {
         guard let selectedPath = settings.selectedProcessorPath else { return }
         guard let processor = processor(at: selectedPath) else { return }
         guard processor.isUserAdded else { return }
-        print("Removing...")
         removeProcessor(at: selectedPath)
     }
 
@@ -414,6 +455,28 @@ class SplitProcessorListViewController: UITableViewController {
 
         // Present the view controller (in a popover).
         self.present(optionsVC, animated: true, completion: nil)
+    }
+}
+
+// MARK: - Dragging and Dropping
+
+extension SplitProcessorListViewController: UITableViewDragDelegate, UITableViewDropDelegate {
+    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        guard indexPath.section == Section.favourited.rawValue else { return [] }
+        return [UIDragItem(itemProvider: NSItemProvider(object: "Move" as NSItemProviderWriting))]
+    }
+
+    func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+        guard session.localDragSession != nil else { return UITableViewDropProposal(operation: .cancel, intent: .unspecified) }
+
+        return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+    }
+
+    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+    }
+
+    func tableView(_ tableView: UITableView, dragSessionIsRestrictedToDraggingApplication session: UIDragSession) -> Bool {
+        return true
     }
 }
 

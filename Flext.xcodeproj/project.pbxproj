@@ -689,6 +689,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.inqk.Flext.FlextMac;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = net.inqk.Flext.FlextMac;
 				PRODUCT_NAME = Flext;
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
@@ -710,6 +711,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.inqk.Flext.FlextMac;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = net.inqk.Flext.FlextMac;
 				PRODUCT_NAME = Flext;
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;

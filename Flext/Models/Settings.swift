@@ -146,16 +146,16 @@ class Settings {
         self.enabledProcessors = processors
             .filter({ $0.isEnabled })
             .sorted(by: {
-                guard let first = PreferencesManager.processors[$0.filename]?.order else { return false }
-                guard let second = PreferencesManager.processors[$1.filename]?.order else { return false }
+                guard let first = PreferencesManager.processors[$0.filename]?.enabledOrder else { return false }
+                guard let second = PreferencesManager.processors[$1.filename]?.enabledOrder else { return false }
 
                 return first < second
             })
         self.favouritedProcessors = processors
             .filter({ $0.isFavourited })
             .sorted(by: {
-                guard let first = PreferencesManager.processors[$0.filename]?.order else { return false }
-                guard let second = PreferencesManager.processors[$1.filename]?.order else { return false }
+                guard let first = PreferencesManager.processors[$0.filename]?.favouritedOrder else { return false }
+                guard let second = PreferencesManager.processors[$1.filename]?.favouritedOrder else { return false }
 
                 return first < second
             })
@@ -202,7 +202,8 @@ class Settings {
 
         DispatchQueue.global(qos: .background).async { [weak self] in
             guard let settings = self else { return }
-            PreferencesManager.save(settings.processors, ordering: settings.enabledProcessors, selectedPath: settings.selectedProcessorPath)
+            let ordering = ProcessorOrdering(enabled: settings.enabledProcessors, favourited: settings.favouritedProcessors)
+            PreferencesManager.save(settings.processors, ordering: ordering, selectedPath: settings.selectedProcessorPath)
         }
     }
 

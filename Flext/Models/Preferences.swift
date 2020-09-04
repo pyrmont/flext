@@ -27,7 +27,10 @@ struct ProcessorPreferences: Codable {
     var isFavourited: Bool
 
     /// The position of the processor in the list of enabled processors.
-    var order: Int?
+    var enabledOrder: Int?
+
+    /// The position of the processor in the list of favourited processors.
+    var favouritedOrder: Int?
 
     /// The user-set options associated with the processor.
     var options: [String: String]
@@ -44,7 +47,8 @@ struct ProcessorPreferences: Codable {
         self.name = processor.name
         self.isEnabled = processor.isEnabled
         self.isFavourited = processor.isFavourited
-        self.order = nil
+        self.enabledOrder = nil
+        self.favouritedOrder = nil
         self.options = [:]
     }
 
@@ -111,15 +115,24 @@ struct Preferences: Codable {
         - ordering: The ordering of the processors.
         - selected: The selected processor.
      */
-    mutating func save(_ processorModels: [Processor], ordering: [Processor], selectedPath: IndexPath?) {
+    mutating func save(_ processorModels: [Processor], ordering: ProcessorOrdering, selectedPath: IndexPath?) {
         for processorModel in processorModels {
             save(processorModel)
         }
 
-        for (index, processorModel) in ordering.enumerated() {
-            processors[processorModel.filename]?.order = index
+        for (index, processorModel) in ordering.enabled.enumerated() {
+            processors[processorModel.filename]?.enabledOrder = index
+        }
+
+        for (index, processorModel) in ordering.favourited.enumerated() {
+            processors[processorModel.filename]?.favouritedOrder = index
         }
 
         self.selectedPath = selectedPath
     }
+}
+
+struct ProcessorOrdering {
+    var enabled: [Processor]
+    var favourited: [Processor]
 }

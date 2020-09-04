@@ -509,6 +509,10 @@ extension ManagerViewController: UITableViewDragDelegate, UITableViewDropDelegat
 
     func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
     }
+
+    func tableView(_ tableView: UITableView, dragSessionIsRestrictedToDraggingApplication session: UIDragSession) -> Bool {
+        return true
+    }
 }
 
 // MARK: - Text Field
