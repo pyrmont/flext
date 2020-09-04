@@ -17,13 +17,12 @@ class SplitProcessorListViewEditableLabel: UITextField {
     override func becomeFirstResponder() -> Bool {
         guard isUserInteractionEnabled else { return false }
         textColor = .label
-        backgroundColor = .white
+        backgroundColor = .systemBackground
         return super.becomeFirstResponder()
     }
 
     override func endEditing(_ force: Bool) -> Bool {
         isUserInteractionEnabled = false
-        textColor = .white
         backgroundColor = .none
         return super.endEditing(force)
     }
@@ -218,6 +217,9 @@ class SplitProcessorListViewController: UITableViewController {
         }
 
         let _ = cell.titleLabel?.endEditing(false)
+        if cell.isSelected {
+            cell.titleLabel?.textColor = .white
+        }
     }
 
 
