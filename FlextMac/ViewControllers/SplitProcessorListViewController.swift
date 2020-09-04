@@ -101,8 +101,7 @@ class SplitProcessorListViewController: UITableViewController {
         }
     }
 
-    func updateSelectedPath(to indexPath: IndexPath, plus increase: Int = 0, minus decrease: Int = 0) {
-        let change = increase - decrease
+    func updateSelectedPath(to indexPath: IndexPath) {
         var collection: [Processor]
         var sectionIfEmpty: Section
         var rowIfEmpty: Int
@@ -127,7 +126,13 @@ class SplitProcessorListViewController: UITableViewController {
         if collection.isEmpty {
             settings.selectedProcessorPath = IndexPath(row: rowIfEmpty, section: sectionIfEmpty.rawValue)
         } else {
-            settings.selectedProcessorPath = IndexPath(row: indexPath.row + change, section: indexPath.section)
+            var newRow = indexPath.row
+            if newRow < 0 {
+                newRow = 0
+            } else if newRow >= collection.count {
+                newRow = collection.count - 1
+            }
+            settings.selectedProcessorPath = IndexPath(row: newRow, section: indexPath.section)
         }
 
         tableView.selectRow(at: settings.selectedProcessorPath, animated: false, scrollPosition: .none)
@@ -160,16 +165,11 @@ class SplitProcessorListViewController: UITableViewController {
         } else if let rowIndex = settings.favouritedProcessors.firstIndex(of: processor) {
             settings.favouritedProcessors.remove(at: rowIndex)
             tableView.deleteRows(at: [IndexPath(row: rowIndex, section: Section.favourited.rawValue)], with: .automatic)
-            if selectedPath.section == Section.favourited.rawValue && selectedPath.row == rowIndex {
-                updateSelectedPath(to: selectedPath, minus: 1)
-            }
         }
 
         tableView.endUpdates()
 
-        toggleFavouriteButton()
-
-        editor.savePreferences()
+        updateSelectedPath(to: selectedPath)
     }
 
     func toggleRemoveButton() {
@@ -215,8 +215,6 @@ class SplitProcessorListViewController: UITableViewController {
         settings.favouritedProcessors.insert(processor, at: destinationIndexPath.row)
 
         editor.savePreferences()
-
-        print(destinationIndexPath)
 
         guard let selectedPath = settings.selectedProcessorPath else { return }
         guard selectedPath.section == Section.favourited.rawValue else { return }
@@ -333,7 +331,7 @@ class SplitProcessorListViewController: UITableViewController {
 
         tableView.endUpdates()
 
-        updateSelectedPath(to: indexPath, minus: 1)
+        updateSelectedPath(to: indexPath)
     }
 
     // MARK: - Table Methods
