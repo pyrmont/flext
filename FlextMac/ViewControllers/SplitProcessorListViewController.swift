@@ -30,6 +30,11 @@ class SplitProcessorListViewEditableLabel: UITextField {
 }
 
 class SplitProcessorListViewCell: UITableViewCell {
+
+    // MARK: - Properties
+
+    var processor: Processor!
+
     // MARK: - IB Outlet Values
 
     @IBOutlet var titleLabel: SplitProcessorListViewEditableLabel?
@@ -120,8 +125,8 @@ class SplitProcessorListViewController: UITableViewController {
             return
         }
 
-        guard tappedPath != existingPath else {
-            let cell = tableView.cellForRow(at: tappedPath) as! SplitProcessorListViewCell
+        let cell = tableView.cellForRow(at: tappedPath) as! SplitProcessorListViewCell
+        if cell.processor.isUserAdded && tappedPath == existingPath {
             cell.titleLabel?.isUserInteractionEnabled = true
             let _ = cell.titleLabel?.becomeFirstResponder()
             return
@@ -185,6 +190,36 @@ class SplitProcessorListViewController: UITableViewController {
         editor.processor = processor(at: settings.selectedProcessorPath)
         editor.returnToEditor()
     }
+
+    // MARK: Processor Renaming
+
+    /**
+     Finishes renaming the processor.
+
+     - Parameters:
+        - sender: The text field for the processor being renamed.
+     */
+    @IBAction func finishedRenaming(_ sender: UITextField) {
+        guard let text = sender.text else { return }
+        guard !text.isEmpty else { return }
+
+        guard let indexPath = tableView.indexPathForRow(at: sender.convert(sender.bounds.origin, to: tableView)) else { return }
+        guard let cell = tableView.cellForRow(at: indexPath) as? SplitProcessorListViewCell else { return }
+        cell.processor.name = text
+
+        if indexPath.section == Section.favourited.rawValue {
+            guard let userAddedRow = userAddedProcessors.firstIndex(of: cell.processor) else { return }
+            guard let userAddedCell = tableView.cellForRow(at: IndexPath(row: userAddedRow, section: Section.userAdded.rawValue)) as? SplitProcessorListViewCell else { return }
+            userAddedCell.titleLabel?.text = cell.processor.name
+        } else {
+            guard let favouritedRow = settings.favouritedProcessors.firstIndex(of: cell.processor) else { return }
+            guard let favouritedCell = tableView.cellForRow(at: IndexPath(row: favouritedRow, section: Section.favourited.rawValue)) as? SplitProcessorListViewCell else { return }
+            favouritedCell.titleLabel?.text = cell.processor.name
+        }
+
+        let _ = cell.titleLabel?.endEditing(false)
+    }
+
 
     // MARK: - Toolbar Updating
 
@@ -430,6 +465,7 @@ class SplitProcessorListViewController: UITableViewController {
         let identifier = processor.hasOptions ? "Processor (Options)" : "Processor"
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
         if let customCell = cell as? SplitProcessorListViewCell {
+            customCell.processor = processor
             customCell.titleLabel?.text = processor.name
         }
 //        cell.textLabel?.text = processor.name

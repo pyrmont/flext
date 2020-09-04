@@ -111,6 +111,10 @@
                                             <rect key="frame" x="20" y="11" width="374" height="22"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <textInputTraits key="textInputTraits"/>
+                                            <connections>
+                                                <action selector="finishedRenaming:" destination="Jxz-SG-Asu" eventType="editingDidEndOnExit" id="5HY-Re-9ph"/>
+                                                <action selector="finishedRenaming:" destination="Jxz-SG-Asu" eventType="editingDidEnd" id="AKe-xZ-a9A"/>
+                                            </connections>
                                         </textField>
                                     </subviews>
                                     <gestureRecognizers/>
@@ -136,6 +140,10 @@
                                             <rect key="frame" x="20" y="11" width="330" height="22"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <textInputTraits key="textInputTraits"/>
+                                            <connections>
+                                                <action selector="finishedRenaming:" destination="Jxz-SG-Asu" eventType="editingDidEnd" id="2DI-Ar-QEw"/>
+                                                <action selector="finishedRenaming:" destination="Jxz-SG-Asu" eventType="editingDidEndOnExit" id="Z0F-Gn-GKH"/>
+                                            </connections>
                                         </textField>
                                     </subviews>
                                     <constraints>
