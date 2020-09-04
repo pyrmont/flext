@@ -73,6 +73,14 @@ class SplitProcessorListViewController: UITableViewController {
         tableView.dragDelegate = self
         tableView.dropDelegate = self
 
+        // This is a means of adjusting the duration the user has to wait before
+        // drag and drop becomes active.
+        if let recognizers = tableView.gestureRecognizers {
+            for case let recognizer as UILongPressGestureRecognizer in recognizers {
+                recognizer.minimumPressDuration = 0.2
+            }
+        }
+
         documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeJavaScript as String], in: .import)
         documentPicker.delegate = self
 
@@ -437,7 +445,7 @@ class SplitProcessorListViewController: UITableViewController {
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
 
         // Load and configure your view controller.
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "MainMac", bundle: nil)
         guard let optionsVC = storyboard.instantiateViewController(withIdentifier: "Options") as? SplitOptionsViewController else { return }
 
         optionsVC.processor = processor(at: indexPath)
