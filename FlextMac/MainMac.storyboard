@@ -101,14 +101,14 @@
                         <gestureRecognizers/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Processor" id="Rz4-Jg-IWW" customClass="SplitProcessorListViewCell" customModule="Flext" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="55.5" width="414" height="43.5"/>
+                                <rect key="frame" x="0.0" y="55.5" width="414" height="32.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Rz4-Jg-IWW" id="06l-gb-o5L">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="32.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VmO-EC-sUr" customClass="SplitProcessorListViewEditableLabel" customModule="Flext" customModuleProvider="target">
-                                            <rect key="frame" x="20" y="11" width="374" height="22"/>
+                                            <rect key="frame" x="20" y="5" width="374" height="22.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <textInputTraits key="textInputTraits"/>
                                             <connections>
@@ -121,6 +121,8 @@
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="VmO-EC-sUr" secondAttribute="trailing" constant="20" id="Clm-ne-KQF"/>
                                         <constraint firstItem="VmO-EC-sUr" firstAttribute="leading" secondItem="06l-gb-o5L" secondAttribute="leading" constant="20" id="Gd2-i5-h7e"/>
+                                        <constraint firstItem="VmO-EC-sUr" firstAttribute="top" secondItem="06l-gb-o5L" secondAttribute="top" constant="5" id="WCj-Dp-wVe"/>
+                                        <constraint firstAttribute="bottom" secondItem="VmO-EC-sUr" secondAttribute="bottom" constant="5" id="tcj-ct-Sxg"/>
                                         <constraint firstItem="VmO-EC-sUr" firstAttribute="centerY" secondItem="06l-gb-o5L" secondAttribute="centerY" id="zsa-Yh-8pc"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -130,14 +132,14 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="Processor (Options)" id="c0R-qt-sR8" customClass="SplitProcessorListViewCell" customModule="Flext" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="99" width="414" height="43.5"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="32.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="c0R-qt-sR8" id="xuY-W1-uRe">
-                                    <rect key="frame" x="0.0" y="0.0" width="370" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="370" height="32.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QdE-E9-GQq" customClass="SplitProcessorListViewEditableLabel" customModule="Flext" customModuleProvider="target">
-                                            <rect key="frame" x="20" y="11" width="330" height="22"/>
+                                            <rect key="frame" x="20" y="5" width="330" height="22.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <textInputTraits key="textInputTraits"/>
                                             <connections>
@@ -147,6 +149,8 @@
                                         </textField>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="QdE-E9-GQq" firstAttribute="top" secondItem="xuY-W1-uRe" secondAttribute="top" constant="5" id="8cc-br-OR4"/>
+                                        <constraint firstAttribute="bottom" secondItem="QdE-E9-GQq" secondAttribute="bottom" constant="5" id="UW0-mj-rDb"/>
                                         <constraint firstItem="QdE-E9-GQq" firstAttribute="centerY" secondItem="xuY-W1-uRe" secondAttribute="centerY" id="dHC-AC-7th"/>
                                         <constraint firstAttribute="trailing" secondItem="QdE-E9-GQq" secondAttribute="trailing" constant="20" id="h3d-u1-SBn"/>
                                         <constraint firstItem="QdE-E9-GQq" firstAttribute="leading" secondItem="xuY-W1-uRe" secondAttribute="leading" constant="20" id="qHe-fh-4aK"/>
