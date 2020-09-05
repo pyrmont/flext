@@ -199,11 +199,19 @@ class SplitProcessorListViewController: UITableViewController {
         - sender: The text field for the processor being renamed.
      */
     @IBAction func finishedRenaming(_ sender: UITextField) {
+        guard let indexPath = tableView.indexPathForRow(at: sender.convert(sender.bounds.origin, to: tableView)) else { return }
+        guard let cell = tableView.cellForRow(at: indexPath) as? SplitProcessorListViewCell else { return }
+
+        defer {
+            let _ = cell.titleLabel?.endEditing(false)
+            if cell.isSelected {
+                cell.titleLabel?.textColor = .white
+            }
+        }
+
         guard let text = sender.text else { return }
         guard !text.isEmpty else { return }
 
-        guard let indexPath = tableView.indexPathForRow(at: sender.convert(sender.bounds.origin, to: tableView)) else { return }
-        guard let cell = tableView.cellForRow(at: indexPath) as? SplitProcessorListViewCell else { return }
         cell.processor.name = text
 
         if indexPath.section == Section.favourited.rawValue {
@@ -216,10 +224,6 @@ class SplitProcessorListViewController: UITableViewController {
             favouritedCell.titleLabel?.text = cell.processor.name
         }
 
-        let _ = cell.titleLabel?.endEditing(false)
-        if cell.isSelected {
-            cell.titleLabel?.textColor = .white
-        }
     }
 
 
@@ -228,28 +232,6 @@ class SplitProcessorListViewController: UITableViewController {
     func updateToolbar() {
         toggleRemoveButton()
         toggleFavouriteButton()
-    }
-
-    @IBAction func toggleFavouriteStatus(_ sender: UIBarButtonItem) {
-        guard let selectedPath = settings.selectedProcessorPath else { return }
-        guard let processor = processor(at: selectedPath) else { return }
-
-        processor.isFavourited.toggle()
-
-        tableView.beginUpdates()
-
-        if processor.isFavourited {
-            let rowIndex = settings.favouritedProcessors.count
-            settings.favouritedProcessors.append(processor)
-            tableView.insertRows(at: [IndexPath(row: rowIndex, section: Section.favourited.rawValue)], with: .automatic)
-        } else if let rowIndex = settings.favouritedProcessors.firstIndex(of: processor) {
-            settings.favouritedProcessors.remove(at: rowIndex)
-            tableView.deleteRows(at: [IndexPath(row: rowIndex, section: Section.favourited.rawValue)], with: .automatic)
-        }
-
-        tableView.endUpdates()
-
-        updateSelectedPath(to: selectedPath)
     }
 
     func toggleRemoveButton() {
@@ -270,6 +252,34 @@ class SplitProcessorListViewController: UITableViewController {
         } else {
             favouriteButton.image = favouriteImage
         }
+    }
+
+    // Favouriting
+
+    @IBAction func toggleFavouriteStatus(_ sender: UIBarButtonItem) {
+        guard let selectedPath = settings.selectedProcessorPath else { return }
+        guard let processor = processor(at: selectedPath) else { return }
+
+        toggleFavouriteStatus(of: processor)
+
+        updateSelectedPath(to: selectedPath)
+    }
+
+    func toggleFavouriteStatus(of processor: Processor) {
+        processor.isFavourited.toggle()
+
+        tableView.beginUpdates()
+
+        if processor.isFavourited {
+            let rowIndex = settings.favouritedProcessors.count
+            settings.favouritedProcessors.append(processor)
+            tableView.insertRows(at: [IndexPath(row: rowIndex, section: Section.favourited.rawValue)], with: .automatic)
+        } else if let rowIndex = settings.favouritedProcessors.firstIndex(of: processor) {
+            settings.favouritedProcessors.remove(at: rowIndex)
+            tableView.deleteRows(at: [IndexPath(row: rowIndex, section: Section.favourited.rawValue)], with: .automatic)
+        }
+
+        tableView.endUpdates()
     }
 
     // MARK: - Moving
@@ -469,6 +479,7 @@ class SplitProcessorListViewController: UITableViewController {
         if let customCell = cell as? SplitProcessorListViewCell {
             customCell.processor = processor
             customCell.titleLabel?.text = processor.name
+            configureContextInteraction(to: customCell)
         }
 //        cell.textLabel?.text = processor.name
 
@@ -570,5 +581,49 @@ extension SplitProcessorListViewController: UIDocumentPickerDelegate {
         for url in urls {
             insertProcessor(with: url)
         }
+    }
+}
+
+// MARK: - Context Menu
+
+extension SplitProcessorListViewController: UIContextMenuInteractionDelegate {
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+        let cell = interaction.view as! SplitProcessorListViewCell
+        let config = UIContextMenuConfiguration(
+            identifier: nil,
+            previewProvider: nil) { _ in
+                let favouriteTitle = cell.processor.isFavourited ? "Unfavourite" : "Favourite"
+                let favouriteImage = cell.processor.isFavourited ? "heart.slash" : "heart"
+                let favouriteAction = UIAction(title: favouriteTitle, image: UIImage(systemName: favouriteImage)) { [weak self] (action) in
+                    self?.toggleFavouriteStatus(of: cell.processor)
+                }
+
+                let renameTitle = "Rename"
+                let renameAttributes: UIMenuElement.Attributes = cell.processor.isUserAdded ? [] : .disabled
+                let renameAction = UIAction(title: renameTitle, image: UIImage(systemName: "square.and.pencil"), attributes: renameAttributes) { [weak self] (action) in
+                    guard let indexPath = self?.tableView.indexPath(for: cell) else { return }
+                    self?.updateSelectedPath(to: indexPath)
+                    cell.titleLabel?.isUserInteractionEnabled = true
+                    let _ = cell.titleLabel?.becomeFirstResponder()
+                }
+
+                let deleteTitle = "Delete"
+                let deleteAttributes: UIMenuElement.Attributes = cell.processor.isUserAdded ? .destructive : .disabled
+                let deleteAction = UIAction(title: deleteTitle, image: UIImage(systemName: "trash"), attributes: deleteAttributes) { [weak self] (action) in
+                    guard let indexPath = self?.tableView.indexPath(for: cell) else { return }
+                    self?.removeProcessor(at: indexPath)
+                }
+
+                let deleteSection = UIMenu(title: "", options: .displayInline, children: [deleteAction])
+                let renameSection = UIMenu(title: "", options: .displayInline, children: [renameAction])
+                let favouriteSection = UIMenu(title: "", options: .displayInline, children: [favouriteAction])
+                return UIMenu(title: "", children: [deleteSection, renameSection, favouriteSection])
+            }
+        return config
+    }
+
+    func configureContextInteraction(to view: UIView) {
+        let interaction = UIContextMenuInteraction(delegate: self)
+        view.addInteraction(interaction)
     }
 }
