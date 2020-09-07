@@ -538,15 +538,27 @@ class EditorViewController: UIViewController {
 
         switch Button(rawValue: sender.selectedSegmentIndex) {
         case .reset:
-            enteredText.editor?.replaceText(with: "", allowEmpty: true)
+            resetInput()
         case .copy:
-            UIPasteboard.general.string = textPreview.text
+            copyOutput()
         case .paste:
-            guard let paste = UIPasteboard.general.string else { return }
-            enteredText.editor?.appendText(with: paste)
+            pasteInput()
         default:
             break
         }
+    }
+
+    func resetInput() {
+        enteredText.editor?.replaceText(with: "", allowEmpty: true)
+    }
+
+    func copyOutput() {
+        UIPasteboard.general.string = textPreview.text
+    }
+
+    func pasteInput() {
+        guard let paste = UIPasteboard.general.string else { return }
+        enteredText.editor?.appendText(with: paste)
     }
 }
 

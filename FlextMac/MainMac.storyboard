@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PBp-cP-bBE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PBp-cP-bBE" initialMenu="w73-ae-W4u">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="UIMenu" message="Requires Xcode 11 or later." minToolsVersion="11.0" requiredIntegratedClassName="UICommandDiff"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -225,6 +226,85 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Blv-3c-9sN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="205" y="-1929"/>
+        </scene>
+        <!--Main Menu-->
+        <scene sceneID="lSe-H6-0H5">
+            <objects>
+                <menu isSystemItem="YES" title="Main Menu" identifier="com.apple.menu.root" id="w73-ae-W4u" sceneMemberID="viewController">
+                    <children>
+                        <menu isSystemItem="YES" title="Edit" identifier="com.apple.menu.edit" id="aBa-DX-WBf">
+                            <children>
+                                <menu isSystemItem="YES" title="Standard Edit" identifier="com.apple.menu.standard-edit" id="mkD-hO-Ecx">
+                                    <menuOptions key="menuOptions" displayInline="YES"/>
+                                    <children>
+                                        <command title="Copy Output" input="C" anchorAction="copy:" id="5zV-5w-Ytx">
+                                            <keyModifierFlags key="modifierFlags" shift="YES" command="YES"/>
+                                            <connections>
+                                                <action selector="copyOutputMenuAction" destination="gzW-15-PDq" id="wRv-mv-hhn"/>
+                                            </connections>
+                                        </command>
+                                    </children>
+                                </menu>
+                                <menu title="Input" anchor="com.apple.menu.find" id="ot9-kt-92h">
+                                    <menuOptions key="menuOptions" displayInline="YES"/>
+                                    <children>
+                                        <command title="Reset Input" input="r" id="zq4-Tc-Bey">
+                                            <menuElementAttributes key="attributes" destructive="YES"/>
+                                            <keyModifierFlags key="modifierFlags" command="YES"/>
+                                            <connections>
+                                                <action selector="resetInputMenuAction" destination="gzW-15-PDq" id="ABA-o2-f0T"/>
+                                            </connections>
+                                        </command>
+                                    </children>
+                                </menu>
+                            </children>
+                            <systemMenuChildDeletions>
+                                <menuDeletion anchor="com.apple.menu.spelling"/>
+                                <menuDeletion anchor="com.apple.menu.substitutions"/>
+                                <menuDeletion anchor="com.apple.menu.transformations"/>
+                                <menuDeletion anchor="com.apple.command.speech"/>
+                            </systemMenuChildDeletions>
+                        </menu>
+                        <menu isSystemItem="YES" title="View" identifier="com.apple.menu.view" id="KxU-L2-VMN">
+                            <systemMenuChildDeletions>
+                                <menuDeletion anchor="com.apple.menu.toolbar"/>
+                            </systemMenuChildDeletions>
+                        </menu>
+                        <menu title="Processor" anchor="com.apple.menu.view" id="eRc-gN-H7B">
+                            <children>
+                                <command title="Select Previous" input="[" id="Kme-SP-wGG">
+                                    <keyModifierFlags key="modifierFlags" command="YES"/>
+                                    <connections>
+                                        <action selector="selectPreviousProcessorMenuAction" destination="gzW-15-PDq" id="6Ry-lU-ITT"/>
+                                    </connections>
+                                </command>
+                                <command title="Select Next" input="]" id="KME-u2-vnK">
+                                    <keyModifierFlags key="modifierFlags" command="YES"/>
+                                    <connections>
+                                        <action selector="selectNextProcessorMenuAction" destination="gzW-15-PDq" id="Pg6-hN-oAC"/>
+                                    </connections>
+                                </command>
+                                <menu title="Favouriting" id="zv5-Wi-KdO">
+                                    <menuOptions key="menuOptions" displayInline="YES"/>
+                                    <children>
+                                        <command title="Favourite" input="d" id="6Hs-OV-Lr3">
+                                            <keyModifierFlags key="modifierFlags" command="YES"/>
+                                            <connections>
+                                                <action selector="toggleFavouriteStatusMenuAction" destination="gzW-15-PDq" id="Xm9-D8-iN0"/>
+                                            </connections>
+                                        </command>
+                                    </children>
+                                </menu>
+                            </children>
+                        </menu>
+                    </children>
+                    <systemMenuChildDeletions>
+                        <menuDeletion anchor="com.apple.menu.format"/>
+                    </systemMenuChildDeletions>
+                </menu>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gzW-15-PDq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1663" y="-1602"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="bnC-4V-VfD">

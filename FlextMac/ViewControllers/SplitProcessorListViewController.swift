@@ -67,11 +67,24 @@ class SplitProcessorListViewController: UITableViewController {
     /// Whether the table has focus.
     var hasFocus = false
 
-    /// Whether a label is being renamed.
-    var isRenaming = false
-
     /// The document picker.
     var documentPicker: UIDocumentPickerViewController!
+
+    var hasNextProcessor: Bool {
+        if userAddedProcessors.isEmpty {
+            return settings.selectedProcessorPath != IndexPath(row: builtInProcessors.count - 1, section: Section.builtIn.rawValue)
+        } else {
+            return settings.selectedProcessorPath != IndexPath(row: userAddedProcessors.count - 1, section: Section.userAdded.rawValue)
+        }
+    }
+
+    var hasPreviousProcessor: Bool {
+        if settings.favouritedProcessors.isEmpty {
+            return settings.selectedProcessorPath != IndexPath(row: 0, section: Section.builtIn.rawValue)
+        } else {
+            return settings.selectedProcessorPath != IndexPath(row: 0, section: Section.favourited.rawValue)
+        }
+    }
 
     // MARK: - IB Outlet Values
 
@@ -84,8 +97,6 @@ class SplitProcessorListViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        editor = self.splitViewController?.viewControllers[1] as? SplitEditorViewController
 
         for processor in settings.processors {
             switch processor.type {
@@ -138,7 +149,7 @@ class SplitProcessorListViewController: UITableViewController {
         tableView.becomeFirstResponder()
     }
 
-    // MARK: - Selected Path Updating
+    // MARK: - Processor Selecting
 
     func defaultSelectedPath() -> IndexPath {
         if settings.favouritedProcessors.isEmpty {
@@ -146,6 +157,18 @@ class SplitProcessorListViewController: UITableViewController {
         } else {
             return IndexPath(row: 0, section: Section.favourited.rawValue)
         }
+    }
+
+    func selectNextProcessor() {
+        guard let selectedPath = settings.selectedProcessorPath else { return }
+        let newPath = IndexPath(row: selectedPath.row + 1, section: selectedPath.section)
+        updateSelectedPath(to: newPath)
+    }
+
+    func selectPreviousProcessor() {
+        guard let selectedPath = settings.selectedProcessorPath else { return }
+        let newPath = IndexPath(row: selectedPath.row - 1, section: selectedPath.section)
+        updateSelectedPath(to: newPath)
     }
 
     func updateSelectedPath(to indexPath: IndexPath) {
@@ -256,7 +279,7 @@ class SplitProcessorListViewController: UITableViewController {
 
     // Favouriting
 
-    @IBAction func toggleFavouriteStatus(_ sender: UIBarButtonItem) {
+    @IBAction func toggleFavouriteStatus(_ sender: UIBarButtonItem? = nil) {
         guard let selectedPath = settings.selectedProcessorPath else { return }
         guard let processor = processor(at: selectedPath) else { return }
 
