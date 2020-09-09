@@ -14,7 +14,7 @@
 		7053B58A24EC53AB007D9408 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7053B58924EC53AB007D9408 /* Media.xcassets */; };
 		7053B58C24EC53AB007D9408 /* ActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7053B58B24EC53AB007D9408 /* ActionViewController.swift */; };
 		7053B58F24EC53AB007D9408 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7053B58D24EC53AB007D9408 /* MainInterface.storyboard */; };
-		7053B59324EC53AB007D9408 /* ActionExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7053B58724EC53AB007D9408 /* ActionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7053B59324EC53AB007D9408 /* ActionExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7053B58724EC53AB007D9408 /* ActionExtension.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7053B59A24ECEA31007D9408 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 708BF85824CFB0E40004A404 /* Assets.xcassets */; };
 		7053B59B24ECF025007D9408 /* SettingsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2312724D68113004760B1 /* SettingsData.swift */; };
 		7053B59C24ECF02A007D9408 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70514C0024E7AD7B004303A9 /* SettingsManager.swift */; };
@@ -492,6 +492,7 @@
 /* Begin PBXTargetDependency section */
 		7053B59224EC53AB007D9408 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = 7053B58624EC53AB007D9408 /* ActionExtension */;
 			targetProxy = 7053B59124EC53AB007D9408 /* PBXContainerItemProxy */;
 		};
