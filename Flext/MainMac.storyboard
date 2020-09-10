@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PBp-cP-bBE" initialMenu="w73-ae-W4u">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="mac" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -13,14 +13,14 @@
             <objects>
                 <viewController id="1JQ-WU-FUg" userLabel="Editor" customClass="SplitEditorViewController" customModule="Flext" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="GrW-MY-XLL">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="478.5" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="QMV-qV-qt4" userLabel="App Container">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <rect key="frame" x="0.0" y="0.0" width="479" height="600"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rA2-WR-ngS" userLabel="Preview">
-                                        <rect key="frame" x="0.0" y="0.0" width="300" height="600"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="239" height="600"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Preview" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qin-2z-jwf" userLabel="Header">
                                                 <rect key="frame" x="20" y="0.0" width="69" height="23"/>
@@ -28,8 +28,8 @@
                                                 <color key="textColor" systemColor="tertiaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="sGl-os-tvP" userLabel="Preview">
-                                                <rect key="frame" x="20" y="43" width="260" height="537"/>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="sGl-os-tvP" userLabel="Preview">
+                                                <rect key="frame" x="20" y="43" width="199" height="537"/>
                                                 <color key="backgroundColor" systemColor="secondarySystemBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -48,10 +48,10 @@
                                         <viewLayoutGuide key="safeArea" id="b51-QG-bCZ"/>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IbY-4I-jhc" userLabel="Editor">
-                                        <rect key="frame" x="300" y="0.0" width="300" height="600"/>
+                                        <rect key="frame" x="239" y="0.0" width="239" height="600"/>
                                         <subviews>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Enter your text." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="oBt-la-S5H" userLabel="Editor" customClass="TextViewWithPlaceholder" customModule="Flext" customModuleProvider="target">
-                                                <rect key="frame" x="20" y="43" width="260" height="537"/>
+                                                <rect key="frame" x="20" y="43" width="199" height="537"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <color key="textColor" systemColor="placeholderTextColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -96,20 +96,20 @@
             <objects>
                 <tableViewController clearsSelectionOnViewWillAppear="NO" id="Jxz-SG-Asu" userLabel="Processor List" customClass="SplitProcessorListViewController" customModule="Flext" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="Dib-oK-0RA">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <gestureRecognizers/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Processor" id="Rz4-Jg-IWW" customClass="SplitProcessorListViewCell" customModule="Flext" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="55.5" width="414" height="32.5"/>
+                                <rect key="frame" x="0.0" y="55" width="320" height="32.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Rz4-Jg-IWW" id="06l-gb-o5L">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="32.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="32.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VmO-EC-sUr" customClass="SplitProcessorListViewEditableLabel" customModule="Flext" customModuleProvider="target">
-                                            <rect key="frame" x="20" y="5" width="560" height="23"/>
+                                            <rect key="frame" x="20" y="5" width="280" height="23"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <textInputTraits key="textInputTraits"/>
                                             <connections>
@@ -133,14 +133,14 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="Processor (Options)" id="c0R-qt-sR8" customClass="SplitProcessorListViewCell" customModule="Flext" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="88" width="414" height="32.5"/>
+                                <rect key="frame" x="0.0" y="87.5" width="320" height="32.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="c0R-qt-sR8" id="xuY-W1-uRe">
-                                    <rect key="frame" x="0.0" y="0.0" width="370" height="32.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="280" height="32.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QdE-E9-GQq" customClass="SplitProcessorListViewEditableLabel" customModule="Flext" customModuleProvider="target">
-                                            <rect key="frame" x="20" y="5" width="516" height="23"/>
+                                            <rect key="frame" x="20" y="5" width="240" height="23"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <textInputTraits key="textInputTraits"/>
                                             <connections>
@@ -216,7 +216,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="qt5-qZ-4Yz">
-                        <rect key="frame" x="0.0" y="813" width="414" height="49"/>
+                        <rect key="frame" x="0.0" y="550" width="320" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>

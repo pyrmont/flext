@@ -15,6 +15,8 @@ class SplitEditorViewController: EditorViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        textPreview.delegate = self
     }
 
     override func selectedProcessor() -> Processor {
@@ -34,5 +36,13 @@ class SplitEditorViewController: EditorViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         scrollPreview()
+    }
+
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if textView == textPreview {
+            return false
+        } else {
+            return true
+        }
     }
 }
