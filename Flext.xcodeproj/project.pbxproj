@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		700B657424F0FDBD0045E4A8 /* WebpageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700B657324F0FDBD0045E4A8 /* WebpageViewController.swift */; };
+		70270ED32509BFEE00E2EAB5 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 70270ED22509BFEE00E2EAB5 /* Credits.rtf */; };
 		702D0DCC24E3919600C86782 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 702D0DCB24E3919600C86782 /* Errors.swift */; };
 		70458B1024FF96F40089299A /* FileHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70458B0F24FF96F40089299A /* FileHandler.swift */; };
 		70514C0124E7AD7B004303A9 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70514C0024E7AD7B004303A9 /* SettingsManager.swift */; };
@@ -90,6 +91,7 @@
 
 /* Begin PBXFileReference section */
 		700B657324F0FDBD0045E4A8 /* WebpageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebpageViewController.swift; sourceTree = "<group>"; };
+		70270ED22509BFEE00E2EAB5 /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		702D0DCB24E3919600C86782 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		70458B0F24FF96F40089299A /* FileHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHandler.swift; sourceTree = "<group>"; };
 		70514C0024E7AD7B004303A9 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
@@ -195,15 +197,16 @@
 				7092A59424F2269E00E0B320 /* Webpages */,
 				7053B59924ECE9BA007D9408 /* Flext.entitlements */,
 				708BF85D24CFB0E40004A404 /* Info.plist */,
+				70270ED22509BFEE00E2EAB5 /* Credits.rtf */,
+				70C5A3902508769700D89881 /* MainMac.storyboard */,
 				708BF84F24CFB0E30004A404 /* AppDelegate.swift */,
 				708BF85124CFB0E30004A404 /* SceneDelegate.swift */,
 				708BF85824CFB0E40004A404 /* Assets.xcassets */,
 				70B2312624D680F9004760B1 /* Data */,
 				70B2312324D6607B004760B1 /* Helpers */,
-				70B2311524D52AB6004760B1 /* Localizable.strings */,
 				708BF85A24CFB0E40004A404 /* LaunchScreen.storyboard */,
+				70B2311524D52AB6004760B1 /* Localizable.strings */,
 				708BF85524CFB0E30004A404 /* Main.storyboard */,
-				70C5A3902508769700D89881 /* MainMac.storyboard */,
 				7096B75124D10A5F00B2C132 /* Models */,
 				7096B75024D10A4500B2C132 /* ViewControllers */,
 				7096B75224D10A7C00B2C132 /* Views */,
@@ -384,6 +387,7 @@
 				7092A59524F2269F00E0B320 /* Webpages in Resources */,
 				708BF85C24CFB0E40004A404 /* LaunchScreen.storyboard in Resources */,
 				70C5A39D25088C8A00D89881 /* MainMac.storyboard in Resources */,
+				70270ED32509BFEE00E2EAB5 /* Credits.rtf in Resources */,
 				7096B74324D1050900B2C132 /* Processors in Resources */,
 				708BF85924CFB0E40004A404 /* Assets.xcassets in Resources */,
 				708BF85724CFB0E30004A404 /* Main.storyboard in Resources */,
