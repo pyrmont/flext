@@ -83,4 +83,28 @@ class SplitViewController: UISplitViewController {
     @IBAction func copyOutputMenuAction() {
         editorController.copyOutput()
     }
+
+    @IBAction func showHelpAddingMenuAction(_ command: UICommand) {
+        let webpage = Webpage(title: command.title, sourceFile: "help_adding.md")
+        showHelp(webpage)
+    }
+
+    @IBAction func showHelpRemovingMenuAction(_ command: UICommand) {
+        let webpage = Webpage(title: command.title, sourceFile: "help_removing.md")
+        showHelp(webpage)
+    }
+
+    @IBAction func showHelpWritingMenuAction(_ command: UICommand) {
+        let webpage = Webpage(title: command.title, sourceFile: "help_writing.md")
+        showHelp(webpage)
+    }
+
+    func showHelp(_ webpage: Webpage) {
+        guard let storyboard = storyboard else { return }
+
+        let webpageController = storyboard.instantiateViewController(identifier: "Webpage") as! WebpageViewController
+        webpageController.webpage = webpage
+
+        present(webpageController, animated: true)
+    }
 }
