@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		700B657424F0FDBD0045E4A8 /* WebpageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700B657324F0FDBD0045E4A8 /* WebpageViewController.swift */; };
-		70270ED32509BFEE00E2EAB5 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 70270ED22509BFEE00E2EAB5 /* Credits.rtf */; };
 		702D0DCC24E3919600C86782 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 702D0DCB24E3919600C86782 /* Errors.swift */; };
 		70458B1024FF96F40089299A /* FileHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70458B0F24FF96F40089299A /* FileHandler.swift */; };
 		70514C0124E7AD7B004303A9 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70514C0024E7AD7B004303A9 /* SettingsManager.swift */; };
@@ -47,12 +46,7 @@
 		70B2311924D53C33004760B1 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2311824D53C33004760B1 /* AboutViewController.swift */; };
 		70B2311F24D65A60004760B1 /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 70B2311E24D65A60004760B1 /* Down */; };
 		70B2312824D68113004760B1 /* SettingsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2312724D68113004760B1 /* SettingsData.swift */; };
-		70C5A396250878DC00D89881 /* SplitEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C5A392250878D800D89881 /* SplitEditorViewController.swift */; };
-		70C5A397250878E000D89881 /* SplitProcessorListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C5A395250878D800D89881 /* SplitProcessorListViewController.swift */; };
-		70C5A398250878E400D89881 /* SplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C5A394250878D800D89881 /* SplitViewController.swift */; };
-		70C5A399250878E700D89881 /* SplitOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C5A393250878D800D89881 /* SplitOptionsViewController.swift */; };
 		70C5A39B250879EC00D89881 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C5A39A2508799800D89881 /* UIViewExtension.swift */; };
-		70C5A39D25088C8A00D89881 /* MainMac.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 70C5A3902508769700D89881 /* MainMac.storyboard */; };
 		70D403D824EE7D12007D9A39 /* Action.js in Resources */ = {isa = PBXBuildFile; fileRef = 70D403D724EE7D12007D9A39 /* Action.js */; };
 		70D9C71824D8F66F002A74AD /* LineReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D9C71724D8F66F002A74AD /* LineReader.swift */; };
 		70D9C71A24D967EA002A74AD /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D9C71924D967EA002A74AD /* OptionsViewController.swift */; };
@@ -91,7 +85,6 @@
 
 /* Begin PBXFileReference section */
 		700B657324F0FDBD0045E4A8 /* WebpageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebpageViewController.swift; sourceTree = "<group>"; };
-		70270ED22509BFEE00E2EAB5 /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		702D0DCB24E3919600C86782 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		70458B0F24FF96F40089299A /* FileHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHandler.swift; sourceTree = "<group>"; };
 		70514C0024E7AD7B004303A9 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
@@ -122,11 +115,6 @@
 		70B2311424D52AB6004760B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70B2311824D53C33004760B1 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		70B2312724D68113004760B1 /* SettingsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsData.swift; sourceTree = "<group>"; };
-		70C5A3902508769700D89881 /* MainMac.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainMac.storyboard; sourceTree = "<group>"; };
-		70C5A392250878D800D89881 /* SplitEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitEditorViewController.swift; sourceTree = "<group>"; };
-		70C5A393250878D800D89881 /* SplitOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitOptionsViewController.swift; sourceTree = "<group>"; };
-		70C5A394250878D800D89881 /* SplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewController.swift; sourceTree = "<group>"; };
-		70C5A395250878D800D89881 /* SplitProcessorListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitProcessorListViewController.swift; sourceTree = "<group>"; };
 		70C5A39A2508799800D89881 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		70D403D724EE7D12007D9A39 /* Action.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Action.js; sourceTree = "<group>"; };
 		70D9C71724D8F66F002A74AD /* LineReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineReader.swift; sourceTree = "<group>"; };
@@ -197,8 +185,6 @@
 				7092A59424F2269E00E0B320 /* Webpages */,
 				7053B59924ECE9BA007D9408 /* Flext.entitlements */,
 				708BF85D24CFB0E40004A404 /* Info.plist */,
-				70270ED22509BFEE00E2EAB5 /* Credits.rtf */,
-				70C5A3902508769700D89881 /* MainMac.storyboard */,
 				708BF84F24CFB0E30004A404 /* AppDelegate.swift */,
 				708BF85124CFB0E30004A404 /* SceneDelegate.swift */,
 				708BF85824CFB0E40004A404 /* Assets.xcassets */,
@@ -229,10 +215,6 @@
 				709899F924DF8AAB005F2C44 /* ManagerViewController.swift */,
 				70D9C71924D967EA002A74AD /* OptionsViewController.swift */,
 				7096B74824D107D100B2C132 /* SettingsViewController.swift */,
-				70C5A392250878D800D89881 /* SplitEditorViewController.swift */,
-				70C5A393250878D800D89881 /* SplitOptionsViewController.swift */,
-				70C5A395250878D800D89881 /* SplitProcessorListViewController.swift */,
-				70C5A394250878D800D89881 /* SplitViewController.swift */,
 				700B657324F0FDBD0045E4A8 /* WebpageViewController.swift */,
 			);
 			path = ViewControllers;
@@ -386,8 +368,6 @@
 			files = (
 				7092A59524F2269F00E0B320 /* Webpages in Resources */,
 				708BF85C24CFB0E40004A404 /* LaunchScreen.storyboard in Resources */,
-				70C5A39D25088C8A00D89881 /* MainMac.storyboard in Resources */,
-				70270ED32509BFEE00E2EAB5 /* Credits.rtf in Resources */,
 				7096B74324D1050900B2C132 /* Processors in Resources */,
 				708BF85924CFB0E40004A404 /* Assets.xcassets in Resources */,
 				708BF85724CFB0E30004A404 /* Main.storyboard in Resources */,
@@ -476,18 +456,14 @@
 				70E7CB2A24FCAD5B00241646 /* TableViewCellWithSelection.swift in Sources */,
 				70B2312824D68113004760B1 /* SettingsData.swift in Sources */,
 				708BF85224CFB0E30004A404 /* SceneDelegate.swift in Sources */,
-				70C5A396250878DC00D89881 /* SplitEditorViewController.swift in Sources */,
 				70D9C71A24D967EA002A74AD /* OptionsViewController.swift in Sources */,
-				70C5A397250878E000D89881 /* SplitProcessorListViewController.swift in Sources */,
 				70458B1024FF96F40089299A /* FileHandler.swift in Sources */,
 				7092A59724F286E600E0B320 /* Webpage.swift in Sources */,
-				70C5A399250878E700D89881 /* SplitOptionsViewController.swift in Sources */,
 				70514C0124E7AD7B004303A9 /* SettingsManager.swift in Sources */,
 				7096B74924D107D100B2C132 /* SettingsViewController.swift in Sources */,
 				70C5A39B250879EC00D89881 /* UIViewExtension.swift in Sources */,
 				70E7CB2724FC98B400241646 /* Preferences.swift in Sources */,
 				708BF86424CFDA3C0004A404 /* TextViewWithPlaceholder.swift in Sources */,
-				70C5A398250878E400D89881 /* SplitViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -555,7 +531,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.inqk.Flext.ActionExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -578,7 +554,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.inqk.Flext.ActionExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -721,7 +697,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.inqk.Flext;
 				PRODUCT_NAME = Flext;
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -748,7 +724,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.inqk.Flext;
 				PRODUCT_NAME = Flext;
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
