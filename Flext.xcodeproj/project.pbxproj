@@ -46,7 +46,6 @@
 		70B2311924D53C33004760B1 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2311824D53C33004760B1 /* AboutViewController.swift */; };
 		70B2311F24D65A60004760B1 /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 70B2311E24D65A60004760B1 /* Down */; };
 		70B2312824D68113004760B1 /* SettingsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2312724D68113004760B1 /* SettingsData.swift */; };
-		70C5A39B250879EC00D89881 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C5A39A2508799800D89881 /* UIViewExtension.swift */; };
 		70D403D824EE7D12007D9A39 /* Action.js in Resources */ = {isa = PBXBuildFile; fileRef = 70D403D724EE7D12007D9A39 /* Action.js */; };
 		70D9C71824D8F66F002A74AD /* LineReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D9C71724D8F66F002A74AD /* LineReader.swift */; };
 		70D9C71A24D967EA002A74AD /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D9C71924D967EA002A74AD /* OptionsViewController.swift */; };
@@ -115,7 +114,6 @@
 		70B2311424D52AB6004760B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70B2311824D53C33004760B1 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		70B2312724D68113004760B1 /* SettingsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsData.swift; sourceTree = "<group>"; };
-		70C5A39A2508799800D89881 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		70D403D724EE7D12007D9A39 /* Action.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Action.js; sourceTree = "<group>"; };
 		70D9C71724D8F66F002A74AD /* LineReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineReader.swift; sourceTree = "<group>"; };
 		70D9C71924D967EA002A74AD /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
@@ -249,7 +247,6 @@
 				70D9C71724D8F66F002A74AD /* LineReader.swift */,
 				709899F524DBF642005F2C44 /* PreferencesManager.swift */,
 				70514C0024E7AD7B004303A9 /* SettingsManager.swift */,
-				70C5A39A2508799800D89881 /* UIViewExtension.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -461,7 +458,6 @@
 				7092A59724F286E600E0B320 /* Webpage.swift in Sources */,
 				70514C0124E7AD7B004303A9 /* SettingsManager.swift in Sources */,
 				7096B74924D107D100B2C132 /* SettingsViewController.swift in Sources */,
-				70C5A39B250879EC00D89881 /* UIViewExtension.swift in Sources */,
 				70E7CB2724FC98B400241646 /* Preferences.swift in Sources */,
 				708BF86424CFDA3C0004A404 /* TextViewWithPlaceholder.swift in Sources */,
 			);
