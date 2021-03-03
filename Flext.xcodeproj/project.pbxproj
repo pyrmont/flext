@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		700B657424F0FDBD0045E4A8 /* WebpageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700B657324F0FDBD0045E4A8 /* WebpageViewController.swift */; };
+		701A196B25EF3A2500AF5BBB /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 701A196A25EF3A2500AF5BBB /* Down */; };
+		701A196F25EF3A9F00AF5BBB /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 701A196E25EF3A9F00AF5BBB /* Down */; };
 		702D0DCC24E3919600C86782 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 702D0DCB24E3919600C86782 /* Errors.swift */; };
 		70458B1024FF96F40089299A /* FileHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70458B0F24FF96F40089299A /* FileHandler.swift */; };
 		70514C0124E7AD7B004303A9 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70514C0024E7AD7B004303A9 /* SettingsManager.swift */; };
@@ -41,10 +43,8 @@
 		7096B74F24D109CA00B2C132 /* Processor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7096B74E24D109CA00B2C132 /* Processor.swift */; };
 		709899F624DBF642005F2C44 /* PreferencesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709899F524DBF642005F2C44 /* PreferencesManager.swift */; };
 		709899FA24DF8AAB005F2C44 /* ManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709899F924DF8AAB005F2C44 /* ManagerViewController.swift */; };
-		70A075DD24F4E55800415B61 /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 70A075DC24F4E55800415B61 /* Down */; };
 		70B2311324D52AB6004760B1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 70B2311524D52AB6004760B1 /* Localizable.strings */; };
 		70B2311924D53C33004760B1 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2311824D53C33004760B1 /* AboutViewController.swift */; };
-		70B2311F24D65A60004760B1 /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 70B2311E24D65A60004760B1 /* Down */; };
 		70B2312824D68113004760B1 /* SettingsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2312724D68113004760B1 /* SettingsData.swift */; };
 		70D403D824EE7D12007D9A39 /* Action.js in Resources */ = {isa = PBXBuildFile; fileRef = 70D403D724EE7D12007D9A39 /* Action.js */; };
 		70D9C71824D8F66F002A74AD /* LineReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D9C71724D8F66F002A74AD /* LineReader.swift */; };
@@ -128,7 +128,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				70A075DD24F4E55800415B61 /* Down in Frameworks */,
+				701A196F25EF3A9F00AF5BBB /* Down in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,7 +136,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				70B2311F24D65A60004760B1 /* Down in Frameworks */,
+				701A196B25EF3A2500AF5BBB /* Down in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,7 +277,7 @@
 			);
 			name = ActionExtension;
 			packageProductDependencies = (
-				70A075DC24F4E55800415B61 /* Down */,
+				701A196E25EF3A9F00AF5BBB /* Down */,
 			);
 			productName = ActionExtension;
 			productReference = 7053B58724EC53AB007D9408 /* ActionExtension.appex */;
@@ -300,7 +300,7 @@
 			);
 			name = Flext;
 			packageProductDependencies = (
-				70B2311E24D65A60004760B1 /* Down */,
+				701A196A25EF3A2500AF5BBB /* Down */,
 			);
 			productName = Telekinesis;
 			productReference = 708BF84C24CFB0E30004A404 /* Flext.app */;
@@ -334,7 +334,7 @@
 			);
 			mainGroup = 708BF84324CFB0E30004A404;
 			packageReferences = (
-				70B2311D24D65A60004760B1 /* XCRemoteSwiftPackageReference "Down" */,
+				701A196925EF3A2500AF5BBB /* XCRemoteSwiftPackageReference "Down" */,
 			);
 			productRefGroup = 708BF84D24CFB0E30004A404 /* Products */;
 			projectDirPath = "";
@@ -759,25 +759,25 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		70B2311D24D65A60004760B1 /* XCRemoteSwiftPackageReference "Down" */ = {
+		701A196925EF3A2500AF5BBB /* XCRemoteSwiftPackageReference "Down" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/iwasrobbed/Down";
+			repositoryURL = "https://github.com/johnxnguyen/Down";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.9.3;
+				minimumVersion = 0.10.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		70A075DC24F4E55800415B61 /* Down */ = {
+		701A196A25EF3A2500AF5BBB /* Down */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 70B2311D24D65A60004760B1 /* XCRemoteSwiftPackageReference "Down" */;
+			package = 701A196925EF3A2500AF5BBB /* XCRemoteSwiftPackageReference "Down" */;
 			productName = Down;
 		};
-		70B2311E24D65A60004760B1 /* Down */ = {
+		701A196E25EF3A9F00AF5BBB /* Down */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 70B2311D24D65A60004760B1 /* XCRemoteSwiftPackageReference "Down" */;
+			package = 701A196925EF3A2500AF5BBB /* XCRemoteSwiftPackageReference "Down" */;
 			productName = Down;
 		};
 /* End XCSwiftPackageProductDependency section */
