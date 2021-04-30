@@ -1,6 +1,6 @@
 # Down
 
-Flext includes code from [Down](https://github.com/iwasrobbed/Down). As a
+Flext includes code from [Down](https://github.com/johnxnguyen/Down/). As a
 condition of the use of this code, its licence is reproduced below.
 
 ## Licence

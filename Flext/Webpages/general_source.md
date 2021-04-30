@@ -1,10 +1,7 @@
 The source code for Flext is available on [GitHub](https://github.com/pyrmont/flext).
-The code is made available under a modified form of the BSD-3 licence.
+The code is made available under the Apache Licence, Version 2.0.
 
 ## Rationale
-
-Making software open source is sometimes considered inconsistent with commercial
-distribution of that software. Flext challenges this orthodoxy.
 
 Making Flext open source has three benefits:
 
@@ -26,14 +23,14 @@ Making Flext open source has three benefits:
    correct mistakes they see. Knowing your work is going to be public also gives
    me incentive to try to write better code.
 
-## Approach
+## Limitations
 
-Flext's source code is licensed under a modified form of the liberal BSD-3
-licence. This permits licensees to modify and distribute the software, including
-for commercial use. In other words, you can, if you'd like, take the source
-code, compile it into your own app and submit it to the App Store.
+Flext's source code is licensed under the Apache Licence, Version 2.0. This permits
+licensees to modify and distribute the software, including for commercial use. In
+other words, you can, if you'd like, take the source code, compile it into your own
+app and, with one limitation, submit it to the App Store.
 
-The one caveat is that the licence does not grant any rights in the 'FLEXT' mark
+The limitation is that the licence does not grant any rights in the 'FLEXT' mark
 or in the 'FLEXT LOGO' mark. Files that include these marks can remain in the
 repository but they cannot be used for marketing or commercial purposes.
 

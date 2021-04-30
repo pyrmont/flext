@@ -3,8 +3,9 @@
 //  Flext
 //
 //  Created by Michael Camilleri on 2/9/20.
-//  Copyright © 2020 Michael Camilleri. All rights reserved.
+//  Copyright © 2021 Michael Camilleri. All rights reserved.
 //
+//  Licensed under the Apache License, Version 2.0.
 
 import Foundation
 import JavaScriptCore

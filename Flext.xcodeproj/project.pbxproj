@@ -43,7 +43,6 @@
 		7096B74F24D109CA00B2C132 /* Processor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7096B74E24D109CA00B2C132 /* Processor.swift */; };
 		709899F624DBF642005F2C44 /* PreferencesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709899F524DBF642005F2C44 /* PreferencesManager.swift */; };
 		709899FA24DF8AAB005F2C44 /* ManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709899F924DF8AAB005F2C44 /* ManagerViewController.swift */; };
-		70B2311324D52AB6004760B1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 70B2311524D52AB6004760B1 /* Localizable.strings */; };
 		70B2311924D53C33004760B1 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2311824D53C33004760B1 /* AboutViewController.swift */; };
 		70B2312824D68113004760B1 /* SettingsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B2312724D68113004760B1 /* SettingsData.swift */; };
 		70D403D824EE7D12007D9A39 /* Action.js in Resources */ = {isa = PBXBuildFile; fileRef = 70D403D724EE7D12007D9A39 /* Action.js */; };
@@ -111,7 +110,6 @@
 		7096B74E24D109CA00B2C132 /* Processor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Processor.swift; sourceTree = "<group>"; };
 		709899F524DBF642005F2C44 /* PreferencesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesManager.swift; sourceTree = "<group>"; };
 		709899F924DF8AAB005F2C44 /* ManagerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerViewController.swift; sourceTree = "<group>"; };
-		70B2311424D52AB6004760B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70B2311824D53C33004760B1 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		70B2312724D68113004760B1 /* SettingsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsData.swift; sourceTree = "<group>"; };
 		70D403D724EE7D12007D9A39 /* Action.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Action.js; sourceTree = "<group>"; };
@@ -189,7 +187,6 @@
 				70B2312624D680F9004760B1 /* Data */,
 				70B2312324D6607B004760B1 /* Helpers */,
 				708BF85A24CFB0E40004A404 /* LaunchScreen.storyboard */,
-				70B2311524D52AB6004760B1 /* Localizable.strings */,
 				708BF85524CFB0E30004A404 /* Main.storyboard */,
 				7096B75124D10A5F00B2C132 /* Models */,
 				7096B75024D10A4500B2C132 /* ViewControllers */,
@@ -368,7 +365,6 @@
 				7096B74324D1050900B2C132 /* Processors in Resources */,
 				708BF85924CFB0E40004A404 /* Assets.xcassets in Resources */,
 				708BF85724CFB0E30004A404 /* Main.storyboard in Resources */,
-				70B2311324D52AB6004760B1 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -497,14 +493,6 @@
 				708BF85B24CFB0E40004A404 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		70B2311524D52AB6004760B1 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				70B2311424D52AB6004760B1 /* en */,
-			);
-			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -681,7 +669,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = 7TD7PZBNXP;
-				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Flext/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -689,7 +676,6 @@
 					"@executable_path/Frameworks",
 				);
 				MAIN_STORYBOARD = Main;
-				"MAIN_STORYBOARD[sdk=macosx*]" = MainMac;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.inqk.Flext;
 				PRODUCT_NAME = Flext;
@@ -708,7 +694,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = 7TD7PZBNXP;
-				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Flext/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -716,7 +701,6 @@
 					"@executable_path/Frameworks",
 				);
 				MAIN_STORYBOARD = Main;
-				"MAIN_STORYBOARD[sdk=macosx*]" = MainMac;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.inqk.Flext;
 				PRODUCT_NAME = Flext;

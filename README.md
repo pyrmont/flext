@@ -27,7 +27,7 @@ $ open Flext.xcodeproj
 
 Flext depends on [Down][], a CommonMark renderer built atop cmark.
 
-[Down]: https://github.com/iwasrobbed/Down
+[Down]: https://github.com/johnxnguyen/Down
 
 ## Bugs
 
@@ -38,14 +38,12 @@ Found a bug? I'd love to know about it. It really helps to report bugs in the
 
 ## Licence
 
-The source code for Flext is released under a modified form of the 3-clause BSD
-licence. See [LICENSE][lc] for more details.
+The source code for Flext is released under the Apache Licence, Version 2.0.
+See [LICENSE][lc] for more details.
 
 [lc]: https://github.com/pyrmont/flext/blob/master/LICENSE
 
 ### Trade Marks
-
-Flext takes a bit of an unusual approach to its licencing.
 
 The rights in the 'FLEXT' mark and the 'FLEXT LOGO' mark are reserved and are
 not covered by the licence. This means that while you're free to use the source
